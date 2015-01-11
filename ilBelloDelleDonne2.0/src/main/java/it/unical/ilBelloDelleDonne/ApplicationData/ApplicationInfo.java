@@ -4,6 +4,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 
 public class ApplicationInfo{
 	
+	
 	private User user = new User();
 	private ShoppingCart shoppingCart = new ShoppingCart();
 	private boolean userLogged = false;
