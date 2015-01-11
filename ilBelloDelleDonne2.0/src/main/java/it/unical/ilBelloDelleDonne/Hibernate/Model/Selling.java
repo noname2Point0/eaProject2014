@@ -1,0 +1,117 @@
+package it.unical.ilBelloDelleDonne.Hibernate.Model;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+@Entity
+@Table(name="Selling")
+public class Selling {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
+	private int id;
+	
+	@ManyToOne
+	@JoinColumn(name="customer")
+	private Customer customer;
+	
+	@Temporal(TemporalType.DATE)
+    @Column(name = "dateOrder", nullable = false)
+    private Date dateOrder;
+	
+	@Temporal(TemporalType.DATE)
+    @Column(name = "dateConsignment", nullable = false)
+    private Date dateConsignment;
+	
+	@OneToMany(mappedBy="selling")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Product> products;
+		
+	@OneToOne(mappedBy="selling")
+	private Billing billing;
+	
+	public Selling(){
+	}
+
+	
+	public Selling(int id, Customer customer, Date dateOrder, Date dateConsignment, List<Product> products){
+		this.id = id;
+		this.customer =  customer;
+		this.dateOrder = dateOrder;
+		this.dateConsignment = dateConsignment;
+		this.products = products;
+	}
+	
+	public Selling(int id, Customer customer, Date dateOrder, Date dateConsignment){
+		this.id = id;
+		this.customer =  customer;
+		this.dateOrder = dateOrder;
+		this.dateConsignment = dateConsignment;
+		products = new ArrayList<Product>();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+/*
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+*/
+	public Date getDateOrder() {
+		return dateOrder;
+	}
+
+	public void setDateOrder(Date dateOrder) {
+		this.dateOrder = dateOrder;
+	}
+
+	public Date getDateConsignment() {
+		return dateConsignment;
+	}
+
+	public void setDateConsignment(Date dateConsignment) {
+		this.dateConsignment = dateConsignment;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+	
+	@Override
+	public String toString() {
+		return new String(String.valueOf(id)+" "+dateOrder +" "+dateConsignment);
+	}
+
+}

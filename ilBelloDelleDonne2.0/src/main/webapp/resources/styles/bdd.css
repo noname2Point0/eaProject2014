@@ -1,0 +1,235 @@
+body{
+
+	background-color:#d3d3ff;
+
+	text-align:center;
+	
+	font-family: arial,sans-serif;	
+	color:#9394fe;
+}
+
+hr{
+	margin:0px;
+	padding:0px;
+}
+
+.imgContainer{
+	padding-left:30px;
+	float:right;
+}
+
+.homeP{
+	text-align:left;
+}
+
+.login{
+
+	position: relative;
+  	width:300px;
+	margin:0 auto;	
+	padding:20px 20px 20px;
+	
+	background-color:#9394fe;
+	color:#efeffe;
+	
+	border-radius:15px;
+}
+
+.mytable{
+	margin: auto;
+	text-align:center;
+	font-family: arial,sans-serif;	
+	border-radius: 10px;
+	width: 80%
+}
+
+.mytable thead tr{
+	background-color:#9394fe;
+	color:#efeffe;
+	font-weight: bold;
+	height: 40px;
+}
+
+.mytable tbody tr{
+	background-color:#f4f4fd;
+	height: 30px;
+}
+
+.pLogHelp{
+	text-decoration:none;
+	font-size:11px
+}
+
+.login p{
+	margin:20px 0 0;
+}
+
+
+input[type=submit]{
+	
+	height:25px;
+	background-color:#efeffe;
+	color:#9394fe;
+	border-radius:10px;
+}
+
+input[type=text], input[type=password], input[type=date]{
+	width:250px;
+	height:30px;	
+	color:#9394fe;
+	
+}
+
+.signIn{
+	position: relative;
+  	width:520px;
+	margin:0 auto;	
+	padding:20px 20px 20px;
+	
+	background-color:#9394fe;
+	color:#efeffe;
+	
+	border-radius:15px;
+}
+
+#pshifted{
+	text-align:right;	
+}
+
+#container{
+	background-color:#efeffe;
+	border-radius: 15px;
+
+	margin: 5% 5%;
+}
+
+#content{
+	margin:50px 10%;
+	overflow:auto;
+}
+
+
+#accountContent{
+	margin:50px 5%;
+	overflow:auto;
+}
+
+#divmenu{
+	
+	float:left;
+	text-align:left;
+	width:20%;
+	color:#6f6fff;
+}
+
+#divUserInfo{
+	background-color: #e9e9ff;
+	border: 1px solid;
+	
+	border-radius:10px;
+	
+	padding-top:10px;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom: 10px;
+	
+}
+
+#divUserMenu{
+	background-color: #e9e9ff;
+	border-radius:10px;
+	border: 1px solid;
+	
+	margin-top:20px;
+	padding-top:10px;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom: 10px;
+}
+
+#divview{
+	
+}
+
+.userMenu{
+	list-style-type:none;
+}
+
+.userMenu li{
+	margin-bottom:5px;	
+}
+
+.userMenu a{
+	text-decoration:none;
+	color:#6f6fff;
+	font-style:italic;
+	margin-bottom:10px;
+}
+
+.userMenu a:hover{
+	font-weight:bold;
+}
+
+#tcontent{
+	margin:50px 10%;
+}
+
+#header{
+
+	background-image: url('../images/header.png');
+	background-repeat: no-repeat;
+	background-position: center top;
+	padding-top:100px;
+	font-weight:bold;
+	font-style:italic;
+}
+
+#headerp{
+	text-align: left;
+	padding-left: 10%;
+}
+
+#navigationBar{
+	padding-top:0px;
+	padding-bottom:0px;
+}
+
+#navigationBar ul{
+	list-style-type: none;
+	margin:5px;
+	padding:5px;
+	
+}
+
+#navigationBar ul li{
+	display: inline;
+	padding:20px;
+	
+}
+
+#navigationBar ul li a{
+
+	text-decoration:none;
+	color:#9394fe;
+	font-weight:bold;
+	font-style:italic;
+	
+	padding-top:5px;
+	padding-bottom:5px;	
+	padding-left:10px;
+	padding-right:10px;
+
+	border-radius:10px;
+}
+
+#navigationBar ul li a:hover{
+	background-color:#9394fe;
+	color:#efeffe;
+}
+
+#footer{
+	font-size:10px;
+	font-style:italic;
+	padding-top:5px;
+	padding-bottom:5px;
+}
