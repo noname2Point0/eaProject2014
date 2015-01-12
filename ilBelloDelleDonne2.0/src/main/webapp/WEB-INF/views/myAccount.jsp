@@ -7,6 +7,7 @@
 <link href="resources/styles/bdd.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="resources/scripts/menu.js"></script>
 
 <script type="text/javascript">
 	$(function() {
@@ -76,18 +77,18 @@
 						<hr />
 						account:
 							<ul class='userMenu'>
-								<li><a href='#'>visualizza</a></li>
-								<li><a href='#'>modifica</a></li>
-								<li><a href='#'>inserisci</a></li>
-								<li><a href='#'>elimina</a></li>
+								<li><a id="modificaAccount" href='#'>modifica</a></li>
+								<li><a id="inserisciAccount" href='#'>inserisci</a></li>
+								<li><a id="visualizzaAccount" href='#'>visualizza accounts</a></li>
+								
 							</ul>
 						<hr/>
 						appuntamenti:						
 							<ul class="userMenu">
-								<li><a href='#'>visualizza</a></li>
-								<li><a href='#'>modifica</a></li>
-								<li><a href='#'>inserisci</a></li>
-								<li><a href='#'>elimina</a></li>
+								<li><a id="visualizzaAppuntamenti" href='#'>visualizza</a></li>
+								<li><a id="modificaAppuntamenti" href='#'>modifica</a></li>
+								<li><a id="inserisciAppuntamenti" href='#'>inserisci</a></li>
+								<li><a id="eliminaAppuntamento" href='#'>elimina</a></li>
 								<li><a href='#'>check</a></li>
 							</ul>
 							<hr/>

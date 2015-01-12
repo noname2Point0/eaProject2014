@@ -50,6 +50,13 @@ hr{
 	height: 40px;
 }
 
+.mytable tbody th{
+	background-color:#9394fe;
+	color:#efeffe;
+	font-weight: bold;
+	height: 40px;
+}
+
 .mytable tbody tr{
 	background-color:#f4f4fd;
 	height: 30px;
@@ -73,7 +80,7 @@ input[type=submit]{
 	border-radius:10px;
 }
 
-input[type=text], input[type=password], input[type=date], input[type=time]{
+input[type=text], input[type=password], input[type=date], input[type=time],input[type=email]{
 	width:250px;
 	height:30px;	
 	color:#9394fe;
@@ -152,7 +159,7 @@ input[type=text], input[type=password], input[type=date], input[type=time]{
 }
 
 #divview{
-	
+	margin-left: 50px;
 }
 
 .userMenu{

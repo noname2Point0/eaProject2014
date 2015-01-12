@@ -7,9 +7,11 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsVerification;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -46,11 +48,17 @@ public class SignInController implements ApplicationContextAware{
 			RedirectAttributes redirectToSignIn){
 		
 			Date dateB = new Date();
+			
 			try {
-				dateB = new SimpleDateFormat("dd/mm/yyyy").parse(birth);
+				dateB= new SimpleDateFormat("yyyy-MM-dd").parse(birth);
 			} catch (ParseException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}			
+			
+			System.out.println(dateB); // Sat Jan 02 00:00:00 GMT 2010
+			
+			
 
 		if(CredentialsVerification.isAnExistingUser(applicationContext, username)){
 			
