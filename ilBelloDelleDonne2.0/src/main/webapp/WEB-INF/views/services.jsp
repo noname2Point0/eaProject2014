@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -53,18 +57,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="service" items="${serviceList}">
+					<c:forEach var="service" items="${serviceList.services}">
 						<tr>
 							<td>${service.description}</td>
 							<td>${service.price}</td>
 							<td>
-								<form action="reserveService" method="post">
-									<input type="submit" value="reserve"> <input
-										type="hidden" name="id" value="${service.id}"> <input
-										type="hidden" name="description"
-										value="${service.description }"> <input type="hidden"
-										name="price" value="${service.price }">
-								</form>
+								<form:form action="reserveService" method="post" modelattribute="service">
+									<input type="submit" value="reserve"> 
+									<input type="hidden" name="id" value="${service.id}"> 
+									<input type="hidden" name="description" value="${service.description }"> 
+									<input type="hidden" name="price" value="${service.price }">
+								</form:form>
 							</td>
 						</tr>
 					</c:forEach>

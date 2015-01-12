@@ -2,7 +2,6 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
-import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
@@ -11,6 +10,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -36,11 +36,10 @@ public class ReserveController implements ApplicationContextAware {
 			@ModelAttribute("service") Service service, 
 			RedirectAttributes redirect){
 		
-		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		
 		if(appInfo.isUserLogged()){
-			
+			model.addAttribute("user", appInfo.getUser());
 			model.addAttribute("service",service);
 			return"reserveService";
 			
@@ -69,11 +68,13 @@ public class ReserveController implements ApplicationContextAware {
 	public String confirmReserve(HttpSession session, Model model, 
 			@RequestParam("data") String data,
 			@RequestParam("time") String time,
-			@RequestParam("id") int idService,
-			@RequestParam("description") String description,
-			@RequestParam("price") double price){
-
+			@ModelAttribute("service") Service service,
+			RedirectAttributes redirect){
+		
+		Reserve reserve = new Reserve();
+		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		
 		Date dateOrder = new Date();
 		Date dateService = new Date();
 		
@@ -86,24 +87,34 @@ public class ReserveController implements ApplicationContextAware {
 		catch (Exception e) {
 			e.addSuppressed(e.getCause());
 		}
-		
-		ServiceDao serviceDao = (ServiceDao) applicationContext.getBean("serviceDao");
+
 		ReserveDao reserveDao = (ReserveDao) applicationContext.getBean("reserveDao");
-		
-		Service service = new Service(description, price);
-		serviceDao.create(service);
 		
 		String query = new String("from Customer c where c.account.username='"+appInfo.getUser().getAccount().getUsername()+"'");
 		
 		Customer customer = QueryFactory.getCustomerByUser(applicationContext, query);
 		
-		Reserve reserve = new Reserve(customer, dateOrder, dateService, service);
+		reserve.setCustomer(customer);
+		reserve.setDateOrder(dateOrder);
+		reserve.setDateService(dateService);
+		reserve.setService(service);
+		
 		reserveDao.create(reserve);
 		
-
-		return "redirect:/home";
+		redirect.addFlashAttribute("reserve",reserve);
+		
+		return "redirect:/reviewReserveSuccess";
 }
 
+	@RequestMapping(value="/reviewReserveSuccess",method=RequestMethod.GET)
+	public String reviewReserve(Model model, HttpSession session){
+		
+		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		if(appInfo.isUserLogged())
+			model.addAttribute("user", appInfo.getUser());
+		
+		return "reviewReserveSuccess";
+	}
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;

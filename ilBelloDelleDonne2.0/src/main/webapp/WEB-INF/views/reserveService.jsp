@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -71,17 +74,18 @@
 					</tr>
 				</thead>
 				<tbody>
-					<form action="" method="post">
+				
+					<form:form action="confirmReserve" method="post" modelattribute="service">
 						<tr>
-							<td><input type="date" name="data"></td>
+							<td><input type="date" name="data" min="${dateMin}"></td>
 							<td><input type="time" name="time"></td>
-							<td><input type="hidden" name="id" value="${service.id}">
-								<input type="hidden" name="description"
-								value="${service.description}"> <input type="hidden"
-								name="price" value="${service.price}"> <input
-								type="submit" value="conferma"></td>
+							<td> 
+							   <input type="hidden" name="id" value="${service.id}">
+								<input type="hidden" name="description" value="${service.description}"> 
+								<input type="hidden"  name="price" value="${service.price}">
+								<input type="submit" value="conferma"></td>
 						</tr>
-					</form>
+					</form:form>
 				</tbody>
 			</table>
 		</div>

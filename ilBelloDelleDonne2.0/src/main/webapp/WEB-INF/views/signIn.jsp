@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -60,40 +64,33 @@
 						<input type="text" value="" placeholder="cognome *" name="cognome">
 					</p>
 					<p>
-						<input type="text" value="" placeholder="citta' di residenza"
-							name="cittaR"> <input type="text" value=""
-							placeholder="via di residenza" name="viaR">
+						<input type="text" value="" placeholder="citta' di residenza" 	name="cittaR"> 
+						<input type="text" value="" placeholder="via di residenza" name="viaR">
 					</p>
 					<p>
-						<input type="text" value="" placeholder="recapito telefonico"
-							name="recTelefono"> <input type="date" value=""
-							placeholder="data di nascita" name="dataNascita">
+						<input type="text" value=""  placeholder="recapito telefonico" name="recTelefono"> 
+						<input type="date" value="" placeholder="data di nascita" name="dataNascita">
 					</p>
-					<p>
-						<input type="text" value="" placeholder="cf / P_Iva"
-							name="pIva_cf">
+					<p id=pshiftedLeft>
+						<input type="text" value="" placeholder="cf / P_Iva" name="pIva_cf">
 					</p>
 					<br>
 					<hr />
 					<h4>Account info</h4>
-					<p>
+					
+					<p id=pshiftedLeft>
 						<input type="text" value="" placeholder="e-mail" name="email">
 					</p>
+					
 					<p>
-						<input type="text" value="" placeholder="username"
-							name="usernameS"> <input type="password" value=""
-							placeholder="password" name="passwordS">
+						<input type="text" value="" placeholder="username" name="usernameS"> 
+						<input type="password" value="" placeholder="password" name="passwordS">
 					</p>
-					<p id="pshifted">
-						<input type="password" value=""
-							placeholder="reinserisci la password" name="passwordSR">
+					
+					<p id="pshiftedRight">
+						<input type="password" value="" placeholder="reinserisci la password" name="passwordSR">
 					</p>
-					<!--  	<p>
-						<input type="text" value=""
-							placeholder="inserisi una domanda segreta" name="dmndSecret">
-						<input type="text" value="" placeholder="inserisci una risposta"
-							name="rispSecret">
-					</p> -->
+					
 					<p>
 						<input type="submit" name="commitS" value="Sign In">
 					</p>

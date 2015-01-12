@@ -1,6 +1,7 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
+import it.unical.ilBelloDelleDonne.ApplicationData.ServiceList;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
@@ -28,10 +29,11 @@ public class ServicesController implements ApplicationContextAware{
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
-
-		List<Service> list = (List<Service>) QueryFactory.create(applicationContext, new String("from Service"));
-
-		model.addAttribute("serviceList", list);
+		
+		ServiceList serviceList = new ServiceList();
+		serviceList.setServices((List<Service>) QueryFactory.create(applicationContext, new String("from Service")));
+		
+		model.addAttribute("serviceList", serviceList);
 
 		return "services";
 	}

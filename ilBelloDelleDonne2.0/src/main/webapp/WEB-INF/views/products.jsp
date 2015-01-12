@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -63,13 +65,13 @@
 							<td>${stock.description}</td>
 							<td>${stock.price}</td>
 							<td>
-								<form action="addToCart" method="get">
-									<input type="submit" value="add"> <input type="hidden"
-										name="type" value="${stock.type}"> <input
-										type="hidden" name="brand" value="${stock.brand}"> <input
-										type="hidden" name="description" value="${stock.description}">
-									<input type="hidden" name="price" value="${stock.price}">
-									<input type="hidden" name="quantity" value="${stock.quantity}">
+								<form action="addToCart" method="get" modelattribute="productCustom">
+								<input type="submit" value="add"> 
+								<input type="hidden" name="type" value="${stock.type}"> 
+								<input type="hidden" name="brand" value="${stock.brand}"> 
+								<input type="hidden" name="description" value="${stock.description}">
+								<input type="hidden" name="price" value="${stock.price}">
+								<input type="hidden" name="quantity" value="${stock.quantity}">
 								</form>
 							</td>
 						</tr>

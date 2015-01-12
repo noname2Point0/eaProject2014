@@ -1,22 +1,21 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsVerification;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsVerification;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +28,6 @@ public class SignInController implements ApplicationContextAware{
 
 	@RequestMapping(value="/signIn", method = RequestMethod.GET)
 	public String signIn(){
-		System.out.println("SONO NEL METODO GET DI SIGNIN CONTROLLER");
 		return "signIn";
 	}
 
@@ -40,16 +38,21 @@ public class SignInController implements ApplicationContextAware{
 			@RequestParam("cittaR") String city,
 			@RequestParam("viaR") String streetAddress,
 			@RequestParam("recTelefono") String telephoneNumber,
-			@RequestParam("dataNascita") Date birth,
+			@RequestParam("dataNascita") String birth,
 			@RequestParam("pIva_cf") String pIva_cf,
 			@RequestParam("email") String email,
 			@RequestParam("usernameS") String username,
 			@RequestParam("passwordS") String password,
-			@RequestParam("passwordSR") String ripetiPassword,
 			RedirectAttributes redirectToSignIn){
+		
+			Date dateB = new Date();
+			try {
+				dateB = new SimpleDateFormat("dd/mm/yyyy").parse(birth);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 
-		String query = "from User user where user.account.username='"+username+"'";
-		if(CredentialsVerification.isAnExistingUser(applicationContext, query)){
+		if(CredentialsVerification.isAnExistingUser(applicationContext, username)){
 			
 			String message = new String("Utente già esistente");
 			redirectToSignIn.addFlashAttribute("message",message);
@@ -61,11 +64,9 @@ public class SignInController implements ApplicationContextAware{
 
 		Account account = new Account(username, password, AccountType.getCustomerType());
 		accountDao.create(account);
-		System.out.println("creo un account");
-
-		userDao.create(new Customer(name, surname, city, streetAddress, telephoneNumber, birth, pIva_cf, email, account));
-		System.out.println("ho appena registrato un customer");
-
+		
+		userDao.create(new Customer(name, surname, city, streetAddress, telephoneNumber, dateB, pIva_cf, email, account));
+		
 		return "redirect:/login";
 
 	}

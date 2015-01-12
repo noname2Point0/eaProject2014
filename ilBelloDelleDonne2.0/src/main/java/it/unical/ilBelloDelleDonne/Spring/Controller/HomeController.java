@@ -20,6 +20,7 @@ public class HomeController implements ApplicationContextAware{
 	private boolean firstInvocation = true;
 	private ApplicationContext applicationContext;
 	
+	
 	@RequestMapping(value="/",method = RequestMethod.GET)
 	public String home(HttpSession session,Model model){
 		
@@ -27,6 +28,7 @@ public class HomeController implements ApplicationContextAware{
 			FillDBFactory.create(applicationContext);
 			firstInvocation = false;
 		}
+		
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		

@@ -21,7 +21,8 @@ public abstract class CredentialsVerification{
 		return false;
 	}
 	
-	public static boolean isAnExistingUser(ApplicationContext context, String query){
+	public static boolean isAnExistingUser(ApplicationContext context, String username){
+		String query = "from User user where user.account.username='"+username+"'";
 		
 		List<User> userList = (List<User>) QueryFactory.create(context, query);
 		

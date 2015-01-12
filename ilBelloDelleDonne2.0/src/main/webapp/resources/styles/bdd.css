@@ -73,7 +73,7 @@ input[type=submit]{
 	border-radius:10px;
 }
 
-input[type=text], input[type=password], input[type=date]{
+input[type=text], input[type=password], input[type=date], input[type=time]{
 	width:250px;
 	height:30px;	
 	color:#9394fe;
@@ -82,7 +82,7 @@ input[type=text], input[type=password], input[type=date]{
 
 .signIn{
 	position: relative;
-  	width:520px;
+  	width:515px;
 	margin:0 auto;	
 	padding:20px 20px 20px;
 	
@@ -92,8 +92,12 @@ input[type=text], input[type=password], input[type=date]{
 	border-radius:15px;
 }
 
-#pshifted{
+#pshiftedRight{
 	text-align:right;	
+}
+
+#pshiftedLeft{
+	text-align:left;
 }
 
 #container{

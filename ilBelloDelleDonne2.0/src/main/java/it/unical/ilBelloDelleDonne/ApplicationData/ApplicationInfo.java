@@ -9,6 +9,7 @@ public class ApplicationInfo{
 	private ShoppingCart shoppingCart = new ShoppingCart();
 	private boolean userLogged = false;
 	
+	
 	public ApplicationInfo(){}
 	
 	public void setUser(User us) {

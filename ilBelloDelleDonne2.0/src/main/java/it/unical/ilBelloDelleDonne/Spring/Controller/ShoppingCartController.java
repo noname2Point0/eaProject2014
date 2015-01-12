@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ShoppingCartController {
 
 	@RequestMapping(value="/addToCart",method=RequestMethod.GET)
-	public String addToShoppingCart(HttpSession session, @ModelAttribute("productCustom") ProductCustom productCustom){
+	public String addToShoppingCart(HttpSession session, 
+			@ModelAttribute("productCustom") ProductCustom productCustom){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		
@@ -27,7 +28,8 @@ public class ShoppingCartController {
 	}
 	
 	@RequestMapping(value="/removeToCart",method=RequestMethod.GET)
-	public String removeToShoppingCart(HttpSession session, @ModelAttribute("productCustom") ProductCustom productCustom){
+	public String removeToShoppingCart(HttpSession session, 
+			@ModelAttribute("productCustom") ProductCustom productCustom){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		appInfo.getShoppingCart().removeToCart(productCustom);
