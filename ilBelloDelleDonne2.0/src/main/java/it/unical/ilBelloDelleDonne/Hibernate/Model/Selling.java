@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,10 +40,10 @@ public class Selling {
     private Date dateOrder;
 	
 	@Temporal(TemporalType.DATE)
-    @Column(name = "dateConsignment", nullable = false)
+    @Column(name = "dateConsignment")
     private Date dateConsignment;
 	
-	@OneToMany(mappedBy="selling")
+	@OneToMany(mappedBy="selling", fetch=FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Product> products;
 		
@@ -53,16 +54,14 @@ public class Selling {
 	}
 
 	
-	public Selling(int id, Customer customer, Date dateOrder, Date dateConsignment, List<Product> products){
-		this.id = id;
+	public Selling(Customer customer, Date dateOrder, Date dateConsignment, List<Product> products){
 		this.customer =  customer;
 		this.dateOrder = dateOrder;
 		this.dateConsignment = dateConsignment;
 		this.products = products;
 	}
 	
-	public Selling(int id, Customer customer, Date dateOrder, Date dateConsignment){
-		this.id = id;
+	public Selling(Customer customer, Date dateOrder, Date dateConsignment){
 		this.customer =  customer;
 		this.dateOrder = dateOrder;
 		this.dateConsignment = dateConsignment;
@@ -76,7 +75,7 @@ public class Selling {
 	public void setId(int id) {
 		this.id = id;
 	}
-/*
+
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -84,7 +83,7 @@ public class Selling {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-*/
+
 	public Date getDateOrder() {
 		return dateOrder;
 	}

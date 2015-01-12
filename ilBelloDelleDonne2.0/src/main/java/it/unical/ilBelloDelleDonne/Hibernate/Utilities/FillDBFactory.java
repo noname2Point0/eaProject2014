@@ -27,22 +27,24 @@ public abstract class FillDBFactory{
 
 	private static void createProduct(ApplicationContext context){
 
+
 		ProductDao productDao = (ProductDao) context.getBean("productDao");
 
 		for(int i = 0; i<10; i++){
-			productDao.create(new Product("shampoo","garnier","shampo medio",4.5));
-			productDao.create(new Product("shampoo","loreal","shampo professionale",6.5));
-			productDao.create(new Product("balsamo","garnier","medio",4.0));
-			productDao.create(new Product("balsamo","loreal","professionale",3.5));
-			productDao.create(new Product("forbici","cosmo","professionali",120.0));
-			productDao.create(new Product("forbici","cosmo","professionali",110.0));
-			productDao.create(new Product("forbici","martial","semiprofessionali",60.0));
-			productDao.create(new Product("phon","parlux","4200",60.0));
-			productDao.create(new Product("phon","parlux","3200",45.0));
-			productDao.create(new Product("phon","rowenta","fixes",30.0));
-			productDao.create(new Product("piastra","parlux","gtr",90.0));
-			productDao.create(new Product("piastra","imetech","bellissima",80.0));
+			productDao.create(new Product("shampoo","garnier","shampoo medio",4.5, null));
+			productDao.create(new Product("shampoo","loreal","shampo professionale",6.5, null));
+			productDao.create(new Product("balsamo","garnier","medio",4.0, null));
+			productDao.create(new Product("balsamo","loreal","professionale",3.5, null));
+			productDao.create(new Product("forbici","cosmo","professionali",120.0, null));
+			productDao.create(new Product("forbici","cosmo","professionali",110.0, null));
+			productDao.create(new Product("forbici","martial","semiprofessionali",60.0, null));
+			productDao.create(new Product("phon","parlux","4200",60.0, null));
+			productDao.create(new Product("phon","parlux","3200",45.0, null));
+			productDao.create(new Product("phon","rowenta","fixes",30.0, null));
+			productDao.create(new Product("piastra","parlux","gtr",90.0, null));
+			productDao.create(new Product("piastra","imetech","bellissima",80.0, null));
 		}
+		
 	}
 
 	private static void createService(ApplicationContext context){

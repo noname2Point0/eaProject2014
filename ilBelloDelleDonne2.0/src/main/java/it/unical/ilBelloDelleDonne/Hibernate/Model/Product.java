@@ -38,11 +38,13 @@ public class Product {
 	
 	public Product(){}
 	
-	public Product(String type, String brand,String description,Double price){
+	public Product(String type, String brand,String description,Double price, Selling selling){
 		setType(type);
 		setBrand(brand);
 		setDescription(description);
 		setPrice(price);
+		setSelling(selling);
+		
 	}
 	
 	public Product(String type, String brand,Double price){
@@ -89,5 +91,18 @@ public class Product {
 	
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+	
+	public Selling getSelling() {
+		return selling;
+	}
+
+	public void setSelling(Selling selling) {
+		this.selling = selling;
+	}
+
+	@Override
+	public String toString() {
+		return new String(type+" "+brand+" "+description+" "+price);
 	}
 }

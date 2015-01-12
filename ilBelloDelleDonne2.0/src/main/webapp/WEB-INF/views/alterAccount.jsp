@@ -5,7 +5,7 @@
 <p>il tuo account:</p>
 
 <p>Anagrafica</p>
-<form>
+<form:form action="updateAlterUser" method="post" modelAttribute="updUser">
 <table class="mytable">
 <thead>
 	<tr><th></th><th>current value</th><th>new value</th></tr>
@@ -14,78 +14,78 @@
 		<tr>
 			<th>Name:</th>
 			<td>${user.name}</td>
-			<td><input type="text" name="name"></input></td>
+			<td><input type="text" value="${user.name}" name="name"></input></td>
 		</tr>
 		<tr>
 			<th>Surname:</th>
 			<td>${user.surname}</td>
-			<td><input type="text" name="surname"></input></td>
+			<td><input type="text" value=${user.surname }" name="surname"></input></td>
 		</tr>
 		<tr>
 			<th>Birth date:</th>
 			<td>${user.birth}</td>
-			<td><input type="date" name="birth"></input></td>
+			<td><input type="text" value="null" name="birth"></input></td>
 		</tr>
 		<tr>
 			<th>City:</th>
 			<td>${user.city}</td>
-			<td><input type="text"  name="city"></input></td>
+			<td><input type="text" value="${user.city }" name="city"></input></td>
 		</tr>
 		<tr>
 			<th>Address:</th>
 			<td>${stock.streetAddress}</td>
-			<td><input type="text"  name="streetAddress"></input></td>
+			<td><input type="text" value="${user.streetAddress}" name="streetAddress"></input></td>
 		</tr>
 		<tr>
 			<th>TelephoneNumber:</th>
 			<td>${user.telephoneNumber}</td>
-			<td><input type="text" name="telephoneNumber"></input></td>
+			<td><input type="text" value="${user.telephoneNumber}" name="telephoneNumber"></input></td>
 		</tr>
 		<tr>
 			<th>email:</th>
 			<td>${user.email}</td>
-			<td><input type="email" name="email"></input></td>
+			<td><input type="email" value="${user.email }" name="email"></input></td>
 		</tr>
 
 	</tbody>
 </table>
 <br>
+<input type="hidden" value="${user.id}" name="id">
 <input type="submit" value="update">
-</form>
+</form:form>
 
 <br>
 <p>Account</p>
-<form>
+<form:form action="updateAlterAccount" method="post" modelAttribute="udpAccount">
 <table class="mytable">
 	<thead>
 		<tr>
-			<th></th><th>current value</th>	<th>new value</th><th>confirm password</th>
+			<th></th><th>current value</th>	<th>new value</th><th></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<th>username</th>
 			<td>${user.account.username}</td>
-			<td><input type="text"  name="username"></td>
+			<td><input type="text" value="${user.account.username}" name="username"></td>
 			<td></td>
 		</tr>
 		
 		<tr>
 			<th>password</th>		
 			<td>-</td>
-			<td><input type="password" name="password"> </td>
-			<td><input type="password" name="reinsPassword"></td>
+			<td><input type="password" value="${user.account.password }" name="password"></td>
+			<td><input type="password" value="" name="reinsPass"></td>
 		</tr>
 		
 		<tr>
 			<th>type</th>
 			<td>${user.account.type}</td>
-			<td><input type="text" name="type"></td>
-			<td></td>
+			<td><input type="text" value="${user.account.type}" name="type"></td>
 		</tr>
 		
 	</tbody>
 </table>
 <br>
 <input type="submit" value="update">
-</form>
+</form:form>
