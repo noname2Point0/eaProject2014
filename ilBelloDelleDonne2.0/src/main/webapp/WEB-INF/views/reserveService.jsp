@@ -26,7 +26,7 @@ function reserveData() {
 	var time = document.mod.time;
 	alert("ecco il secondo alert ");
 	
-	var t = parseInt(document.mod.time.substring(1));
+	var t = parseInt(document.mod.time.value.substring(1));
 
 	
 	if(document.mod.time.value.substring(1) < "7" || document.mod.time.value.substring(1) > "19"){

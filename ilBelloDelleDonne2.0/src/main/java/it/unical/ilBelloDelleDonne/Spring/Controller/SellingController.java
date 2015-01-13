@@ -63,28 +63,28 @@ public class SellingController implements ApplicationContextAware{
 	@RequestMapping(value="/confirmSelling",method=RequestMethod.GET)
 	public String orderProductsPost(
 			@ModelAttribute("productsCustomList") ProductCustomList productsCustomList,
-			HttpSession session){
+			HttpSession session,
+			RedirectAttributes redirect){
 		
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 
 		List<ProductCustom> productCustom = productsCustomList.getProductsCustom();
 
-
 		ArrayList<Product> products = new ArrayList<Product>();
 
 		for(int i=0; i < productCustom.size(); i++){
-
+			System.out.println(productCustom.get(i).getPrice());
+			
 			String query = new String("from Product p where p.description='"+productCustom.get(i).getDescription()+"' and p.brand='"+productCustom.get(i).getBrand()+"' and p.type='"+productCustom.get(i).getType()+"'");
-
 			List<Product> p =(List<Product>) QueryFactory.create(applicationContext, query);
-
+			
 			for(int j=0; j < productCustom.get(i).getQuantity(); j++){
 				products.add(p.get(j));
 			}
-
 		}
 
+		
 		String query = new String("from Customer c where c.account.username='"+appInfo.getUser().getAccount().getUsername()+"'");	
 		Customer customer = QueryFactory.getCustomerByUser(applicationContext, query);
 
@@ -103,15 +103,25 @@ public class SellingController implements ApplicationContextAware{
 		}
 
 		selling.setProducts(products);
-
 		sellingDao.update(selling);	
 
 		appInfo.getShoppingCart().getProductsIn().clear();
 
-		return "redirect:/home";
+		redirect.addFlashAttribute("selling",selling);
+		redirect.addFlashAttribute("stockList",productsCustomList.getProductsCustom());
+		return "redirect:/reviewSellingSuccess";
 	
 	}
 
+	@RequestMapping(value="/reviewSellingSuccess",method=RequestMethod.GET)
+	public String reviewSellingSuccess(HttpSession session,Model model){
+
+		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		if(appInfo.isUserLogged())
+			model.addAttribute("user", appInfo.getUser());
+		
+		return "reviewSellingSuccess";
+	}
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
