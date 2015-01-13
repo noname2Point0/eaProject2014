@@ -30,6 +30,9 @@ public class Reserve {
     @Column(name = "dateService", nullable = false)
     private Date dateService;
 	
+	@Column(name="time")
+	private String time;
+	
 	@ManyToOne
 	@JoinColumn(name="customer")
 	private Customer customer;
@@ -40,10 +43,11 @@ public class Reserve {
 	
 	public Reserve(){}
 	
-	public Reserve(Customer customer, Date dataOrder, Date dataService, Service service){
+	public Reserve(Customer customer, Date dataOrder, Date dataService, String time, Service service){
 		this.customer = customer;
 		this.dateOrder = dataOrder;
 		this.dateService = dataService;
+		this.time = time;
 		this.service = service;
 	}
 
@@ -77,6 +81,14 @@ public class Reserve {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 	public Service getService() {

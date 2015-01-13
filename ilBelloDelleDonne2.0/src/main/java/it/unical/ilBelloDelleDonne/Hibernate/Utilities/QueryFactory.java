@@ -3,6 +3,7 @@ package it.unical.ilBelloDelleDonne.Hibernate.Utilities;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -51,6 +52,19 @@ public abstract class QueryFactory {
 		
 		return customer;
 
+	}
+	
+	public static  List getReserveByData(ApplicationContext context,String query, String data){
+
+		SessionFactory ses = (SessionFactory) context.getBean("sessionFactory");
+		Session session = ses.openSession();
+
+		Query q = session.createQuery(query);
+		q.setParameter("d", data);
+		List l = q.list();
+
+		session.close();
+		return l;
 	}
 
 }
