@@ -19,12 +19,12 @@
 		<tr>
 			<th>Surname:</th>
 			<td>${user.surname}</td>
-			<td><input type="text" value=${user.surname }" name="surname"></input></td>
+			<td><input type="text" value="${user.surname }" name="surname"></input></td>
 		</tr>
 		<tr>
 			<th>Birth date:</th>
 			<td>${user.birth}</td>
-			<td><input type="text" value="null" name="birth"></input></td>
+			<td><input type="date" value="null" name="birthString"></input></td>
 		</tr>
 		<tr>
 			<th>City:</th>
@@ -33,7 +33,7 @@
 		</tr>
 		<tr>
 			<th>Address:</th>
-			<td>${stock.streetAddress}</td>
+			<td>${user.streetAddress}</td>
 			<td><input type="text" value="${user.streetAddress}" name="streetAddress"></input></td>
 		</tr>
 		<tr>
@@ -50,6 +50,8 @@
 	</tbody>
 </table>
 <br>
+
+<input type="hidden" name="account.username" value="${account.username}">
 <input type="hidden" value="${user.id}" name="id">
 <input type="submit" value="update">
 </form:form>
@@ -82,6 +84,7 @@
 			<th>type</th>
 			<td>${user.account.type}</td>
 			<td><input type="text" value="${user.account.type}" name="type"></td>
+			<td></td>
 		</tr>
 		
 	</tbody>

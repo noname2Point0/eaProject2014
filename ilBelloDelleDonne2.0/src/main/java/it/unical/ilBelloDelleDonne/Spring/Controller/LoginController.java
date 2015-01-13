@@ -38,7 +38,7 @@ public class LoginController implements ApplicationContextAware{
 			@RequestParam("password") String password){
 		
 		User user = new User();
-		boolean verification = CredentialsVerification.loginVerification(applicationContext,user,username,password);
+		boolean verification = CredentialsVerification.verify(applicationContext,user,username,password);
 	
 		if(verification){
 			

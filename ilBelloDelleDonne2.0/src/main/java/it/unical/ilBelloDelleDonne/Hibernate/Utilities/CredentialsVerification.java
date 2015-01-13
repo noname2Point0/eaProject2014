@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 
 public abstract class CredentialsVerification{
 	
-	public static boolean loginVerification(ApplicationContext context,User user,String username,String password){
+	public static boolean verify(ApplicationContext context,User user,String username,String password){
 		
 		UserDao userDao = (UserDao) context.getBean("userDao");
 		User us = userDao.retrieve(username);
@@ -34,6 +34,22 @@ public abstract class CredentialsVerification{
 		}		
 		return false;
 		
+	}
+
+	public static String generateUsername(ApplicationContext context, String a, String b) {
+		String username = new String();
+		
+		username = new String(a+"."+b);
+		
+		int conc = 0;
+		
+		String test = new String(username);
+		while(isAnExistingUser(context, test)){
+			test = new String(username+String.valueOf(conc));
+			conc++;
+		}
+		
+		return test; 
 	}
 
 }

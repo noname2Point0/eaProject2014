@@ -71,11 +71,11 @@
 								<td>${product.description}</td>
 								<td>${product.price}</td>
 								<td>
-								<input type="number" name="productsCustom[${status.index}].quantity" value="1" min="1"
-									max="${product.quantity}"> 
+								<input type="number" name="productsCustom[${status.index}].quantity" value="1" min="1" max="${product.quantity}"> 
 									<input type="hidden" name="productsCustom[${status.index}].type" value="${product.type}">
 									<input type="hidden" name="productsCustom[${status.index}].brand" value="${product.brand}"> 
 									<input type="hidden" name="productsCustom[${status.index}].description" value="${product.description}">
+									<input type="hidden" name="productsCustom[${status.index }].price" value="${product.price}">
 								</td>
 							</tr>
 						</tbody>

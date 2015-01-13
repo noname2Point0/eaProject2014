@@ -79,6 +79,7 @@
 							<ul class='userMenu'>
 								<li><a id="modificaAccount" href='#'>modifica</a></li>
 								<li><a id="inserisciAccount" href='#'>inserisci</a></li>
+								<li><a id="eliminaAccount" href="#">elimina</a>
 								<li><a id="visualizzaAccount" href='#'>visualizza accounts</a></li>
 								
 							</ul>
@@ -113,7 +114,9 @@
 							</ul>
 							</div>
 				</div>
-				<div id="divview"></div>
+				<div id="divview">
+				<p>${message}</p>
+				</div>
 			</c:if>
 		</div>
 

@@ -2,8 +2,15 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsVerification;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AccountOptionController implements ApplicationContextAware{
@@ -24,26 +32,53 @@ public class AccountOptionController implements ApplicationContextAware{
 	
 	@RequestMapping(value="/alterAccount", method=RequestMethod.GET)
 	public String alterAccount(HttpSession session, Model model){
-		System.out.println("ciao");
-		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		model.addAttribute("user", appInfo.getUser());
 		
 		return "alterAccount";
 	}
 	
-	@RequestMapping(value="/updateAlterUser",method=RequestMethod.POST)
-	public String updateAlterUser(@ModelAttribute("updUser") User user,@RequestParam("data")String  data){
-		System.out.println(user.getName());
+	@RequestMapping(value="/insertAccount", method=RequestMethod.GET)
+	public String insertAccount(HttpSession session, Model model){
 		
-		return "redirect:myAccount";
+		model.addAttribute("user", new User());
+		return "insertAccount";
+	}
+	
+	@RequestMapping(value="/updateAlterUser",method=RequestMethod.POST)
+	public String updateAlterUser(HttpSession session,
+			@ModelAttribute("updUser")User userAlter,
+			@RequestParam("birthString")String birth,
+			RedirectAttributes redirect){
+	
+		try {
+			userAlter.setBirth(new SimpleDateFormat("yyyy-mm-dd").parse(birth));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		User user = appInfo.getUser();
+		
+		user.setName(userAlter.getName());
+		user.setSurname(userAlter.getSurname());
+		user.setBirth(userAlter.getBirth());
+		user.setCity(userAlter.getCity());
+		user.setEmail(user.getEmail());
+		user.setStreetAddress(user.getStreetAddress());
+		user.setTelephoneNumber(userAlter.getTelephoneNumber());
+		
+		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+		userDao.update(user);
+		
+		redirect.addFlashAttribute("message","operazione eseguita con successo");
+		return "redirect:/myAccount";
 	}
 	
 	@RequestMapping(value="/updateAlterAccount", method=RequestMethod.POST)
-	public String updateAlterAccount(@ModelAttribute("updAccount")Account account,HttpSession session){
-		System.out.println(account.getUsername());
-		System.out.println(account.getPassword());
-		System.out.println(account.getType());
+	public String updateAlterAccount(@ModelAttribute("updAccount")Account account,
+			HttpSession session,
+			RedirectAttributes redirect){
 		
 		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
 		
@@ -52,10 +87,55 @@ public class AccountOptionController implements ApplicationContextAware{
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		
 		appInfo.getUser().setAccount(account);
-		
+		redirect.addFlashAttribute("message","operazione eseguita con successo");
 		return "redirect:myAccount";
 	}
 
+	@RequestMapping(value="/insertNewAccount",method=RequestMethod.POST)
+	public String insertNewAccount(RedirectAttributes redirect,
+			HttpSession session,
+			@ModelAttribute("insUser")User user,
+			@RequestParam("birthString")String birth,
+			@RequestParam("typeUs")String type){
+		
+		String username = CredentialsVerification.generateUsername(applicationContext,user.getName(),user.getSurname());
+		
+		Account account = new Account(username,type, type);
+		
+		try {
+			user.setBirth(new SimpleDateFormat("yyyy-mm-dd").parse(birth));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		user.setAccount(account);
+		
+		account.setUser(user);
+		
+		
+		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
+		accountDao.create(account);
+
+		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+	
+		userDao.create(user);
+		
+		redirect.addFlashAttribute("message","account generato con successo: username="+account.getUsername()+" password="+account.getPassword());
+		
+		List<User> users =(List<User>) QueryFactory.create(applicationContext, "from User");
+		
+		System.out.println(user.getAccount().getType());
+		
+		return "redirect:myAccount";
+	}
+	
+	@RequestMapping(value="/showAccounts",method=RequestMethod.GET)
+	public String showAccount(Model model){
+		
+		return "redirect:myAccount";
+	}
+	
+	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)throws BeansException {
 		this.applicationContext = applicationContext;
