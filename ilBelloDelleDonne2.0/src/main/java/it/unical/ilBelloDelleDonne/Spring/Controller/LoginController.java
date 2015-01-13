@@ -42,14 +42,10 @@ public class LoginController implements ApplicationContextAware{
 	
 		if(verification){
 			
-			System.out.println("user exist upda in session");
-			System.out.println(user.getName());
-			
 			ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 			appInfo.setUser(user);
 			
 			String after = request.getParameter("after");
-			
 			
 			if(after != null){
 				if(after.equals(new String("/reserveService"))){
@@ -65,13 +61,11 @@ public class LoginController implements ApplicationContextAware{
 				}
 				return "redirect:"+after;
 			
-			}
-			else{
+			}else{
 				return "redirect:/myAccount";
 			}
 			
 		}else{
-			System.out.println("error");
 			redirect.addFlashAttribute("message","username or password incorrect");
 			return "redirect:/login";
 		}

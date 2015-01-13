@@ -88,21 +88,21 @@
 						appuntamenti:						
 							<ul class="userMenu">
 								<li><a id="visualizzaAppuntamenti" href='#'>visualizza</a></li>
-								<li><a id="modificaAppuntamenti" href='#'>NO modifica</a></li>
-								<li><a id="inserisciAppuntamenti" href='#'>Forse inserisci</a></li>
-								<li><a id="eliminaAppuntamento" href='#'>NO elimina</a></li>
+								<c:if test="${user.account.type=='admin'}">
 								<li><a id="checkOutAppuntamento" href='#'>check</a></li>
+								</c:if>
 							</ul>
 							<hr/>
-							ordini:
+						
+						ordini:
 							<ul class="userMenu">
 								<li><a href='#'>visualizza</a></li>
-								<li><a href='#'>modifica</a></li>
-								<li><a href='#'>inserisci</a></li>
-								<li><a href='#'>elimina</a></li>
-								<li><a href='#'>check</a></li>
+								<c:if test="${user.account.type=='admin'}">
+									<li><a href='#'>check</a></li>
+								</c:if>
 							</ul>
-							<hr/>
+						<hr/>
+						
 							magazzino:
 							<ul class="userMenu">
 								<li><a href='#'>visualizza</a></li>

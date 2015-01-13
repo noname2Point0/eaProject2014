@@ -14,9 +14,12 @@ public abstract class CredentialsVerification{
 		UserDao userDao = (UserDao) context.getBean("userDao");
 		User us = userDao.retrieve(username);
 		
+		
 		if(us!= null){
-			user.copy(us);
-			return true;
+			if(us.getAccount().getPassword().equals(password)){
+					user.copy(us);
+					return true;
+			}
 		}
 		return false;
 	}
