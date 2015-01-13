@@ -89,19 +89,24 @@ public class SellingController implements ApplicationContextAware{
 
 		Date dateOrder = CurrentData.getLocaleData();
 		Date dateConsignment = null;
+		
+		double sellingCost = 0.0;
 
 		SellingDao sellingDao = (SellingDao) applicationContext.getBean("sellingDao");
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
 	
-		Selling selling = new Selling(customer, dateOrder, dateConsignment, null);
+		Selling selling = new Selling(customer, dateOrder, dateConsignment, 0.0, null);
 		sellingDao.create(selling);
 
 		for(int i=0; i<products.size(); i++){
 			products.get(i).setSelling(selling);
 			productDao.update(products.get(i));
+			
+			sellingCost+= products.get(i).getPrice();
 		}
 
 		selling.setProducts(products);
+		selling.setSellingCost(sellingCost);
 		sellingDao.update(selling);	
 
 		appInfo.getShoppingCart().getProductsIn().clear();

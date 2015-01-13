@@ -1,59 +1,55 @@
-function reserveData() {
-	// Variabili associate ai campi del modulo
-	alert("eccomi sono nello script");
-	var date = document.mod.date.value;
-	var time = document.mod.time.value;
-
+function reserveData(){
 	
-	if(document.mod.time.value.substring(1) < "7" || document.mod.time.value.substring(1) > "19"){
-		alert("La prenotazione inserita non rispetta gli orari di apertura/chiusura dell'esercizio.\n+"
-				+"Inserire un orario compreso tra 7:00-19:00");
+	alert("sono nella function reserveData");
 
-		document.mod.time.focus();
+	var data = document.mod.data.value;
+	var splitData = data.split("-");
+	var s1 = document.mod.data.value.substring(1);
+	var s2 = document.mod.data.value.substring(2);
+	var s3 = document.mod.data.value.substring(3);
+	var s4 = document.mod.data.value.substring(4);
+
+	var year = parseInt(splitData[0]);
+	var month = parseInt(splitData[1]);
+	var day = parseInt(splitData[2]);
+
+	var d = new Date();
+	
+	var curr_day = d.getDate();
+	if (curr_day == 0) {
+		curr_day = curr_day + 1;
+	}
+	var curr_month = d.getMonth();
+
+	if (curr_month == 0) {
+		curr_month = curr_month + 1;
+	}
+
+	var curr_year = d.getFullYear();
+
+
+	if (year < curr_year) {
+		alert("Inserire una data corretta.\n L'anno selezionato è inferiore a quello corrente");
+		document.mod.data.docus();
 		return false;
 	}
-	
-	/*
-    else if(document.modulo.date.value.substring()){
-
-    }
-    //Effettua il controllo sul campo DATA DI NASCITA
-     if (document.modulo.date.value.substring(2,3) != "/" ||
-             document.modulo.nascita.value.substring(5,6) != "/" ||
-             isNaN(document.modulo.nascita.value.substring(0,2)) ||
-             isNaN(document.modulo.nascita.value.substring(3,5)) ||
-             isNaN(document.modulo.nascita.value.substring(6,10))) {
-
-        alert("Inserire nascita in formato gg/mm/aaaa");
-        document.modulo.nascita.value = "";
-        document.modulo.nascita.focus();
-        return false;
-    }
-    else if (document.modulo.nascita.value.substring(0,2) > 31) {
-        alert("Impossibile utilizzare un valore superiore a 31 per i giorni");
-        document.modulo.nascita.select();
-        return false;
-    }
-    else if (document.modulo.nascita.value.substring(3,5) > 12) {
-        alert("Impossibile utilizzare un valore superiore a 12 per i mesi");
-        document.modulo.nascita.value = "";
-        document.modulo.nascita.focus();
-        return false;
-    }
-    else if (document.modulo.nascita.value.substring(6,10) < 1900) {
-        alert("Impossibile utilizzare un valore inferiore a 1900 per l'anno");
-        document.modulo.nascita.value = "";
-        document.modulo.nascita.focus();
-        return false;
-    }
-	 */
+	if (year == curr_year && month < curr_month) {
+		alert("Inserire una data corretta.\n Il mese selezionato è inferiore a quello corrente");
+		document.mod.data.docus();
+		return false;
+	}
+	if (year == curr_year && month == curr_month && day < curr_day) {
+		alert("Inserire una data corretta.\n Il giorno selezionato è inferiore a quello crescente");
+		document.mod.data.docus();
+		return false;
+	} 
 
 	return true;
 
 };
 
 $(function(){
-
+	alert("FUNCTION");
 	$("#reserve").submit(function(){
 
 		return reserveData();
