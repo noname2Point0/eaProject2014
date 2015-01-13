@@ -26,7 +26,11 @@ public abstract class AccountType {
 		return test.equals("customer");
 	}
 	
-	public static boolean isEmloyee(String test){
-		return test.equals("employee");
+	public static boolean isEmloyeeWarehouse(String test){
+		return test.equals("employeeWarehouse");
+	}
+	
+	public static boolean isEmployeeSaloon(String test){
+		return test.equals("employeeSaloon");
 	}
 }
