@@ -1,8 +1,11 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CurrentData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.beans.BeansException;
@@ -28,6 +31,24 @@ public class AppointmentOptionController implements ApplicationContextAware{
 		
 		return "showAppointments";
 	}
+	
+	 @RequestMapping(value="/checkOutAppointments",method=RequestMethod.GET)
+	 public String checkOutAppointments(Model model){
+		 	GregorianCalendar gc = new GregorianCalendar();
+		 	
+		 	Date date = CurrentData.getLocaleData();
+
+		 	/**
+		 	 * fai la query che prende tutte le reserve per cui billing è null
+		 	 */
+		 	
+		 	String query = new String();
+			List<Reserve> reserveList = (List<Reserve>)QueryFactory.create(applicationContext, query);
+			
+			model.addAttribute("reserveList",reserveList);
+		
+		 return "checkOutAppointments";
+	 }
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)throws BeansException {

@@ -20,4 +20,8 @@ $(function(){
 		$("#divview").load("showAppointments");
 	});
 	
+	$("#checkOutAppuntamento").click(function(){
+		$("#divview").load("checkOutAppointments");
+	});
+	
 });

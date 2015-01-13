@@ -2,6 +2,7 @@ package it.unical.ilBelloDelleDonne.Hibernate.Utilities;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
@@ -23,7 +24,7 @@ public abstract class FillDBFactory{
 		createProduct(context);
 		createService(context);
 		createUser(context);
-	}
+	}	
 
 	private static void createProduct(ApplicationContext context){
 

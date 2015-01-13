@@ -92,7 +92,7 @@ public class ReserveController implements ApplicationContextAware {
 		System.out.println("ecco l'orario selezionato "+time);
 		
 
-		if(ReserveSchedule.isAnAvailableReserve(applicationContext, data, time)){
+//		if(ReserveSchedule.isAnAvailableReserve(applicationContext, data, time)){
 			
 			System.out.println("POSSO INSERIRE LA PRENOTAZIONE");
 			Reserve reserve = new Reserve();
@@ -119,11 +119,11 @@ public class ReserveController implements ApplicationContextAware {
 			//inserisco la prenotazione in reserveMapping
 
 			redirect.addFlashAttribute("reserve",reserve);
-		}
-		else{
-			System.out.println("NON È POSSIBILE EFFETTUARE LA PRENOTAZIONE");
+//		}
+//		else{
+//			System.out.println("NON È POSSIBILE EFFETTUARE LA PRENOTAZIONE");
 
-		}
+//		}
 
 		return "redirect:/reviewReserveSuccess";
 	}

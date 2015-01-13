@@ -34,9 +34,6 @@ public class Service {
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Reserve> reserves;
 	
-	@OneToOne(mappedBy="service")
-	private Billing billing;
-	
 	public Service(){}
 	
 	public Service(String description, Double price){

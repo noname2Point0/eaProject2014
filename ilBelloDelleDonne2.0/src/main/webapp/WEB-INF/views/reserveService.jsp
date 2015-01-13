@@ -8,39 +8,15 @@
 <meta charset="utf-8">
 <title>il bello delle donne</title>
 <link href="resources/styles/bdd.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="resources/scripts/reserve.js"></script>
-<script type="text/javascript" src="resources/scripts/jquery-1.11.1.js">
-	<script type="text/javascript">
+<script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
+
+<script type="text/javascript">
 	$(function() {
 
 		$("#footer").load("resources/template/footer.html");
 		$("#header").load("resources/template/header.html");
 
 	});
-</script>
-<script type="text/javascript">
-function reserveData() {
-	// Variabili associate ai campi del modulo
-	
-	var date = document.mod.date;
-	var time = document.mod.time;
-	alert("ecco il secondo alert ");
-	
-	var t = parseInt(document.mod.time.value.substring(1));
-
-	
-	if(document.mod.time.value.substring(1) < "7" || document.mod.time.value.substring(1) > "19"){
-		alert("La prenotazione inserita non rispetta gli orari di apertura/chiusura dell'esercizio.\n+"
-				+"Inserire un orario compreso tra 7:00-19:00");
-
-		document.mod.time.focus();
-		return false;
-	}
-	else{
-		document.mod.submit();	
-	}
-
-}
 </script>
 
 </head>
@@ -102,7 +78,7 @@ function reserveData() {
 					<form:form id="reserve" action="confirmReserve" method="post" name="mod" modelattribute="service">
 						<tr>
 							<td><input type="date" name="data" min="${dateMin}"></td>
-							<td><input type="time" name="time"></td>
+							<td><input type="time" name="time" min="08:00:00" max="19:00:00"></td>
 							<td> 
 							   <input type="hidden" name="id" value="${service.id}">
 								<input type="hidden" name="description" value="${service.description}"> 

@@ -88,9 +88,9 @@
 						appuntamenti:						
 							<ul class="userMenu">
 								<li><a id="visualizzaAppuntamenti" href='#'>visualizza</a></li>
-								<li><a id="modificaAppuntamenti" href='#'>modifica</a></li>
-								<li><a id="inserisciAppuntamenti" href='#'>inserisci</a></li>
-								<li><a id="eliminaAppuntamento" href='#'>elimina</a></li>
+								<li><a id="modificaAppuntamenti" href='#'>NO modifica</a></li>
+								<li><a id="inserisciAppuntamenti" href='#'>Forse inserisci</a></li>
+								<li><a id="eliminaAppuntamento" href='#'>NO elimina</a></li>
 								<li><a id="checkOutAppuntamento" href='#'>check</a></li>
 							</ul>
 							<hr/>

@@ -28,8 +28,8 @@ public class Billing {
 	private Selling selling;
 	
 	@OneToOne
-	@JoinColumn(name="service")
-	private Service service;
+	@JoinColumn(name="reserve")
+	private Reserve reserve;
 	
 	public Billing(){
 		
@@ -40,9 +40,9 @@ public class Billing {
 		this.selling = selling;
 	}
 	
-	public Billing(Date dateBilling, Service service){
+	public Billing(Date dateBilling, Reserve reserve){
 		this.dateBilling = dateBilling;
-		this.service = service;
+		this.reserve = reserve;
 	}
 
 	public int getId() {
@@ -69,12 +69,12 @@ public class Billing {
 		this.selling = selling;
 	}
 
-	public Service getService() {
-		return service;
+	public Reserve getReserve() {
+		return reserve;
 	}
 
-	public void setService(Service service) {
-		this.service = service;
+	public void setReserve(Reserve reserve) {
+		this.reserve = reserve;
 	}
 
 }

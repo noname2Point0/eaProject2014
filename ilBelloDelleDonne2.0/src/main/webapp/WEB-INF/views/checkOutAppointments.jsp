@@ -12,6 +12,7 @@
 			<th>nome</th>
 			<th>cognome</th>
 			<th>prezzo</th>
+			<th>fattura</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -24,7 +25,12 @@
 			<td>${reserve.customer.name }</td>
 			<td>${reserve.customer.surname }</td>
 			<td>${reserve.service.price}</td>
-			
+			<td>
+				<form action="billingReserve" method="post" >
+				<input type="submit" value="check out">
+				<input type="hidden" name="reserveId" value="${reserve.id}">
+				</form> 
+			</td>
 		</tr>
 	</c:forEach>
 	</tbody>
