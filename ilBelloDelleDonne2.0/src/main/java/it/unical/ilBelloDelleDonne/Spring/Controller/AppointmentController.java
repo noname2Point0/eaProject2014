@@ -1,3 +1,4 @@
+
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
@@ -72,12 +73,8 @@ public class AppointmentController implements ApplicationContextAware{
 		 	
 		 	Date date = CurrentData.getLocaleData();
 
-		 	/**
-		 	 * fai la query che prende tutte le reserve per cui billing è null
-		 	 */
-		 	
-		 	String query = new String();
-			List<Reserve> reserveList = (List<Reserve>)QueryFactory.create(applicationContext, query);
+		 	String query = new String("from Reserve r where r.billing=billing");
+			List<Reserve> reserveList = (List<Reserve>)QueryFactory.getReserveByParameter(applicationContext, query, null);
 			
 			model.addAttribute("reserveList",reserveList);
 		

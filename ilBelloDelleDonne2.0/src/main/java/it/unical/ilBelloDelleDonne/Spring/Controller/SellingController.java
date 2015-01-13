@@ -7,12 +7,14 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CurrentData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -127,10 +129,10 @@ public class SellingController implements ApplicationContextAware{
 		return "reviewSellingSuccess";
 	}
 
-	@RequestMapping(value="/showSelling",method=RequestMethod.POST)
+	
+	@RequestMapping(value="/showSelling",method=RequestMethod.GET)
 	public String showSelling(Model model){
 
-		System.err.println("cao");
 		List<Selling> sellings = (List<Selling>)QueryFactory.create(applicationContext,"from Selling");
 		
 		model.addAttribute("sellings",sellings);
@@ -138,6 +140,17 @@ public class SellingController implements ApplicationContextAware{
 		return "showSelling";
 	}
 
+	@RequestMapping(value="/checkOutSelling",method=RequestMethod.GET)
+	 public String checkOutAppointments(Model model){
+		 
+
+		 	String query = new String("from Selling s where s.billing=billing");
+			List<Reserve> reserveList = (List<Reserve>)QueryFactory.getSellingByParameter(applicationContext, query, null);
+			
+			model.addAttribute("reserveList",reserveList);
+		
+		 return "checkOutAppointments";
+	 }
 
 
 	@Override

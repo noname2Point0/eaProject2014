@@ -33,9 +33,9 @@ $(function(){
 	});
 	
 	$("#visualizzaOrdini").click(function(){
-		aler("ciao");
+		alert("ciao");
 		$("#divview").load("showSelling");
-	})
+	});
 	
 	$("#checkOutOrdine").click(function(){
 		alert("ciao");

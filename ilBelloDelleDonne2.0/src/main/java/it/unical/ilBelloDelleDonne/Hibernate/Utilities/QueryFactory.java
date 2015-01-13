@@ -66,5 +66,18 @@ public abstract class QueryFactory {
 		session.close();
 		return l;
 	}
+	
+	public static List getSellingByParameter(ApplicationContext context, String query, String data){
+		SessionFactory ses = (SessionFactory) context.getBean("sessionFactory");
+		Session session = ses.openSession();
+
+		Query q = session.createQuery(query);
+		q.setParameter("billing", null);
+		List l = q.list();
+
+		session.close();
+		return l;
+
+	}
 
 }
