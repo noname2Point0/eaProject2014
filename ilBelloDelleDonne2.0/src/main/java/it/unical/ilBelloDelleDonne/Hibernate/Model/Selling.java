@@ -43,6 +43,9 @@ public class Selling {
     @Column(name = "dateConsignment")
     private Date dateConsignment;
 	
+	@Column(name="sellingCost")
+	private double sellingCost;
+	
 	@OneToMany(mappedBy="selling", fetch=FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Product> products;
@@ -54,17 +57,19 @@ public class Selling {
 	}
 
 	
-	public Selling(Customer customer, Date dateOrder, Date dateConsignment, List<Product> products){
+	public Selling(Customer customer, Date dateOrder, Date dateConsignment, double sellingCost, List<Product> products){
 		this.customer =  customer;
 		this.dateOrder = dateOrder;
 		this.dateConsignment = dateConsignment;
+		this.sellingCost = sellingCost;
 		this.products = products;
 	}
 	
-	public Selling(Customer customer, Date dateOrder, Date dateConsignment){
+	public Selling(Customer customer, Date dateOrder, Date dateConsignment, double sellingCost){
 		this.customer =  customer;
 		this.dateOrder = dateOrder;
 		this.dateConsignment = dateConsignment;
+		this.sellingCost = sellingCost;
 		products = new ArrayList<Product>();
 	}
 
@@ -108,6 +113,26 @@ public class Selling {
 		this.products = products;
 	}
 	
+	public double getSellingCost() {
+		return sellingCost;
+	}
+
+
+	public void setSellingCost(double sellingCost) {
+		this.sellingCost = sellingCost;
+	}
+
+
+	public Billing getBilling() {
+		return billing;
+	}
+
+
+	public void setBilling(Billing billing) {
+		this.billing = billing;
+	}
+
+
 	@Override
 	public String toString() {
 		return new String(String.valueOf(id)+" "+dateOrder +" "+dateConsignment);
