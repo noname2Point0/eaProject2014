@@ -29,43 +29,43 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class SellingController implements ApplicationContextAware{
-	
+
 	private ApplicationContext applicationContext;
-	
+
 
 	@RequestMapping(value="/sellingProducts",method=RequestMethod.GET)
 	public String orderProducts(HttpSession session, Model model,RedirectAttributes redirect){
-		
+
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		
+
 		if(appInfo.isUserLogged()){
-			
+
 			ProductCustomList productCustomList = new ProductCustomList();
 			productCustomList.setProductsCustom(appInfo.getShoppingCart().getProductsIn());
-			
+
 			model.addAttribute("productCustomList",productCustomList);
-			
+
 			model.addAttribute("user", appInfo.getUser());
 			return "sellingProducts";
 		}else{
 
 			String message = new String("devi accedere al sistema prima di poter effettuare l'acquisto, riempi il seguente form oppure registrati");
-		
+
 			redirect.addFlashAttribute("before",new String("/sellingProducts"));
 			redirect.addFlashAttribute("message",message);
-			
+
 			return "redirect:/login";
-		
+
 		}
-		
-		}
-	
+
+	}
+
 	@RequestMapping(value="/confirmSelling",method=RequestMethod.GET)
 	public String orderProductsPost(
 			@ModelAttribute("productsCustomList") ProductCustomList productsCustomList,
 			HttpSession session,
 			RedirectAttributes redirect){
-		
+
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 
@@ -74,34 +74,34 @@ public class SellingController implements ApplicationContextAware{
 		ArrayList<Product> products = new ArrayList<Product>();
 
 		for(int i=0; i < productCustom.size(); i++){
-			
+
 			String query = new String("from Product p where p.description='"+productCustom.get(i).getDescription()+"' and p.brand='"+productCustom.get(i).getBrand()+"' and p.type='"+productCustom.get(i).getType()+"'");
 			List<Product> p =(List<Product>) QueryFactory.create(applicationContext, query);
-			
+
 			for(int j=0; j < productCustom.get(i).getQuantity(); j++){
 				products.add(p.get(j));
 			}
 		}
 
-		
+
 		String query = new String("from Customer c where c.account.username='"+appInfo.getUser().getAccount().getUsername()+"'");	
 		Customer customer = QueryFactory.getCustomerByUser(applicationContext, query);
 
 		Date dateOrder = CurrentData.getLocaleData();
 		Date dateConsignment = null;
-		
+
 		double sellingCost = 0.0;
 
 		SellingDao sellingDao = (SellingDao) applicationContext.getBean("sellingDao");
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
-	
+
 		Selling selling = new Selling(customer, dateOrder, dateConsignment, 0.0, null);
 		sellingDao.create(selling);
 
 		for(int i=0; i<products.size(); i++){
 			products.get(i).setSelling(selling);
 			productDao.update(products.get(i));
-			
+
 			sellingCost+= products.get(i).getPrice();
 		}
 
@@ -114,7 +114,7 @@ public class SellingController implements ApplicationContextAware{
 		redirect.addFlashAttribute("selling",selling);
 		redirect.addFlashAttribute("stockList",productsCustomList.getProductsCustom());
 		return "redirect:/reviewSellingSuccess";
-	
+
 	}
 
 	@RequestMapping(value="/reviewSellingSuccess",method=RequestMethod.GET)
@@ -123,14 +123,28 @@ public class SellingController implements ApplicationContextAware{
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
-		
+
 		return "reviewSellingSuccess";
 	}
+
+	@RequestMapping(value="/showSelling",method=RequestMethod.POST)
+	public String showSelling(Model model){
+
+		System.err.println("cao");
+		List<Selling> sellings = (List<Selling>)QueryFactory.create(applicationContext,"from Selling");
+		
+		model.addAttribute("sellings",sellings);
+		
+		return "showSelling";
+	}
+
+
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
-		
+
 	}
-	
-	
+
+
 }

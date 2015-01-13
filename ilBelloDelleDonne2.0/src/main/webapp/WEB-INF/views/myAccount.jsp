@@ -96,16 +96,16 @@
 						
 						ordini:
 							<ul class="userMenu">
-								<li><a href='#'>visualizza</a></li>
-								<c:if test="${user.account.type=='admin'}">
-									<li><a href='#'>check</a></li>
-								</c:if>
+								<li><a id="visualizzaOrdini" href='#'>visualizza</a></li>
+									<li><a id="checkOutOrdine" href='#'>check</a></li>
+							
 							</ul>
 						<hr/>
 						
 							magazzino:
 							<ul class="userMenu">
-								<li><a href='#'>visualizza</a></li>
+								<li><a id="visualizzaMagazzino" href="#">visualizza</a></li>
+								<li><a id="inserisciProdotti" href="#">inserisci prodotti</a></li>
 							</ul>
 							<hr/>
 							

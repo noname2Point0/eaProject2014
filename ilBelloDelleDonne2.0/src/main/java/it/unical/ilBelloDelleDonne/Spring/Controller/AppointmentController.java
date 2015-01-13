@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class AppointmentOptionController implements ApplicationContextAware{
+public class AppointmentController implements ApplicationContextAware{
 
 	private ApplicationContext applicationContext;
 

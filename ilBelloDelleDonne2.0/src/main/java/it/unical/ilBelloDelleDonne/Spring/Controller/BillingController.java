@@ -45,6 +45,12 @@ public class BillingController implements ApplicationContextAware{
 		return "redirect:myAccount";
 	}
 	
+	@RequestMapping(value="/billingSelling",method=RequestMethod.POST)
+	public String billingSelling(){
+		
+		return "redirect:myAccount";
+	}
+	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
