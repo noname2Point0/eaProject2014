@@ -54,13 +54,13 @@ public abstract class QueryFactory {
 
 	}
 	
-	public static  List getReserveByData(ApplicationContext context,String query, String data){
+	public static  List getReserveByParameter(ApplicationContext context,String query, String data){
 
 		SessionFactory ses = (SessionFactory) context.getBean("sessionFactory");
 		Session session = ses.openSession();
 
 		Query q = session.createQuery(query);
-		q.setParameter("d", data);
+		q.setParameter("billing", null);
 		List l = q.list();
 
 		session.close();
