@@ -78,19 +78,20 @@
 						account:
 							<ul class='userMenu'>
 								<li><a id="modificaAccount" href='#'>modifica</a></li>
+								<c:if test="${user.account.type == 'admin' }">
 								<li><a id="inserisciAccount" href='#'>inserisci</a></li>
 								<li><a id="eliminaAccount" href="#">elimina</a>
 								<li><a id="visualizzaAccount" href='#'>visualizza accounts</a></li>
-								
+								</c:if>
 							</ul>
 						<hr/>
 						appuntamenti:						
 							<ul class="userMenu">
 								<li><a id="visualizzaAppuntamenti" href='#'>visualizza</a></li>
-								<li><a id="modificaAppuntamenti" href='#'>modifica</a></li>
-								<li><a id="inserisciAppuntamenti" href='#'>inserisci</a></li>
-								<li><a id="eliminaAppuntamento" href='#'>elimina</a></li>
-								<li><a href='#'>check</a></li>
+								<li><a id="modificaAppuntamenti" href='#'>NO modifica</a></li>
+								<li><a id="inserisciAppuntamenti" href='#'>Forse inserisci</a></li>
+								<li><a id="eliminaAppuntamento" href='#'>NO elimina</a></li>
+								<li><a id="checkOutAppuntamento" href='#'>check</a></li>
 							</ul>
 							<hr/>
 							ordini:

@@ -47,9 +47,10 @@
 					<table class="mytable">
 						<thead>
 							<tr>
-								<th>servizion</th>
+								<th>servizio</th>
 								<th>data di prenotazione</th>
 								<th>data prenotata</th>
+								<th>ora prenotata</th>
 								<th>nome</th>
 								<th>cognome</th>
 								<th>prezzo</th>
@@ -60,6 +61,7 @@
 								<td>${reserve.service.description}</td>
 								<td>${reserve.dateOrder}</td>
 								<td>${reserve.dateService}</td>
+								<td>${reserve.time}</td>
 								<td>${reserve.customer.name }</td>
 								<td>${reserve.customer.surname }</td>
 								<td>${reserve.service.price}</td>

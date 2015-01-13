@@ -13,6 +13,9 @@
 <script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
 
 <script type="text/javascript">
+<script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
+
+<script type="text/javascript">
 	$(function() {
 
 		$("#footer").load("resources/template/footer.html");
@@ -138,7 +141,7 @@
 						name="mod" modelattribute="service">
 						<tr>
 							<td><input type="date" value="" name="data" min="${dateMin}"></td>
-							<td><input type="time" name="time"></td>
+							<td><input type="time" name="time" min="08:00:00" max="19:00:00"></td>
 							<td><input type="hidden" name="id" value="${service.id}">
 								<input type="hidden" name="description"
 								value="${service.description}"> <input type="hidden"

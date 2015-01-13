@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,6 +41,9 @@ public class Reserve {
 	@ManyToOne
 	@JoinColumn(name="service")
 	private Service service;
+	
+	@OneToOne(mappedBy="reserve")
+	private Billing billing;
 	
 	public Reserve(){}
 	
@@ -97,6 +101,14 @@ public class Reserve {
 
 	public void setService(Service service) {
 		this.service = service;
+	}
+	
+	public void setBilling(Billing billing){
+		this.billing = billing;
+	}
+	
+	public Billing getBilling(){
+		return this.billing;
 	}
 	
 }
