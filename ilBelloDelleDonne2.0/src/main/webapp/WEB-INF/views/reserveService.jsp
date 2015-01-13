@@ -25,7 +25,6 @@
 </script>
 <script type="text/javascript">
 	function reserveData() {
-		alert("sono nella function");
 
 		if(document.mod.data.value == "undefined"){
 			alert("Inserire una data");			
