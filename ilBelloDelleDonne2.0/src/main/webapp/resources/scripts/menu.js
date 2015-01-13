@@ -7,12 +7,17 @@ $(function(){
 		$("#divview").load("insertAccount");
 	});
 	
-	$("#deleteAccount").click(function(){
-		$("#divview").load("deletAccount");
+	$("#eliminaAccount").click(function(){
+		$("#divview").load("deleteAccounts");
 	});
 	
 	$("#visualizzaAccount").click(function(){
-		$("#divview").load("showAccount");
+		$("#divview").load("showAccounts");
 	});
-
+	
+	$("#visualizzaAppuntamenti").click(function(){
+		
+		$("#divview").load("showAppointments");
+	});
+	
 });

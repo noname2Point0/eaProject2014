@@ -6,29 +6,25 @@
 	<thead>
 		<tr>
 			<th>username</th>
-			<th>role</th>
 			<th>name</th>
 			<th>surname</th>
-			<th>birth</th>
-			<th>city</th>
-			<th>street</th>
-			<th>telephone Number</th>
-			<th>email</th>			
+			<th>role</th>
+			<th>remove</th>
 		</tr>
 	</thead>
 	<tbody>
 		<c:forEach var="user" items="${userList}">
 			<tr>
 				<td>${user.account.username}</td>
-				<td>${user.account.type}</td>
 				<td>${user.name}</td>
 				<td>${user.surname}</td>
-				<td>${user.birth }</td>
-				<td>${user.city}</td>
-				<td>${user.streetAddress}</td>
-				<td>${user.telephoneNumber }</td>
-				<td>${user.email }</td>
+				<td>${user.account.type}</td>
 				<td>
+					<form action="deleteAccount" method="post">
+						<input type="submit" value="remove"> 
+						<input type="hidden" name ="identifier" value="${user.account.username}">
+					</form>
+				</td>
 			</tr>
 		</c:forEach>
 	</tbody>

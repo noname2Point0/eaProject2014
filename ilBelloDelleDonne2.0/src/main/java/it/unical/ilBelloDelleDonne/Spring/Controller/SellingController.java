@@ -74,7 +74,6 @@ public class SellingController implements ApplicationContextAware{
 		ArrayList<Product> products = new ArrayList<Product>();
 
 		for(int i=0; i < productCustom.size(); i++){
-			System.out.println(productCustom.get(i).getPrice());
 			
 			String query = new String("from Product p where p.description='"+productCustom.get(i).getDescription()+"' and p.brand='"+productCustom.get(i).getBrand()+"' and p.type='"+productCustom.get(i).getType()+"'");
 			List<Product> p =(List<Product>) QueryFactory.create(applicationContext, query);

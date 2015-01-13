@@ -83,7 +83,16 @@
 		<tr>
 			<th>type</th>
 			<td>${user.account.type}</td>
-			<td><input type="text" value="${user.account.type}" name="type"></td>
+			<td><c:choose>
+					<c:when test="${user.account.type=='admin'}">
+					<input type="text" value="${user.account.type}" name="type">
+					</c:when>
+					<c:otherwise>
+						<input type="hidden" value="${user.account.type}" name="type">
+					</c:otherwise>
+					</c:choose>
+				
+			</td>
 			<td></td>
 		</tr>
 		

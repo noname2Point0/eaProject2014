@@ -41,7 +41,6 @@ public class AccountOptionController implements ApplicationContextAware{
 	@RequestMapping(value="/insertAccount", method=RequestMethod.GET)
 	public String insertAccount(HttpSession session, Model model){
 		
-		model.addAttribute("user", new User());
 		return "insertAccount";
 	}
 	
@@ -121,20 +120,49 @@ public class AccountOptionController implements ApplicationContextAware{
 		userDao.create(user);
 		
 		redirect.addFlashAttribute("message","account generato con successo: username="+account.getUsername()+" password="+account.getPassword());
-		
-		List<User> users =(List<User>) QueryFactory.create(applicationContext, "from User");
-		
-		System.out.println(user.getAccount().getType());
-		
+			
 		return "redirect:myAccount";
 	}
 	
 	@RequestMapping(value="/showAccounts",method=RequestMethod.GET)
-	public String showAccount(Model model){
-		
-		return "redirect:myAccount";
+	public String showAccounts(Model model){
+		List<User> userList = QueryFactory.create(applicationContext, "from User");
+		model.addAttribute("userList",userList);
+	
+		return "showAccounts";
+	}
+
+	@RequestMapping(value="/showAccount",method=RequestMethod.POST)
+	public String showAccount(Model model,
+		@RequestParam("identifier") String ident, RedirectAttributes redirect){
+			
+			UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+			
+			User user = userDao.retrieve(ident);
+			model.addAttribute("user",user);
+			return "showAccount";
 	}
 	
+	@RequestMapping(value="/deleteAccounts",method=RequestMethod.GET)
+	public String deleteAccounts(Model model){
+		List<User> userList = QueryFactory.create(applicationContext, "from User");
+		model.addAttribute("userList",userList);
+		
+		return "deleteAccounts";
+	}
+	
+	@RequestMapping(value="/deleteAccount", method=RequestMethod.POST)
+	public String deleteAccount(@RequestParam("identifier") String ident, RedirectAttributes redirect){
+		
+		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+		
+		User user = userDao.retrieve(ident);
+		userDao.delete(user);
+		
+		String message="user eliminato correttamente dal sistema";
+		redirect.addFlashAttribute("message",message);
+		return "redirect:myAccount";
+	}
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)throws BeansException {
