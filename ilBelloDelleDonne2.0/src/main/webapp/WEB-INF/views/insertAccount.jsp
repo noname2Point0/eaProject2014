@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<p>il tuo account:</p>
+<p>inserisci il nuovo account:</p>
 
 <p>Anagrafica</p>
 <form:form action="insertNewAccount" method="post" modelAttribute="insUser">

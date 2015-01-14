@@ -42,4 +42,14 @@ $(function(){
 		$("#divview").load("checkOutSelling");
 	});
 	
+	$("visualizzaServizi").click(function(){
+		alert("ciao");
+		$("#divview").load("")
+	});
+	
+	$("inserisciServizio").click(function(){
+		alert("ciao");
+		$("#divview").load("");
+	});
+	
 });

@@ -53,7 +53,9 @@
 					<tr>
 						<th>description</th>
 						<th>price</th>
+						<c:if test="${user.account.type =='customer' || empty user.account.type }">
 						<th>click</th>
+						</c:if>
 					</tr>
 				</thead>
 				<tbody>
@@ -61,6 +63,7 @@
 						<tr>
 							<td>${service.description}</td>
 							<td>${service.price}</td>
+							<c:if test="${user.account.type =='customer' || empty user.account.type }">
 							<td>
 								<form:form action="reserveService" method="post" modelattribute="service">
 									<input type="submit" value="reserve"> 
@@ -69,6 +72,7 @@
 									<input type="hidden" name="price" value="${service.price }">
 								</form:form>
 							</td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</tbody>

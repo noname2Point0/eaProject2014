@@ -54,7 +54,9 @@
 						<th>brand</th>
 						<th>description</th>
 						<th>price</th>
-						<th>add to cart</th>
+						<c:if test="${user.account.type =='customer' || empty user.account.type }">
+						<th>add to cart</th> 
+						</c:if>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,6 +66,7 @@
 							<td>${stock.brand}</td>
 							<td>${stock.description}</td>
 							<td>${stock.price}</td>
+							<c:if test="${user.account.type =='customer' || empty user.account.type }">
 							<td>
 								<form action="addToCart" method="get" modelattribute="productCustom">
 								<input type="submit" value="add"> 
@@ -74,6 +77,7 @@
 								<input type="hidden" name="quantity" value="${stock.quantity}">
 								</form>
 							</td>
+							</c:if>
 						</tr>
 					</c:forEach>
 				</tbody>

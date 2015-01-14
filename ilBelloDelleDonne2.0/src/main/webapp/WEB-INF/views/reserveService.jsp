@@ -105,6 +105,7 @@
 		</div>
 
 		<div id="content">
+		<c:if test="${user.account.type =='customer' || empty user.account.type }">
 			<p>conferma la tua prenotazione</p>
 			<br>
 			<p>servizio scelto</p>
@@ -150,6 +151,10 @@
 					</form:form>
 				</tbody>
 			</table>
+			</c:if>
+			<c:if test="${user.account.type != 'customer'}">
+			<p>il tuo account non ti permette di  prenotare un servizio, siamo spiacenti</p>
+			</c:if>
 		</div>
 
 		<div id="footer"></div>

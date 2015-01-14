@@ -84,9 +84,9 @@
 								<li><a id="visualizzaAccount" href='#'>visualizza accounts</a></li>
 								</c:if>
 							</ul>
-						<hr/>
 						
 						<c:if test="${user.account.type != 'employeeWarehouse' }">
+						<hr/>
 						appuntamenti:						
 							<ul class="userMenu">
 								<li><a id="visualizzaAppuntamenti" href='#'>visualizza</a></li>
@@ -94,10 +94,10 @@
 								<li><a id="checkOutAppuntamento" href='#'>check</a></li>
 								</c:if>
 							</ul>
-							<hr/>
 						</c:if>
 						
 						<c:if test="${user.account.type == 'admin' || user.account.type == 'employeeWarehouse'}">
+						<hr/>
 						ordini:
 							<ul class="userMenu">
 								<li><a id="visualizzaOrdini" href='#'>visualizza</a></li>
@@ -109,20 +109,30 @@
 								</c:if>
 								
 							</ul>
-						<hr/>
 						
-							magazzino:
+						<hr/>
+						magazzino:
 							<ul class="userMenu">
 								<li><a id="visualizzaMagazzino" href="#">visualizza</a></li>
 								<c:if test="${user.account.type=='admin'}">
 								<li><a id="inserisciProdotti" href="#">inserisci prodotti</a></li>
 								</c:if>
 							</ul>
-							<hr/>
 						</c:if>
-							
-							</div>
+						
+						<c:if test="${user.account.type=='admin'}">
+						<hr/>
+							salone:
+							<ul class="userMenu">
+								<li><a id="visualizzaServizi" href="#">visualizza</a></li>
+								<c:if test="${user.account.type=='admin'}">
+								<li><a id="inserisciServizio" href="#">inserisci prodotti</a></li>
+								</c:if>
+							</ul>
+						</c:if>	
+						</div>
 				</div>
+				
 				<div id="divview">
 				<p>${message}</p>
 				</div>

@@ -2,8 +2,12 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
-<table class="mytable">
+ <p>all accounts</p>
+
+<c:forEach var="user" items="${userList}">
+ <table class="mytable">
 	<thead>
+		<thead>
 		<tr>
 			<th>username</th>
 			<th>role</th>
@@ -16,8 +20,8 @@
 			<th>email</th>			
 		</tr>
 	</thead>
+	</thead>
 	<tbody>
-		<c:forEach var="user" items="${userList}">
 			<tr>
 				<td>${user.account.username}</td>
 				<td>${user.account.type}</td>
@@ -30,6 +34,8 @@
 				<td>${user.email }</td>
 				<td>
 			</tr>
-		</c:forEach>
 	</tbody>
 </table>
+
+ <br><br>
+ </c:forEach> 

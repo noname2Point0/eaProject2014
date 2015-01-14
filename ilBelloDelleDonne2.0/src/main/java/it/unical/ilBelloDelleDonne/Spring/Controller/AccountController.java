@@ -71,6 +71,7 @@ public class AccountController implements ApplicationContextAware{
 		userDao.update(user);
 		
 		redirect.addFlashAttribute("message","operazione eseguita con successo");
+		
 		return "redirect:/myAccount";
 	}
 	

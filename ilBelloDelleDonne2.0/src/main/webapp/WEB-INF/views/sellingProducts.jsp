@@ -46,6 +46,7 @@
 		</div>
           
 		<div id="content">
+		<c:if test="${user.account.type =='customer' || empty user.account.type }">
 			<p>conferma il tuo ordine d'acquisto</p>
 			<p>seleziona la quantita' per ogni prodotto e clicca su acquista</p>
 			<br>
@@ -86,6 +87,10 @@
 				</c:forEach>		
 				<input type="submit" value="buy" >
 			</form:form>
+			</c:if>
+			<c:if test="${user.account.type !='customer'}">
+			<p>il tuo account non ti permette di acquistare nessun prodotto. siamo spiacenti</p>
+			</c:if>
 		</div>
 
 		<div id="footer"></div>
