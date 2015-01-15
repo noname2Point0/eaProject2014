@@ -11,23 +11,21 @@
 			<th>date order</th>
 			<th>date send</th>
 			<th>cost</th>
-			<th>fattura</th>
+			<th>check send</th>
 		</tr>
 	</thead>
 	<tbody>
 		<c:forEach var="selling" items="${sellings}">
 			<tr>
-				<td>${selling.id}</td>	
+				<td>${selling.id}</td>
 				<td>${selling.customer.account.username}</td>
 				<td>${selling.dateOrder }</td>
 				<td>${selling.dateConsignment }</td>
 				<td>${selling.sellingCost }</td>
-				<td>
-					<form action="billingSelling" method="post">
-					<input type="hidden" name="sellingId" value="${selling.id}">
-						<input type="submit" value="check out">
-					</form>
-				
+				<td><form action="sendSelling" method="post">
+							<input type="submit" value="send">
+						<input type="hidden" name="sellingId" value="${selling.id}">
+						</form>
 				</td>
 				</tr>
 		</c:forEach>

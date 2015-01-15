@@ -2,11 +2,12 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -49,7 +51,30 @@ public class WarehouseController implements ApplicationContextAware{
 
 		return "showWarehouse";
 	}
+	
+	@RequestMapping(value="/sendSelling",method=RequestMethod.GET)
+	public String getSendSelling(Model model){
+	
+		List<Selling> sellings = QueryFactory.create(applicationContext,"from Selling s where s.dateConsignment is null");
+		
+		model.addAttribute("sellings",sellings);
+		
+		return "sendSelling";
+	}
 
+	@RequestMapping(value="/sendSelling",method=RequestMethod.POST)
+	public String setSendSelling(Model model,@RequestParam("sellingId")int sellingId,RedirectAttributes redirect){
+		
+		System.out.println("ciao");
+		SellingDao sellingDao = (SellingDao)applicationContext.getBean("sellingDao");
+		Selling selling = sellingDao.retrieve(sellingId);
+		selling.setDateConsignment(MyData.getLocaleData());
+		sellingDao.update(selling);
+		
+		redirect.addFlashAttribute("message","operazione eseguita con successo. Spedizione in attesa del check out dell'amministratore");
+		return "redirect:myAccount";
+	}
+	
 	@RequestMapping(value="/insertProduct",method=RequestMethod.GET)
 	public String insertProduct(){
 		System.out.println("ciaoooo");

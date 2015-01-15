@@ -21,6 +21,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -105,7 +108,7 @@ public class SellingController implements ApplicationContextAware{
 		sellingDao.update(selling);
 		
 		
-		appInfo.getShoppingCart().getProductsIn().clear();
+		appInfo.getShoppingCart().clearCart();
 		session.setAttribute("info", appInfo);
 		
 		redirect.addFlashAttribute("selling",selling);
@@ -137,14 +140,23 @@ public class SellingController implements ApplicationContextAware{
 
 	@RequestMapping(value="/checkOutSelling",method=RequestMethod.GET)
 	 public String checkOutAppointments(Model model){
-		 
 
-		 	String query = new String("from Selling s where s.billing=billing");
-			List<Reserve> reserveList = (List<Reserve>)QueryFactory.getSellingByParameter(applicationContext, query, null);
-			
-			model.addAttribute("reserveList",reserveList);
+//		 	String query = new String("from Selling s where s.billing is null");
+//			List<Reserve> reserveList = (List<Reserve>)QueryFactory.getSellingByParameter(applicationContext, query, null);
+	
+//			String query = new String("from Selling s where s.billing is not null ");
 		
-		 return "checkOutAppointments";
+			String query=new String("from Selling s where s.dateConsignment is not null and  not exists(from Billing b where b.selling = s)");
+			
+			List<Selling> sellings = (List<Selling>) QueryFactory.create(applicationContext, query);
+			
+			
+		 	System.out.println("ciao "+sellings.size());
+		 	
+		 	
+			model.addAttribute("sellings",sellings);
+		
+			return "checkOutSelling";
 	 }
 
 

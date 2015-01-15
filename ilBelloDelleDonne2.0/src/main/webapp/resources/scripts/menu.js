@@ -33,14 +33,19 @@ $(function(){
 	});
 	
 	$("#visualizzaOrdini").click(function(){
-		alert("ciao");
 		$("#divview").load("showSelling");
+	});
+	
+	$("#spedisciOrdine").click(function(){
+		$("#divview").load("sendSelling");
 	});
 	
 	$("#checkOutOrdine").click(function(){
 		alert("ciao");
 		$("#divview").load("checkOutSelling");
 	});
+	
+	
 	
 	$("visualizzaServizi").click(function(){
 		alert("ciao");

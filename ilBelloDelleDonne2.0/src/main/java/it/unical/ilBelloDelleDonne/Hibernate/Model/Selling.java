@@ -63,6 +63,7 @@ public class Selling {
 		this.dateConsignment = dateConsignment;
 		this.sellingCost = sellingCost;
 		this.products = products;
+		this.billing = null;
 	}
 	
 	public Selling(Customer customer, Date dateOrder, Date dateConsignment, double sellingCost){
@@ -71,6 +72,7 @@ public class Selling {
 		this.dateConsignment = dateConsignment;
 		this.sellingCost = sellingCost;
 		products = new ArrayList<Product>();
+		this.billing = null;
 	}
 
 	public int getId() {
