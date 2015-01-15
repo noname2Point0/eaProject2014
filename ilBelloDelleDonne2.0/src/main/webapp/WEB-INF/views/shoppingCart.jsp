@@ -70,26 +70,26 @@
 									<td>${productCustom.price}</td>
 									<td>
 										<form action="removeToCart" method="get">
-											<input type="submit" value="remove"> <input
-												type="hidden" name="type" value="${productCustom.type}">
-											<input type="hidden" name="brand"
-												value="${productCustom.brand}"> <input type="hidden"
-												name="description" value="${productCustom.description}">
-											<input type="hidden" name="price"
-												value="${productCustom.price}">
+											<input type="submit" value="remove"> 
+											<input type="hidden" name="type" value="${productCustom.type}">
+											<input type="hidden" name="brand" value="${productCustom.brand}"> 
+											<input type="hidden" name="description" value="${productCustom.description}">
+											<input type="hidden" name="price" value="${productCustom.price}">
+											<input type="hidden" name="id" value="${productCustom.id}">
 										</form>
 									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
+					<br>
+					<br>
+
+					<form action="sellingProducts" method="get">
+						<input type="submit" value="ordina">
+					</form>
 				</c:otherwise>
 			</c:choose>
-			<br>
-			<br>
-			<form action="sellingProducts" method="get">
-				<input type="submit" value="ordina">
-			</form>
 		</div>
 		<div id="footer"></div>
 	</div>

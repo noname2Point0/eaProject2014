@@ -2,6 +2,7 @@ package it.unical.ilBelloDelleDonne.Hibernate.Utilities;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
@@ -10,9 +11,11 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Admin;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Employee;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.springframework.context.ApplicationContext;
@@ -27,25 +30,78 @@ public abstract class FillDBFactory{
 	}	
 
 	private static void createProduct(ApplicationContext context){
-
-
-		ProductDao productDao = (ProductDao) context.getBean("productDao");
-
-		for(int i = 0; i<10; i++){
-			productDao.create(new Product("shampoo","garnier","shampoo medio",4.5, null));
-			productDao.create(new Product("shampoo","loreal","shampo professionale",6.5, null));
-			productDao.create(new Product("balsamo","garnier","medio",4.0, null));
-			productDao.create(new Product("balsamo","loreal","professionale",3.5, null));
-			productDao.create(new Product("forbici","cosmo","professionali",120.0, null));
-			productDao.create(new Product("forbici","cosmo","professionali",110.0, null));
-			productDao.create(new Product("forbici","martial","semiprofessionali",60.0, null));
-			productDao.create(new Product("phon","parlux","4200",60.0, null));
-			productDao.create(new Product("phon","parlux","3200",45.0, null));
-			productDao.create(new Product("phon","rowenta","fixes",30.0, null));
-			productDao.create(new Product("piastra","parlux","gtr",90.0, null));
-			productDao.create(new Product("piastra","imetech","bellissima",80.0, null));
-		}
 		
+		ProductStockDao psd = (ProductStockDao) context.getBean("productStockDao");
+		
+		ProductStock productStock = new ProductStock("shampoo","garnier","shampoo medio",5,100,4.5);
+		ProductDao productDao = (ProductDao) context.getBean("productDao");
+		
+		psd.create(productStock);
+		
+		ArrayList<Product> products = new ArrayList<Product>();
+		for(int i = 0; i<productStock.getQuantity(); i++){
+			Product product = new Product(productStock);
+			products.add(product);
+			productDao.create(product);
+		}
+		productStock.setProducts(products);
+		psd.update(productStock);
+		
+		
+		psd = (ProductStockDao) context.getBean("productStockDao");
+		
+		productStock = new ProductStock("piastra","imetech","bellissima",5,100,80.0);
+		productDao = (ProductDao) context.getBean("productDao");
+		
+		psd.create(productStock);
+		
+		 products = new ArrayList<Product>();
+		for(int i = 0; i<productStock.getQuantity(); i++){
+			Product product = new Product(productStock);
+			products.add(product);
+			productDao.create(product);
+		}
+		productStock.setProducts(products);
+		psd.update(productStock);
+		
+		
+		
+		psd = (ProductStockDao) context.getBean("productStockDao");
+		
+		productStock = new ProductStock("phon","parlux","4200",5,100,60.0);
+		productDao = (ProductDao) context.getBean("productDao");
+		
+		psd.create(productStock);
+		
+		products = new ArrayList<Product>();
+		for(int i = 0; i<productStock.getQuantity(); i++){
+			Product product = new Product(productStock);
+			products.add(product);
+			productDao.create(product);
+		}
+		productStock.setProducts(products);
+		psd.update(productStock);
+		
+		
+		
+		
+//		
+//
+//		for(int i = 0; i<10; i++){
+//			productDao.create(new Product("shampoo","garnier","shampoo medio",4.5, null));
+//			productDao.create(new Product("shampoo","loreal","shampo professionale",6.5, null));
+//			productDao.create(new Product("balsamo","garnier","medio",4.0, null));
+//			productDao.create(new Product("balsamo","loreal","professionale",3.5, null));
+//			productDao.create(new Product("forbici","cosmo","professionali",120.0, null));
+//			productDao.create(new Product("forbici","cosmo","professionali",110.0, null));
+//			productDao.create(new Product("forbici","martial","semiprofessionali",60.0, null));
+//			productDao.create(new Product("phon","parlux","4200",60.0, null));
+//			productDao.create(new Product("phon","parlux","3200",45.0, null));
+//			productDao.create(new Product("phon","rowenta","fixes",30.0, null));
+//			productDao.create(new Product("piastra","parlux","gtr",90.0, null));
+//			productDao.create(new Product("piastra","imetech","bellissima",80.0, null));
+//		}
+//		
 	}
 
 	private static void createService(ApplicationContext context){
@@ -97,8 +153,8 @@ public abstract class FillDBFactory{
 		catch (Exception e) {
 			e.addSuppressed(e.getCause());
 		}		
-		Customer customer1 = new Customer("vincenzo", "Algieri", "cosenza", "mazzini", "3209878655", date1, "lgrvcn89t02d005r", "algieri@tiscali.it", account3);
-		Employee employee1 = new Employee("nicola",  "Benedetto", "cosenza", "mazzini", "3209877055", date2, "magazzino", "benedetto@tiscali.it", account2);
+		Customer customer1 = new Customer("vincenzo", "Algieri", "cosenza", "mazzini", "3209878655", date1, "lgrvcn89t02d005r", "algieri@tiscali.it", account2);
+		Employee employee1 = new Employee("nicola",  "Benedetto", "cosenza", "mazzini", "3209877055", date2, "magazzino", "benedetto@tiscali.it", account3);
 		Employee employee2 = new Employee("nicola",  "Benedetto", "cosenza", "mazzini", "3209877055", date4, "saloon", "benedetto@tiscali.it", account4);
 		Admin admin1 = new Admin("giuseppe", "cristiano", "cosenza", "mazzini", "3223877055", date3, "admin@tiscali.it", account1);
 	

@@ -51,6 +51,8 @@
 								<th>id</th>
 								<th>date order</th>
 								<th>date send</th>
+								<th>to</th>
+								<th>tot cost</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -58,6 +60,8 @@
 								<td>${selling.id}</td>
 								<td>${selling.dateOrder}</td>
 								<td>${selling.dateConsignment}</td>
+								<td>${selling.customer.account.username}</td>
+								<td>${selling.sellingCost}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -83,7 +87,7 @@
 							<td>${stock.description}</td>
 							<td>${stock.price}</td>
 							<td>${stock.quantity}</td>
-							<td><c:out value="${stock.quantity}* ${stock.price}"></c:out></td>
+							<td><c:out value="${stock.quantity * stock.price}"></c:out></td>
 						</tr>
 					</c:forEach>
 				</tbody>

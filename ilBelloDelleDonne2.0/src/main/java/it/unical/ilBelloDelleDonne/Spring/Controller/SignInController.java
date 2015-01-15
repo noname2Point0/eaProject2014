@@ -4,20 +4,25 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsVerification;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,57 +31,93 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class SignInController implements ApplicationContextAware{
 
+	/*
+	 * Controller che gestisce la registrazione da parte di un utente! Solo i customer possono registrarsi da soli.
+	 */
+	
 	private ApplicationContext applicationContext;
 
 	@RequestMapping(value="/signIn", method = RequestMethod.GET)
-	public String signIn(){
+	public String getSignIn(Model model, 
+			@RequestParam(value="after",required=false)String after,
+			@RequestParam(value="service",required=false)String serviceId){
+		/*
+		 * semplice get della pagina signIn
+		 */
+		
+		if(after != null)
+			model.addAttribute("after",after);
+		
+		if(serviceId != null)
+			model.addAttribute("service",serviceId);
 		return "signIn";
 	}
+	
+	@InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
 
 	@RequestMapping(value="/signIn", method=RequestMethod.POST)
-	public String signInPost(Model model,
-			@RequestParam("nome") String name,
-			@RequestParam("cognome") String surname,
-			@RequestParam("cittaR") String city,
-			@RequestParam("viaR") String streetAddress,
-			@RequestParam("recTelefono") String telephoneNumber,
-			@RequestParam("dataNascita") String birth,
-			@RequestParam("pIva_cf") String pIva_cf,
-			@RequestParam("email") String email,
-			@RequestParam("usernameS") String username,
-			@RequestParam("passwordS") String password,
-			RedirectAttributes redirectToSignIn){
+	public String postSignIn(HttpServletRequest request,
+			Model model,
+			@Valid @ModelAttribute("newUser")Customer user,
+			BindingResult result,
+			RedirectAttributes redirect){
 		
-			Date dateB = new Date();
-			
-			try {
-				dateB= new SimpleDateFormat("yyyy-MM-dd").parse(birth);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-			
-			System.out.println(dateB); // Sat Jan 02 00:00:00 GMT 2010
-			
-			
-
-		if(CredentialsVerification.isAnExistingUser(applicationContext, username)){
-			
-			String message = new String("Utente già esistente");
-			redirectToSignIn.addFlashAttribute("message",message);
-			return "redirect:/signIn";
-		} 
+		String after = request.getParameter("after");
+		String serviceId = request.getParameter("service");
 		
+		if(result.hasErrors()){
+			model.addAttribute("user",user);
+			model.addAttribute("message","errore nel riempimento dei campi");
+			if(after != null)
+				model.addAttribute("after", after);
+			
+			if(serviceId != null)
+				model.addAttribute("service",serviceId);
+			
+			return "signIn";
+		}
+		
+		String username = (String)request.getParameter("username");	
+		String password = (String)request.getParameter("password");
+	
 		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
-		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
-
-		Account account = new Account(username, password, AccountType.getCustomerType());
-		accountDao.create(account);
-		
-		userDao.create(new Customer(name, surname, city, streetAddress, telephoneNumber, dateB, pIva_cf, email, account));
-		
-		return "redirect:/login";
-
+		Account account = accountDao.retrieve(username);
+			
+		if( account == null ){
+			account = new Account();
+			account.setUsername(username);
+			account.setPassword(password);
+			account.setUser(user);
+			account.setType(AccountType.getCustomerType());
+			accountDao.create(account);
+			user.setAccount(account);
+				
+			UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+			userDao.create(user);
+			
+			redirect.addFlashAttribute("before",after);
+			if(serviceId!=null)
+				redirect.addFlashAttribute("service",serviceId);
+			
+			return "redirect:login";
+				
+		}else{
+			model.addAttribute("user",user);
+			model.addAttribute("message","username exist");
+			
+			if(after != null)
+				model.addAttribute("after", after);
+			
+			if(serviceId != null)
+				model.addAttribute("service",serviceId);
+			
+			return "signIn";
+		}
 	}
 
 	@Override

@@ -14,6 +14,15 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -31,25 +40,39 @@ public class User implements Serializable{
 	@OneToOne
 	@JoinColumn(name="account")
 	private Account account;
-		
+	
+	@NotNull
+	@Size(min = 2, max = 10)
 	@Column(name="name", length=255, nullable=false)
 	private String name;
-	
+
+	@NotNull
+	@Size(min = 2, max = 10)
 	@Column(name="surname", length=255, nullable=false)
 	private String surname;
 	
+	@NotEmpty
+	@NotNull
+	@Email
 	@Column(name="email", length=255, nullable=false)
 	private String email;
 	
+	@Past
+	@NotNull
+	@DateTimeFormat(pattern="dd/mm/yyyy")
 	@Column(name="birth", length=255)
 	private Date birth;
 	
+	@NotNull
+	@NotEmpty
 	@Column(name="city", length=255, nullable=false)
 	private String city;
 	
 	@Column(name="telephoneNumber", length=255)
 	private String telephoneNumber;
 	
+	@NotNull
+	@NotEmpty
 	@Column(name="streetAddress", length=255, nullable=false)
 	private String streetAddress;
 	

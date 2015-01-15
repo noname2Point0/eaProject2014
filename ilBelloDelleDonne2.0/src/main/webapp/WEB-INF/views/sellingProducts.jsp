@@ -53,7 +53,7 @@
 			<p>your products:</p>
 			
 			<form:form method="get" action="confirmSelling"  modelattribute="productCustomList">
-						<c:forEach items="${productCustomList.productsCustom}"  var="product" varStatus="status" >
+						<c:forEach items="${productCustomList.productsStock}"  var="product"  varStatus="status" >
 						
 						<table class="mytable">
 						<thead>
@@ -72,11 +72,12 @@
 								<td>${product.description}</td>
 								<td>${product.price}</td>
 								<td>
-								<input type="number" name="productsCustom[${status.index}].quantity" value="1" min="1" max="${product.quantity}"> 
-									<input type="hidden" name="productsCustom[${status.index}].type" value="${product.type}">
-									<input type="hidden" name="productsCustom[${status.index}].brand" value="${product.brand}"> 
-									<input type="hidden" name="productsCustom[${status.index}].description" value="${product.description}">
-									<input type="hidden" name="productsCustom[${status.index }].price" value="${product.price}">
+								<input type="number" name="productsStock[${status.index}].quantity" value="1" min="1" max="${product.quantity}"> 
+									<input type="hidden" name="productsStock[${status.index}].type" value="${product.type}">
+									<input type="hidden" name="productsStock[${status.index}].brand" value="${product.brand}"> 
+									<input type="hidden" name="productsStock[${status.index}].description" value="${product.description}">
+									<input type="hidden" name="productsStock[${status.index }].price" value="${product.price}">
+									<input type="hidden" name="productsStock[${status.index }].id" value="${product.id}">
 								</td>
 							</tr>
 						</tbody>

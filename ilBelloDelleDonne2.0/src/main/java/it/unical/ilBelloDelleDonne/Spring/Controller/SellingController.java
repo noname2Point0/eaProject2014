@@ -1,20 +1,22 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
-import it.unical.ilBelloDelleDonne.ApplicationData.ProductCustom;
+import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.ApplicationData.ProductCustomList;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CurrentData;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -43,7 +45,7 @@ public class SellingController implements ApplicationContextAware{
 		if(appInfo.isUserLogged()){
 
 			ProductCustomList productCustomList = new ProductCustomList();
-			productCustomList.setProductsCustom(appInfo.getShoppingCart().getProductsIn());
+			productCustomList.setProductsStock(appInfo.getShoppingCart().getProductsIn());
 
 			model.addAttribute("productCustomList",productCustomList);
 
@@ -67,54 +69,47 @@ public class SellingController implements ApplicationContextAware{
 			@ModelAttribute("productsCustomList") ProductCustomList productsCustomList,
 			HttpSession session,
 			RedirectAttributes redirect){
-
-
+		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-
-		List<ProductCustom> productCustom = productsCustomList.getProductsCustom();
-
 		ArrayList<Product> products = new ArrayList<Product>();
 
-		for(int i=0; i < productCustom.size(); i++){
-
-			String query = new String("from Product p where p.description='"+productCustom.get(i).getDescription()+"' and p.brand='"+productCustom.get(i).getBrand()+"' and p.type='"+productCustom.get(i).getType()+"'");
+		Double sum = 0.0;
+		for(ProductStock productStock :productsCustomList.getProductsStock()){
+					
+			String query = new String("from Product p where p.productStock.id="+productStock.getId()+"");
 			List<Product> p =(List<Product>) QueryFactory.create(applicationContext, query);
 
-			for(int j=0; j < productCustom.get(i).getQuantity(); j++){
-				products.add(p.get(j));
+			for(int i = 0; i<productStock.getQuantity(); i++){
+				products.add(p.get(i));
+				sum+= productStock.getPrice();
 			}
 		}
-
-
-		String query = new String("from Customer c where c.account.username='"+appInfo.getUser().getAccount().getUsername()+"'");	
-		Customer customer = QueryFactory.getCustomerByUser(applicationContext, query);
-
-		Date dateOrder = CurrentData.getLocaleData();
-		Date dateConsignment = null;
-
-		double sellingCost = 0.0;
-
+	
+	
+		UserDao userDao = (UserDao)applicationContext.getBean("userDao");
+		Customer customer = (Customer) userDao.retrieve(appInfo.getUser().getAccount().getUsername());
+		
+		Date dateOrder = MyData.getLocaleData();
 		SellingDao sellingDao = (SellingDao) applicationContext.getBean("sellingDao");
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
 
-		Selling selling = new Selling(customer, dateOrder, dateConsignment, 0.0, null);
+		Selling selling = new Selling(customer, dateOrder, null, sum);
 		sellingDao.create(selling);
-
-		for(int i=0; i<products.size(); i++){
+		
+		for(int i = 0; i<products.size(); i++){
 			products.get(i).setSelling(selling);
 			productDao.update(products.get(i));
-
-			sellingCost+= products.get(i).getPrice();
 		}
 
 		selling.setProducts(products);
-		selling.setSellingCost(sellingCost);
-		sellingDao.update(selling);	
-
+		sellingDao.update(selling);
+		
+		
 		appInfo.getShoppingCart().getProductsIn().clear();
-
+		session.setAttribute("info", appInfo);
+		
 		redirect.addFlashAttribute("selling",selling);
-		redirect.addFlashAttribute("stockList",productsCustomList.getProductsCustom());
+		redirect.addFlashAttribute("stockList",productsCustomList.getProductsStock());
 		return "redirect:/reviewSellingSuccess";
 
 	}

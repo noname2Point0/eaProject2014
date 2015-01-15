@@ -73,9 +73,22 @@
 					</p>
 				</form>
 			</div>
-			<p class=" pLogHelp">
-				<a href="signIn">registrati</a>
-			</p>
+			<br><br>
+			
+			<form method="get" action="signIn">
+				<c:if test="${!empty before}">
+					<input type="hidden" name="after" value="${before}">
+					<c:if test="${!empty service}">
+						<input type="hidden" name="service" value="${service}">
+					</c:if>
+				</c:if>
+					
+					<p>non sei ancora registrato? allora registrati cliccando il pulsante</p>
+					<p>
+					<input type="submit" value="signIn">
+					</p>
+			</form>
+				
 			<br>
 		</div>
 		<div id="footer"></div>

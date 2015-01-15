@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public abstract class CurrentData {
+public abstract class MyData {
 	
 	public static Date getLocaleData(){
 		Date date = new Date();

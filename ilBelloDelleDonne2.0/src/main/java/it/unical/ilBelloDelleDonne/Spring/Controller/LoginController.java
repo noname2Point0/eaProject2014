@@ -2,10 +2,9 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
-
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsVerification;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,50 +22,61 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class LoginController implements ApplicationContextAware{
 
+	/*
+	 * Controller che gestisce la fase di login
+	 */
 	private ApplicationContext applicationContext;
 
-	@RequestMapping(value="/login", method=RequestMethod.GET )
-	
-	public String login(Model model){
+	@RequestMapping(value="/login", method=RequestMethod.GET )	
+	public String getLogin(Model model){
+		/*
+		 * restituisce la view login
+		 */
+		System.out.println(model.asMap());
 		return "login";
 	}
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String loginPost(HttpSession session,Model model,
+	public String postLogin(HttpSession session,Model model,
 			HttpServletRequest request,RedirectAttributes redirect,
 			@RequestParam("username") String username,
-			@RequestParam("password") String password){
+			@RequestParam("password") String password,
+			@RequestParam(value="service" , required=false) String serviceId,
+			@RequestParam(value= "after" , required=false)String after){
 		
-		User user = new User();
-		boolean verification = CredentialsVerification.verify(applicationContext,user,username,password);
-	
-		if(verification){
+		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+		User user = userDao.retrieve(username);
+		
+		if(user != null && user.getAccount().getPassword().equals(password)){//se l'utente esiste e la password combacia	
 			
 			ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 			appInfo.setUser(user);
 			
-			String after = request.getParameter("after");
-			
-			if(after != null){
-				if(after.equals(new String("/reserveService"))){
+			if(after !=null){//se after non è null devo reindirizzarmi a qualche pagina.
 				
-				int id = Integer.valueOf(request.getParameter("service"));
-				
-				ServiceDao serviceDao = (ServiceDao) applicationContext.getBean("serviceDao");
-				Service service = serviceDao.retrieve(id);
-				
-				System.out.println(service.getDescription());
-				redirect.addFlashAttribute("service",service);
-				
+				if(serviceId != null){//se after è /reserveService devo reindirizzarmi alla prenotazione di un servizio dunque devo prelevare il service e reindirizzarlo
+					
+					ServiceDao serviceDao = (ServiceDao) applicationContext.getBean("serviceDao");
+					Service service = serviceDao.retrieve(Integer.valueOf(serviceId));
+					
+					redirect.addFlashAttribute("service",service);
 				}
-				return "redirect:"+after;
+				
+				return"redirect:"+after;
 			
 			}else{
-				return "redirect:/myAccount";
+				return "redirect:myAccount";
 			}
 			
 		}else{
-			redirect.addFlashAttribute("message","username or password incorrect");
+			
+			if(after != null)
+				redirect.addFlashAttribute("after",after);
+			
+			if(serviceId!=null)
+				redirect.addFlashAttribute("service",serviceId);
+			
+			redirect.addFlashAttribute("message","username or password incorrect!");
 			return "redirect:/login";
 		}
 	}

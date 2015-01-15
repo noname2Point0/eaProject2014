@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -19,9 +20,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name="Customer")
 @PrimaryKeyJoinColumn(name="id")
 public class Customer extends User {
-
-	private static final long serialVersionUID = 1L;
-
+	@NotNull
 	@Column(name = "pIva_cf", length=255, nullable=false)
 	private String pIva_cf;
 	

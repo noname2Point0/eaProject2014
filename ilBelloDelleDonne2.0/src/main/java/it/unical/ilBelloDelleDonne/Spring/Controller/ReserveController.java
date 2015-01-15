@@ -5,7 +5,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CurrentData;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.ReserveSchedule;
 
@@ -74,32 +74,24 @@ public class ReserveController implements ApplicationContextAware {
 			@ModelAttribute("service") Service service,
 			RedirectAttributes redirect){
 
+		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+
 		Date dateService = new Date();
-		System.out.println("ecco la data selezionata prima del parser "+data);
-		
+
 		try{
-			dateService = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(data);
-			
-			
+			dateService = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(data);		
 		}
 		catch (Exception e) {
 			e.addSuppressed(e.getCause());
 		}
-		
-		
-		System.out.println("ecco la data selezionata "+dateService);
-		
-		System.out.println("ecco l'orario selezionato "+time);
-		
 
-//		if(ReserveSchedule.isAnAvailableReserve(applicationContext, data, time)){
-			
+		if(ReserveSchedule.isAnAvailableReserve(applicationContext, data, time)){
+
 			System.out.println("POSSO INSERIRE LA PRENOTAZIONE");
 			Reserve reserve = new Reserve();
 
-			ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 
-			Date dateOrder = CurrentData.getLocaleData();
+			Date dateOrder = MyData.getLocaleData();
 
 			ReserveDao reserveDao = (ReserveDao) applicationContext.getBean("reserveDao");
 
@@ -114,18 +106,22 @@ public class ReserveController implements ApplicationContextAware {
 			reserve.setService(service);
 
 			reserveDao.create(reserve);
-			
-			
-			//inserisco la prenotazione in reserveMapping
 
 			redirect.addFlashAttribute("reserve",reserve);
-//		}
-//		else{
-//			System.out.println("NON È POSSIBILE EFFETTUARE LA PRENOTAZIONE");
 
-//		}
+			return "redirect:/reviewReserveSuccess";
+		}
+		else{
 
-		return "redirect:/reviewReserveSuccess";
+			String message = "NON È POSSIBILE EFFETTUARE PRENOTAZIONI NELL'ORARIO SCELTO";
+			if(appInfo.isUserLogged()){
+				model.addAttribute("user", appInfo.getUser());
+				model.addAttribute("message",message);
+			}
+
+			return "reserveService";
+		}
+
 	}
 
 	@RequestMapping(value="/reviewReserveSuccess",method=RequestMethod.GET)

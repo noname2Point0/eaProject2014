@@ -35,11 +35,11 @@ public class AccountDaoImpl implements AccountDao{
 	}
 
 	@Override
-	public Account retrieve(int idAccount) {
+	public Account retrieve(String username) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from Account where id = :idAccount";
+		String queryString = "from Account where username = :idAccount";
 		Query query = session.createQuery(queryString);
-		query.setParameter("idAccount", idAccount);
+		query.setParameter("idAccount", username);
 		Account account = (Account) query.uniqueResult();	
 		session.close();	
 		return account;

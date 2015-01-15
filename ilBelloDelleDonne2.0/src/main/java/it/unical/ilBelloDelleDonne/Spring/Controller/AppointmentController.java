@@ -4,7 +4,7 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CurrentData;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
 import java.util.Date;
@@ -54,7 +54,7 @@ public class AppointmentController implements ApplicationContextAware{
 	}
 	
 	private List<Reserve> reserveEmployeeSaloon(){
-		Date date = CurrentData.getLocaleData();
+		Date date = MyData.getLocaleData();
 		
 		String query = new String("from Reserve r where r.dateService="+date+" order by  r.dateService ASC");
 		return (List<Reserve>)QueryFactory.create(applicationContext, query);
@@ -71,7 +71,7 @@ public class AppointmentController implements ApplicationContextAware{
 	 public String checkOutAppointments(Model model){
 		 	GregorianCalendar gc = new GregorianCalendar();
 		 	
-		 	Date date = CurrentData.getLocaleData();
+		 	Date date = MyData.getLocaleData();
 
 		 	String query = new String("from Reserve r where r.billing=billing");
 			List<Reserve> reserveList = (List<Reserve>)QueryFactory.getReserveByParameter(applicationContext, query, null);

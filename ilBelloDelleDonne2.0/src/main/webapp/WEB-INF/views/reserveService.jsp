@@ -105,11 +105,20 @@
 		</div>
 
 		<div id="content">
+		<c:if test="${!empty message}">
+				<p>
+					<c:out value="${message}" />
+				</p>
+				<br>
+				<br>
+		</c:if>
 		<c:if test="${user.account.type =='customer' || empty user.account.type }">
-			<p>conferma la tua prenotazione</p>
-			<br>
-			<p>servizio scelto</p>
-			<br>
+			<c:if test="${empty message}">
+				<p>conferma la tua prenotazione</p>			
+				<br>
+				<p>servizio scelto</p>
+				<br>
+			</c:if>
 			<table class="mytable">
 				<thead>
 					<tr>

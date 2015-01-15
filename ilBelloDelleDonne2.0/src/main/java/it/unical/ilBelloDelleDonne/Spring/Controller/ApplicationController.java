@@ -15,20 +15,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class HomeController implements ApplicationContextAware{
-	
+public class ApplicationController implements ApplicationContextAware{
+	/*
+	 * Controller che gestisce la navigazione delle pagine statice
+	 */
 	private boolean firstInvocation = true;
 	private ApplicationContext applicationContext;
 	
 	
 	@RequestMapping(value="/",method = RequestMethod.GET)
-	public String home(HttpSession session,Model model){
+	public String getHome(HttpSession session,Model model){
+		
+		/*
+		 * inserisce alcuni dati nel db;
+		 * se non esiste crea un oggetto applicationInfo nella sessione
+		 */
 		
 		if(firstInvocation){
 			FillDBFactory.create(applicationContext);
 			firstInvocation = false;
 		}
-		
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		
@@ -44,7 +50,12 @@ public class HomeController implements ApplicationContextAware{
 	}
 
 	@RequestMapping(value="/home",method=RequestMethod.GET)
-	public String home(Model model,HttpSession session){
+	public String getHome(Model model,HttpSession session){
+		
+		/*
+		 * semplice get di home
+		 */
+		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
@@ -53,7 +64,11 @@ public class HomeController implements ApplicationContextAware{
 	}
 	
 	@RequestMapping(value="/chiSiamo", method=RequestMethod.GET)
-	public String chiSiamo(Model model,HttpSession session){
+	public String getChiSiamo(Model model,HttpSession session){
+		/*
+		 * semplice get di chi siamo
+		 */
+		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());

@@ -1,22 +1,22 @@
 package it.unical.ilBelloDelleDonne.ApplicationData;
 
-import java.util.ArrayList;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
+
 import java.util.List;
 
 public class ProductCustomList{
 
-	private List<ProductCustom> productsCustom;
+	private List<ProductStock> productsStock;
 	
 	public ProductCustomList(){
 		
 	}
 	
-	public void setProductsCustom(List<ProductCustom> list) {
-		
-		this.productsCustom =list;
+	public void setProductsStock(List<ProductStock> list) {
+		this.productsStock =list;
 	}
 	
-	public List<ProductCustom> getProductsCustom(){
-		return productsCustom;
+	public List<ProductStock> getProductsStock(){
+		return productsStock;
 	}
 }

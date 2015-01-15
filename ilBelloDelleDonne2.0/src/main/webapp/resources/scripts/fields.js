@@ -1,13 +1,14 @@
 function manageData(){
 	// Variabili associate ai campi del modulo
-	var nome = document.modulo.nome.value;
-	var cognome = document.modulo.cognome.value;
-	var usernameS = document.modulo.usernameS.value;
-	var passwordS = document.modulo.passwordS.value;
+	alert("ciao");
+	var nome = document.modulo.name.value;
+	var cognome = document.modulo.surname.value;
+	var usernameS = document.modulo.username.value;
+	var passwordS = document.modulo.password.value;
 	var passwordSR = document.modulo.passwordSR.value;
-	var dataNascita = document.modulo.dataNascita.value;
-	var viaR = document.modulo.viaR.value;
-	var recTelefono = document.modulo.recTelefono.value;
+	var dataNascita = document.modulo.birth.value;
+	var viaR = document.modulo.streetAddress.value;
+	var recTelefono = document.modulo.telephoneNumber.value;
 	var email = document.modulo.email.value;
 	var pIva_cf = document.modulo.pIva_cf.value;
 

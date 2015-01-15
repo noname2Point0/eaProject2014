@@ -1,8 +1,8 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
-import it.unical.ilBelloDelleDonne.ApplicationData.ProductCustom;
 import it.unical.ilBelloDelleDonne.ApplicationData.ShoppingCart;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,11 +17,11 @@ public class ShoppingCartController {
 
 	@RequestMapping(value="/addToCart",method=RequestMethod.GET)
 	public String addToShoppingCart(HttpSession session, 
-			@ModelAttribute("productCustom") ProductCustom productCustom){
+			@ModelAttribute("productCustom") ProductStock productStock){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		
-		appInfo.getShoppingCart().addToCart(productCustom);
+		appInfo.getShoppingCart().addToCart(productStock);
 		session.setAttribute("info", appInfo);
 		
 		return "redirect:/products";
@@ -29,10 +29,12 @@ public class ShoppingCartController {
 	
 	@RequestMapping(value="/removeToCart",method=RequestMethod.GET)
 	public String removeToShoppingCart(HttpSession session, 
-			@ModelAttribute("productCustom") ProductCustom productCustom){
+			@ModelAttribute("productCustom") ProductStock productStock){
+		
+		System.out.println(productStock.getId());
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		appInfo.getShoppingCart().removeToCart(productCustom);
+		appInfo.getShoppingCart().removeToCart(productStock);
 		session.setAttribute("info", appInfo);
 		
 		return "redirect:/shoppingCart";

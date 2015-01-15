@@ -89,7 +89,7 @@ input[type=text], input[type=password], input[type=date], input[type=time],input
 
 .signIn{
 	position: relative;
-  	width:515px;
+  	width:60%;
 	margin:0 auto;	
 	padding:20px 20px 20px;
 	

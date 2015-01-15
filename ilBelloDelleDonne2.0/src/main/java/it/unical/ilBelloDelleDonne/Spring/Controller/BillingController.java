@@ -6,7 +6,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.BillingDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Billing;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CurrentData;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +26,7 @@ public class BillingController implements ApplicationContextAware{
 	public String billingReserve( @RequestParam("reserveId")int idReserve,
 			RedirectAttributes redirect){
 		
-		Date date = CurrentData.getLocaleData();
+		Date date = MyData.getLocaleData();
 		
 		BillingDao billingDao = (BillingDao) applicationContext.getBean("billingDao");
 		ReserveDao reserveDao = (ReserveDao) applicationContext.getBean("reserveDao");

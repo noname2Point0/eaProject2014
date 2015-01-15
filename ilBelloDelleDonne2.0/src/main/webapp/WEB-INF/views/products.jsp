@@ -45,6 +45,7 @@
 
 		<div id="tcontent">
 			<p>Products</p>
+			<p>click add per aggiungere il prodotto al tuo carrello della spesa</p>
 			<br>
 
 			<table class="mytable">
@@ -69,7 +70,8 @@
 							<c:if test="${user.account.type =='customer' || empty user.account.type }">
 							<td>
 								<form action="addToCart" method="get" modelattribute="productCustom">
-								<input type="submit" value="add"> 
+								<input type="submit" value="add">
+								<input type="hidden" name="id" value="${stock.id}"> 
 								<input type="hidden" name="type" value="${stock.type}"> 
 								<input type="hidden" name="brand" value="${stock.brand}"> 
 								<input type="hidden" name="description" value="${stock.description}">
