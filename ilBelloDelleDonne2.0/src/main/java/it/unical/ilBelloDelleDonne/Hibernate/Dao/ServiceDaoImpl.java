@@ -34,11 +34,11 @@ public class ServiceDaoImpl implements ServiceDao{
 	}
 
 	@Override
-	public Service retrieve(int id) {
+	public Service retrieve(int idService) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from Service where id = :id";
+		String queryString = "from Service where id =:service";
 		Query query = session.createQuery(queryString);
-		query.setParameter("id", id);
+		query.setParameter("service", idService);
 		Service service = (Service) query.uniqueResult();	
 		session.close();	
 	    return service;

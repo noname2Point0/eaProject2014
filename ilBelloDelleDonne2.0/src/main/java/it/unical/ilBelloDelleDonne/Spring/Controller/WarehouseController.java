@@ -64,8 +64,7 @@ public class WarehouseController implements ApplicationContextAware{
 
 	@RequestMapping(value="/sendSelling",method=RequestMethod.POST)
 	public String setSendSelling(Model model,@RequestParam("sellingId")int sellingId,RedirectAttributes redirect){
-		
-		System.out.println("ciao");
+	
 		SellingDao sellingDao = (SellingDao)applicationContext.getBean("sellingDao");
 		Selling selling = sellingDao.retrieve(sellingId);
 		selling.setDateConsignment(MyData.getLocaleData());
@@ -77,7 +76,7 @@ public class WarehouseController implements ApplicationContextAware{
 	
 	@RequestMapping(value="/insertProduct",method=RequestMethod.GET)
 	public String insertProduct(){
-		System.out.println("ciaoooo");
+
 		return "insertProduct";
 	}
 
@@ -88,7 +87,7 @@ public class WarehouseController implements ApplicationContextAware{
 		int nProd = productCustom.getQuantity();
 
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
-//
+
 //		for(int i = 0 ; i<nProd; i++){
 //			Product product = new Product();
 //			product.setType(productCustom.getType());

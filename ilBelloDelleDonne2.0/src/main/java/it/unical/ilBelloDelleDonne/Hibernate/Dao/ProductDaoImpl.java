@@ -37,7 +37,7 @@ public class ProductDaoImpl implements ProductDao{
 	@Override
 	public Product retrieve(int idProduct) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from Product where id = :idProduct";
+		String queryString = "from Product where id = :product";
 		Query query = session.createQuery(queryString);
 		query.setParameter("product", idProduct);
 		Product product = (Product) query.uniqueResult();	
