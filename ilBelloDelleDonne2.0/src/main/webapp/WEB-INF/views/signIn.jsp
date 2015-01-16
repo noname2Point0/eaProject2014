@@ -8,6 +8,7 @@
 <title>il bello delle donne</title>
 <link href="resources/styles/bdd.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="resources/scripts/comuni.js"></script>
 
 <script type="text/javascript">
 	$(function() {
@@ -111,14 +112,17 @@
 					</c:if>
 					<td><form:errors path='birth'/></td>
 					</tr>
-					
+
 					<tr>
 					<th>City:</th>
-					<td><input type="text"  name="city" value="${user.city}"></td>
-					<td><form:errors path='city'/></td>
-					</tr>
-					<tr>
+					<td><select name="city" id="city" value="${user.city}"></select></td>
+					<td>
+					<script language="javascript"> populateCountries("city");</script>
+ 					</td>
+ 					<td><form:errors path='city'/></td>
+ 					</tr>
 					
+					<tr>	
 					<th>Street Address:</th>
 					<td><input type="text" name="streetAddress" value="${user.streetAddress }"></td>
 					<td><form:errors path='streetAddress'/></td>
