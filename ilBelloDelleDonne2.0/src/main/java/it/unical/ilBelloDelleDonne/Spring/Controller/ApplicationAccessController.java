@@ -154,7 +154,7 @@ public class ApplicationAccessController implements ApplicationContextAware {
 				
 		}else{
 			model.addAttribute("user",user);
-			model.addAttribute("message","username exist");
+			model.addAttribute("message","Accont già esistente, scegli un altro username.");
 			
 			if(after != null)
 				model.addAttribute("after", after);
