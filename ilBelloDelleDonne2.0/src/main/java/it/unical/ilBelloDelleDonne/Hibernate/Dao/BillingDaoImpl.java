@@ -38,9 +38,9 @@ public class BillingDaoImpl implements BillingDao{
 	@Override
 	public Billing retrieve(int idBilling) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from Billing where id = :idBilling";
+		String queryString = "from Billing where id = :billing";
 		Query query = session.createQuery(queryString);
-		query.setParameter("idBilling", idBilling);
+		query.setParameter("billing", idBilling);
 		Billing billing = (Billing) query.uniqueResult();	
 		session.close();	
 		return billing;

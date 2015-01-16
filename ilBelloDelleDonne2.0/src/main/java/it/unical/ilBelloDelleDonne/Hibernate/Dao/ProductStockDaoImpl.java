@@ -1,6 +1,5 @@
 package it.unical.ilBelloDelleDonne.Hibernate.Dao;
 
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 
 import org.hibernate.Query;
@@ -37,9 +36,9 @@ private SessionFactory sessionFactory;
 	@Override
 	public ProductStock retrieve(int id) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from ProductStock where id = :product";
+		String queryString = "from ProductStock where id = :productStock";
 		Query query = session.createQuery(queryString);
-		query.setParameter("product", id);
+		query.setParameter("productStock", id);
 		ProductStock productStock = (ProductStock) query.uniqueResult();	
 		session.close();	
 	    return productStock;

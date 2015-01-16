@@ -37,9 +37,9 @@ public class SellingDaoImpl implements SellingDao{
 	@Override
 	public Selling retrieve(int idSelling) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from Selling where id = :Selling";
+		String queryString = "from Selling where id =:selling";
 		Query query = session.createQuery(queryString);
-		query.setParameter("Selling", idSelling);
+		query.setParameter("selling", idSelling);
 		Selling selling = (Selling) query.uniqueResult();	
 		session.close();	
 	    return selling;

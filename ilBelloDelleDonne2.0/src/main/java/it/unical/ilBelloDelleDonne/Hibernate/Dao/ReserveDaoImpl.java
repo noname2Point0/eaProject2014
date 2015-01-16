@@ -37,9 +37,9 @@ public class ReserveDaoImpl implements ReserveDao{
 	@Override
 	public Reserve retrieve(int idReserve) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from Reserve where id = :Reserve";
+		String queryString = "from Reserve where id = :reserve";
 		Query query = session.createQuery(queryString);
-		query.setParameter("Reserve", idReserve);
+		query.setParameter("reserve", idReserve);
 		Reserve reserve = (Reserve) query.uniqueResult();	
 		session.close();	
 	    return reserve;
