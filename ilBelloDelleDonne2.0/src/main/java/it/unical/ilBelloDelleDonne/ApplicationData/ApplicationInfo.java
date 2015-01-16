@@ -13,6 +13,7 @@ public class ApplicationInfo{
 	public ApplicationInfo(){}
 	
 	public void setUser(User us) {
+		us.getAccount().setPassword("");
 		userLogged = true;
 		user.copy(us);
 	}

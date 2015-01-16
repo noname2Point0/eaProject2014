@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ApplicationController implements ApplicationContextAware{
 	/*
-	 * Controller che gestisce la navigazione delle pagine statice
+	 * Controller che gestisce la navigazione delle pagine statiche
 	 */
 	private boolean firstInvocation = true;
 	private ApplicationContext applicationContext;

@@ -12,7 +12,25 @@
 
 		$("#footer").load("resources/template/footer.html");
 		$("#header").load("resources/template/header.html");
-
+		
+		$("#logForm").submit(function(){
+		//	var username = $("#inusername").val();
+		//	var pass = $("#inpassword").val();
+		var username = $("#inusername").val();
+		var pass = $("#inpassword").val();	
+			
+			if(username == "" || username == "undefined" || username == null){
+				alert("insert username");
+				return false;
+			}
+			
+			if(pass == "" || pass=="undefined" || pass== null){
+				alert("insert password");
+				return false;
+			}
+			
+			
+		});
 	});
 </script>
 
@@ -56,11 +74,10 @@
 				<hr />
 				<form id="logForm" method="post" action="login">
 					<p>
-						<input type="text" value="" placeholder="username" name="username">
+						<input id="inusername" type="text" value="" placeholder="username" name="username">
 					</p>
 					<p>
-						<input type="password" value="" placeholder="password"
-							name="password">
+						<input id="inpassword" type="password" value="" placeholder="password"	name="password">
 					</p>
 					<c:if test="${!empty before}">
 						<input type="hidden" name="after" value="${before}">
@@ -75,7 +92,7 @@
 			</div>
 			<br><br>
 			
-			<form method="get" action="signIn">
+			<form id="logForm" method="get" action="signIn">
 				<c:if test="${!empty before}">
 					<input type="hidden" name="after" value="${before}">
 					<c:if test="${!empty service}">

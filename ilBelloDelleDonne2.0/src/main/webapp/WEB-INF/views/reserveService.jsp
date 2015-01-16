@@ -8,11 +8,6 @@
 <meta charset="utf-8">
 <title>il bello delle donne</title>
 <link href="resources/styles/bdd.css" rel="stylesheet" type="text/css" />
-
-<script type="text/javascript" src="resources/scripts/reserve.js"></script>
-<script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
-
-<script type="text/javascript">
 <script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
 
 <script type="text/javascript">
@@ -24,21 +19,30 @@
 	});
 </script>
 <script type="text/javascript">
-	function reserveData() {
+$(function(){
+	var date = new Date();
+	var tomorrowDate = new Date(date.getTime()+(24 * 60 * 60 * 1000));
+	
+	var dateFormatted = tomorrowDate.getFullYear()+"-"+("0"+(tomorrowDate.getMonth()+1)).slice(-2)+"-"+("0"+tomorrowDate.getDate()).slice(-2);
 
-		if(document.mod.data.value == "undefined"){
-			alert("Inserire una data");			
-			document.mod.data.focus();
-			return false;
-		}
-		var data = document.mod.data.value;
+	$("#dateR").attr("value",dateFormatted);
+	var time ="08:00:00";
+	$("#timeR").attr("value","08:00:00");
+});
+
+</script>
+
+<script type="text/javascript">
+	$(function() {
+		
+		$("#reserve").submit(function(){
+		
+		var currentDate = new Date();
+	
+		var data = $("#dateR").val();
 		
 		var splitData = data.split("-");
-		var s1 = document.mod.data.value.substring(1);
-		var s2 = document.mod.data.value.substring(2);
-		var s3 = document.mod.data.value.substring(3);
-		var s4 = document.mod.data.value.substring(4);
-
+			
 		var year = parseInt(splitData[0]);
 		var month = parseInt(splitData[1]);
 		var day = parseInt(splitData[2]);
@@ -76,7 +80,9 @@
 
 			return true;
 		}
-	}
+	});
+	
+	});
 </script>
 
 
@@ -149,8 +155,8 @@
 					<form:form id="reserve" action="confirmReserve" method="post"
 						name="mod" modelattribute="service">
 						<tr>
-							<td><input type="date" value="" name="data" min="${dateMin}"></td>
-							<td><input type="time" name="time" min="08:00:00" max="19:00:00"></td>
+							<td><input id="dateR" type="date" value="" name="data" min="${dateMin}"></td>
+							<td><input id="timeR"  type="time" name="time" min="08:00:00" max="19:00:00"></td>
 							<td><input type="hidden" name="id" value="${service.id}">
 								<input type="hidden" name="description"
 								value="${service.description}"> <input type="hidden"
