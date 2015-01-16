@@ -1,24 +1,31 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
+import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Admin;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Employee;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsVerification;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.CredentialsManager;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,120 +40,129 @@ public class AccountController implements ApplicationContextAware{
 	@RequestMapping(value="/alterAccount", method=RequestMethod.GET)
 	public String alterAccount(HttpSession session, Model model){
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		model.addAttribute("user", appInfo.getUser());
+		
+		User user = DataProvider.getUser(applicationContext, appInfo.getUser().getAccount().getUsername());
+		
+		user.getAccount().setPassword("");
+		
+		String date = user.getBirth().toString().substring(0,10);
+		
+		model.addAttribute("user",user);
+		model.addAttribute("userBirth",date);
 		
 		return "alterAccount";
 	}
 	
 	@RequestMapping(value="/insertAccount", method=RequestMethod.GET)
 	public String insertAccount(HttpSession session, Model model){
-		
 		return "insertAccount";
 	}
 	
 	@RequestMapping(value="/updateAlterUser",method=RequestMethod.POST)
 	public String updateAlterUser(HttpSession session,
 			@ModelAttribute("updUser")User userAlter,
-			@RequestParam("birthString")String birth,
 			RedirectAttributes redirect){
-	
-		try {
-			userAlter.setBirth(new SimpleDateFormat("yyyy-mm-dd").parse(birth));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		User user = appInfo.getUser();
+		
+		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+		User user = userDao.retrieve(appInfo.getUser().getAccount().getUsername());
 		
 		user.setName(userAlter.getName());
 		user.setSurname(userAlter.getSurname());
 		user.setBirth(userAlter.getBirth());
 		user.setCity(userAlter.getCity());
-		user.setEmail(user.getEmail());
-		user.setStreetAddress(user.getStreetAddress());
+		user.setEmail(userAlter.getEmail());
+		user.setStreetAddress(userAlter.getStreetAddress());
 		user.setTelephoneNumber(userAlter.getTelephoneNumber());
 		
-		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
 		userDao.update(user);
 		
+		appInfo.setUser(user);
 		redirect.addFlashAttribute("message","operazione eseguita con successo");
 		
 		return "redirect:/myAccount";
 	}
 	
 	@RequestMapping(value="/updateAlterAccount", method=RequestMethod.POST)
-	public String updateAlterAccount(@ModelAttribute("updAccount")Account account,
+	public String updateAlterAccount(@RequestParam("password")String password,
+			@RequestParam("currentPassword") String curPass,
 			HttpSession session,
 			RedirectAttributes redirect){
 		
-		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
-		
-		accountDao.update(account);
-		
+	
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		
-		appInfo.getUser().setAccount(account);
-		redirect.addFlashAttribute("message","operazione eseguita con successo");
+		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
+		Account acc = accountDao.retrieve(appInfo.getUser().getAccount().getUsername());
+		
+		if(acc.getPassword().equals(curPass)){
+			acc.setPassword(password);
+			accountDao.update(acc);
+		
+			appInfo.getUser().setAccount(acc);
+		
+			redirect.addFlashAttribute("message","operazione eseguita con successo");
+		}else{
+			redirect.addFlashAttribute("message", "spiacente, non è stato possibile cambiare la tua password, il valore inserito della password corrente non combacia");
+		}
+		
 		return "redirect:myAccount";
 	}
 
 	@RequestMapping(value="/insertNewAccount",method=RequestMethod.POST)
-	public String insertNewAccount(RedirectAttributes redirect,
+	public String insertNewAccount(Model model,
+			RedirectAttributes redirect,
 			HttpSession session,
 			@ModelAttribute("insUser")User user,
-			@RequestParam("birthString")String birth,
 			@RequestParam("typeUs")String type){
+
+		String username = CredentialsManager.generateUsername(applicationContext, user.getName(), user.getSurname());
 		
-		String username = CredentialsVerification.generateUsername(applicationContext,user.getName(),user.getSurname());
-		
-		Account account = new Account(username,type, type);
-		
-		try {
-			user.setBirth(new SimpleDateFormat("yyyy-mm-dd").parse(birth));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		user.setAccount(account);
-		
-		account.setUser(user);
-		
-		
+		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
 		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
+	
+		Account account = new Account(username,type,type);
 		accountDao.create(account);
 
-		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
-	
-		userDao.create(user);
+		if(type.equals(AccountType.getAdminType())){
+		Admin admin = new Admin();
+		admin.copy(user);
 		
-		redirect.addFlashAttribute("message","account generato con successo: username="+account.getUsername()+" password="+account.getPassword());
+		admin.setAccount(account);
+		userDao.create(admin);
+		
+		}else{
+			Employee employee = new Employee();
+			employee.copy(user);
+			
+			if(type.equals(AccountType.getEmployeeSaloonType()))
+				employee.setDepartment("saloon");
+			else
+				employee.setDepartment("warehouse");
+			
+			employee.setAccount(account);
+			userDao.create(employee);
+		}
+	
 			
 		return "redirect:myAccount";
 	}
 	
 	@RequestMapping(value="/showAccounts",method=RequestMethod.GET)
 	public String showAccounts(Model model){
-		List<User> userList = QueryFactory.create(applicationContext, "from User");
+		
+		List<User> userList = DataProvider.getUsers(applicationContext);
+		
 		model.addAttribute("userList",userList);
-	
 		return "showAccounts";
-	}
-
-	@RequestMapping(value="/showAccount",method=RequestMethod.POST)
-	public String showAccount(Model model,
-		@RequestParam("identifier") String ident, RedirectAttributes redirect){
-			
-			UserDao userDao = (UserDao) applicationContext.getBean("userDao");
-			
-			User user = userDao.retrieve(ident);
-			model.addAttribute("user",user);
-			return "showAccount";
 	}
 	
 	@RequestMapping(value="/deleteAccounts",method=RequestMethod.GET)
 	public String deleteAccounts(Model model){
-		List<User> userList = QueryFactory.create(applicationContext, "from User");
+		
+		List<User> userList = DataProvider.getUsers(applicationContext);
+		
 		model.addAttribute("userList",userList);
 		
 		return "deleteAccounts";
@@ -164,6 +180,13 @@ public class AccountController implements ApplicationContextAware{
 		redirect.addFlashAttribute("message",message);
 		return "redirect:myAccount";
 	}
+	
+	@InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)throws BeansException {

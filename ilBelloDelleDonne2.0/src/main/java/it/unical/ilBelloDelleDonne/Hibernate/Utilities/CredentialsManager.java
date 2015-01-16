@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 
-public abstract class CredentialsVerification{
+public abstract class CredentialsManager{
 	
 	public static boolean verify(ApplicationContext context,User user,String username,String password){
 		

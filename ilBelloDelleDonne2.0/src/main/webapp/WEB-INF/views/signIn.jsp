@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="it">
 <head>
 <meta charset="utf-8">
@@ -84,7 +85,7 @@
 				<form:form id="mod" method="post" action="signIn" modelAttribute="newUser" commandName="newUser">
 					<h4>Anagrafica</h4>
 				
-					<table>
+					<table align="center">
 					<tr>
 					<th>Name:</th>
 					<td><input type="text"  name="name" value="${user.name}" ></td>
@@ -104,12 +105,8 @@
 					
 					<tr>
 					<th>BirthDate:</th>
-					<c:if test="${!empty user.birth}">
+				
 					<td><input id="dateBirth" type="date"  name="birth" value="${user.birth}"></td>
-					</c:if>
-					<c:if test="${empty user.birth}">
-					<td><input id="dateBirth" type="date"  name="birth" ></td>
-					</c:if>
 					<td><form:errors path='birth'/></td>
 					</tr>
 
@@ -141,9 +138,10 @@
 					</tr>
 					<tr>
 					</table>
-							<hr />
+					<br>
+					<hr />
 					<h4>Account info</h4>
-					<table>
+					<table align="center">
 					<tr>
 					<th>Username:</th>
 					<td><input id = "usr" type="text"  name="username"></td>
