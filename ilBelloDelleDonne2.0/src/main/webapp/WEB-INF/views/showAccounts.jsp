@@ -4,7 +4,6 @@
 
  <p>all accounts</p>
 
-<c:forEach var="user" items="${userList}">
  <table class="mytable">
 	<thead>
 		<thead>
@@ -22,6 +21,8 @@
 	</thead>
 	</thead>
 	<tbody>
+	
+<c:forEach var="user" items="${userList}">
 			<tr>
 				<td>${user.account.username}</td>
 				<td>${user.account.type}</td>
@@ -34,8 +35,9 @@
 				<td>${user.email }</td>
 				<td>
 			</tr>
+
+ </c:forEach> 
+ 
 	</tbody>
 </table>
 
- <br><br>
- </c:forEach> 

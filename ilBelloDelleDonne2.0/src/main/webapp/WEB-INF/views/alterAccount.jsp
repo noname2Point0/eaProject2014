@@ -1,9 +1,39 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <p>il tuo account:</p>
+<script type="text/javascript">
+$(function(){
+$("#mod").submit(function(){
+	
+	var cpass=$("#cpass").val();
+	var pass = $("#inpass").val();
+	var rpass = $("#rinpass").val();
+	
+	if((cpass==null)||(cpass=="")||(cpass=="undefined")){
+		alert("inserisci la password corrente");
+		return false;
+	}
+	
+	if((pass==null)||(pass=="")||(pass=="undefined")){
+		alert("inserisci una password");
+		return false;
+	}
+	
+	if(pass != rpass){
+		alert("conferma password non corretta");
+		return false;
+	}
+	
+	
+	});
 
+});
+
+</script>
 <p>Anagrafica</p>
 <form:form action="updateAlterUser" method="post" modelAttribute="updUser">
 <table class="mytable">
@@ -24,7 +54,7 @@
 		<tr>
 			<th>Birth date:</th>
 			<td>${user.birth}</td>
-			<td><input type="date" value="null" name="birthString"></input></td>
+			<td><input type="date" value="${userBirth}" name="birth"></input></td>
 		</tr>
 		<tr>
 			<th>City:</th>
@@ -46,56 +76,30 @@
 			<td>${user.email}</td>
 			<td><input type="email" value="${user.email }" name="email"></input></td>
 		</tr>
-
+		
 	</tbody>
 </table>
 <br>
-
 <input type="hidden" name="account.username" value="${account.username}">
 <input type="hidden" value="${user.id}" name="id">
 <input type="submit" value="update">
 </form:form>
 
 <br>
-<p>Account</p>
-<form:form action="updateAlterAccount" method="post" modelAttribute="udpAccount">
+<p>cambia la tua password</p>
+<form:form id="mod" action="updateAlterAccount" method="post" modelAttribute="udpAccount">
 <table class="mytable">
 	<thead>
 		<tr>
-			<th></th><th>current value</th>	<th>new value</th><th></th>
+			<th></th><th>current password</th>	<th>new password</th><th>confirmpassword</th>
 		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<th>username</th>
-			<td>${user.account.username}</td>
-			<td><input type="text" value="${user.account.username}" name="username"></td>
-			<td></td>
-		</tr>
-		
+	</thead>	
 		<tr>
 			<th>password</th>		
-			<td>-</td>
-			<td><input type="password" value="${user.account.password }" name="password"></td>
-			<td><input type="password" value="" name="reinsPass"></td>
+			<td><input id="cpass" type="password" name="currentPassword"></td>
+			<td><input id="inpass" type="password" name="password"></td>
+			<td><input id="rinpass" type="password"></td>
 		</tr>
-		
-		<tr>
-			<th>type</th>
-			<td>${user.account.type}</td>
-			<td><c:choose>
-					<c:when test="${user.account.type=='admin'}">
-					<input type="text" value="${user.account.type}" name="type">
-					</c:when>
-					<c:otherwise>
-						<input type="hidden" value="${user.account.type}" name="type">
-					</c:otherwise>
-					</c:choose>
-				
-			</td>
-			<td></td>
-		</tr>
-		
 	</tbody>
 </table>
 <br>

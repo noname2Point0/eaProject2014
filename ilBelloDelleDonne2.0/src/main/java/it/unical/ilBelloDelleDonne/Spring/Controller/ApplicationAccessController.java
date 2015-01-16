@@ -49,7 +49,6 @@ public class ApplicationAccessController implements ApplicationContextAware {
 			@RequestParam(value= "after" , required=false)String after){
 		
 		User user = DataProvider.getUser(applicationContext, username);
-		
 		if(user != null && user.getAccount().getPassword().equals(password)){	
 			
 			ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
