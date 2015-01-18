@@ -125,16 +125,16 @@
 							salone:
 							<ul class="userMenu">
 								<li><a id="visualizzaServizi" href="#">visualizza</a></li>
-								<c:if test="${user.account.type=='admin'}">
-								<li><a id="inserisciServizio" href="#">inserisci prodotti</a></li>
-								</c:if>
+								<li><a id="inserisciServizio" href="#">inserisci servizio</a></li>
+								<li><a id="modificaServizio" href="#">modifica servizio</a>
 							</ul>
+							
 						</c:if>	
 						</div>
 				</div>
 				
 				<div id="divview">
-				<p>${message}</p>
+				<p id="pMessage">${message}</p>
 				</div>
 			</c:if>
 		</div>

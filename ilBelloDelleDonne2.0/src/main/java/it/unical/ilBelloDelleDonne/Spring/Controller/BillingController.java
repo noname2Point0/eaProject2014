@@ -52,7 +52,6 @@ public class BillingController implements ApplicationContextAware{
 	public String billingSelling(Model model,@RequestParam("sellingId") int sellingId,
 			RedirectAttributes redirect){
 		
-		System.out.println("-----------------");
 
 		Date date = MyData.getLocaleData();
 		

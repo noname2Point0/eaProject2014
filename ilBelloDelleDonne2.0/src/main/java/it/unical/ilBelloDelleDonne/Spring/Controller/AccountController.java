@@ -6,7 +6,6 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Admin;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Employee;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
@@ -16,7 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -24,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,7 +56,8 @@ public class AccountController implements ApplicationContextAware{
 	}
 	
 	@RequestMapping(value="/insertAccount", method=RequestMethod.GET)
-	public String insertAccount(HttpSession session, Model model){
+	public String insertAccount(HttpSession session, HttpServletRequest request, Model model){
+		
 		return "insertAccount";
 	}
 	
@@ -122,7 +125,7 @@ public class AccountController implements ApplicationContextAware{
 		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
 		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
 	
-		Account account = new Account(username,type,type);
+		Account account = new Account(username,"admin","admin");
 		accountDao.create(account);
 
 		if(type.equals(AccountType.getAdminType())){
@@ -145,6 +148,7 @@ public class AccountController implements ApplicationContextAware{
 			userDao.create(employee);
 		}
 	
+		redirect.addFlashAttribute("message","utente inserito con successo");
 			
 		return "redirect:myAccount";
 	}

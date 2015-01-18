@@ -41,20 +41,19 @@ $(function(){
 	});
 	
 	$("#checkOutOrdine").click(function(){
-		alert("ciao");
 		$("#divview").load("checkOutSelling");
 	});
 	
-	
-	
-	$("visualizzaServizi").click(function(){
+	$("#visualizzaServizi").click(function(){
 		alert("ciao");
-		$("#divview").load("")
 	});
 	
-	$("inserisciServizio").click(function(){
+	$("#inserisciServizio").click(function(){
 		alert("ciao");
-		$("#divview").load("");
+	});
+	
+	$("#modificaServizio").click(function(){
+		alert("ciao");
 	});
 	
 });

@@ -186,10 +186,4 @@ public class User implements Serializable{
 		this.telephoneNumber = us.telephoneNumber;
 	}
 	
-	@Override
-	public String toString() {
-		return new String(name+" "+surname+" "+birth+" "+city+" "+telephoneNumber+" "+streetAddress+" "+account.getType()+" "+account.getUsername() +" "+account.getPassword()+" "+email);
-	}
-	
-	
 }
