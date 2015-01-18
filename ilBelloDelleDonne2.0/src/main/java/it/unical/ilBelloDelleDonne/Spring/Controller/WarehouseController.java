@@ -1,13 +1,17 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
+import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -31,16 +35,43 @@ public class WarehouseController implements ApplicationContextAware{
 	@RequestMapping(value="/products",method=RequestMethod.GET)
 	public String products(Model model,HttpSession session){
 		
+		ImageWrapperDao imageDao = (ImageWrapperDao) applicationContext.getBean("imageWrapperDao");
+		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
 		
 		List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
 		
+		System.out.println("SONO NEL CONTROLLER@@@");
+	/*	
+		for(ProductStock ps:productStocks){
+			String imageName = ps.getType()+"_"+ps.getBrand();
+			String pathImage = "/home/vincenzo/git/ilBelloDelleDonne2.0/ilBelloDelleDonne2.0/src/main/webapp/resources/images/"+imageName;
+			
+			ImageWrapper image = imageDao.retrieve(ps.getImageWrapper().getId());
+			byte[] byteImage = image.getData();
+			try{
+			    FileOutputStream fos = new FileOutputStream(pathImage);
+			    fos.write(byteImage);
+			    fos.close();
+			}
+			catch(Exception e){
+			    e.printStackTrace();
+			}
+			
+			ps.getImageWrapper().setData(byteImage);
+			productStockDao.update(ps);
+			
+		}
+		*/
+		
 		model.addAttribute("stockList",productStocks);
 
 		return "products";
 	}
+	
 
 	@RequestMapping(value="/showWarehouse", method=RequestMethod.GET)
 	public String showWarehouse(Model model){

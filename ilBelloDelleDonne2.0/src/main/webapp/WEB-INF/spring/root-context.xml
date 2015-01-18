@@ -69,6 +69,10 @@
 
 	<bean id="productStockDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
+	
+	<bean id="imageWrapperDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>		
 	
 	<bean id="transactionManager"

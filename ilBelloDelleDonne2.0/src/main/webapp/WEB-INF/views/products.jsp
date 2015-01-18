@@ -51,6 +51,7 @@
 			<table class="mytable">
 				<thead>
 					<tr>
+						<th>photo</th>
 						<th>type</th>
 						<th>brand</th>
 						<th>description</th>
@@ -63,14 +64,20 @@
 				<tbody>
 					<c:forEach var="stock" items="${stockList}">
 						<tr>
+							<td>
+							  <form action="showImage" method="get">
+							  	<input type="image" src="resources/images/${stock.imageWrapper.imageName}" name="imageWrapper" >
+							  </form>
+							</td>
 							<td>${stock.type}</td>
 							<td>${stock.brand}</td>
 							<td>${stock.description}</td>
-							<td>${stock.price}</td>
+							<td>${stock.price}</td>							
 							<c:if test="${user.account.type =='customer' || empty user.account.type }">
 							<td>
 								<form action="addToCart" method="get" modelattribute="productCustom">
 								<input type="submit" value="add">
+					<!-- 		<input type="hidden" name="imageWrapper" value="${stock.imageWrapper}"> --> 
 								<input type="hidden" name="id" value="${stock.id}"> 
 								<input type="hidden" name="type" value="${stock.type}"> 
 								<input type="hidden" name="brand" value="${stock.brand}"> 
