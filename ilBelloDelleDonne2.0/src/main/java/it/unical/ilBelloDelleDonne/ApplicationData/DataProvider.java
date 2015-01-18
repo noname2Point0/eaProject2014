@@ -6,6 +6,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -31,6 +32,14 @@ public abstract class DataProvider {
 
 	public static List<User> getUsers(ApplicationContext context){
 		return (List<User>) performQuery(context, "from User");
+	}
+	
+	public static List<Service> getServiceList(ApplicationContext applicationContext) {
+		
+		String query="from Service";
+		List<Service> serviceList = (List<Service>) performQuery(applicationContext, query);
+		
+		return serviceList;
 	}
 	
 
@@ -84,5 +93,7 @@ public abstract class DataProvider {
 		session.close();
 		return l;
 	}
+
+	
 
 }
