@@ -1,10 +1,12 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
+import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.ReserveSchedule;
@@ -59,6 +61,7 @@ public class ReserveController implements ApplicationContextAware {
 
 	@RequestMapping(value="/reserveService", method=RequestMethod.GET)
 	public String getReserve(Model model,HttpSession session){
+		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
@@ -87,17 +90,13 @@ public class ReserveController implements ApplicationContextAware {
 
 		if(ReserveSchedule.isAnAvailableReserve(applicationContext, data, time)){
 
-			System.out.println("POSSO INSERIRE LA PRENOTAZIONE");
 			Reserve reserve = new Reserve();
-
 
 			Date dateOrder = MyData.getLocaleData();
 
 			ReserveDao reserveDao = (ReserveDao) applicationContext.getBean("reserveDao");
 
-			String query = new String("from Customer c where c.account.username='"+appInfo.getUser().getAccount().getUsername()+"'");
-
-			Customer customer = QueryFactory.getCustomerByUser(applicationContext, query);
+			Customer customer = (Customer) DataProvider.getUser(applicationContext, appInfo.getUser().getAccount().getUsername());
 
 			reserve.setCustomer(customer);
 			reserve.setDateOrder(dateOrder);
@@ -113,7 +112,8 @@ public class ReserveController implements ApplicationContextAware {
 		}
 		else{
 
-			String message = "NON È POSSIBILE EFFETTUARE PRENOTAZIONI NELL'ORARIO SCELTO";
+			String message = "non è possibile effettuare la prenotazione, scegli un altra data o orario";
+			
 			if(appInfo.isUserLogged()){
 				model.addAttribute("user", appInfo.getUser());
 				model.addAttribute("message",message);
@@ -133,6 +133,42 @@ public class ReserveController implements ApplicationContextAware {
 
 		return "reviewReserveSuccess";
 	}
+	
+
+	@RequestMapping(value="/showAppointments",method=RequestMethod.GET)
+	public String showAppointmenst(Model model, HttpSession session){
+	
+		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		String accType = appInfo.getUser().getAccount().getType();
+		
+		List<Reserve> reserveList = null;
+		if(AccountType.isAdmin(accType)){
+			reserveList = DataProvider.getReserveList(applicationContext);
+		}
+		
+		if(AccountType.isCustomer(accType)){
+			reserveList=DataProvider.getCustomerReserveList(applicationContext,appInfo.getUser().getAccount().getUsername());
+		}
+		
+		if(AccountType.isEmployeeSaloon(accType)){
+			reserveList=DataProvider.getEmployeeReserveList(applicationContext);
+		}
+		
+		model.addAttribute("reserveList",reserveList);
+		
+		return "showAppointments";
+	}
+	
+	 @RequestMapping(value="/checkOutAppointments",method=RequestMethod.GET)
+	 public String checkOutAppointments(Model model){
+			 	
+		 	List<Reserve> reserveList = (List<Reserve>) DataProvider.getReserveListNoBilling(applicationContext); 	
+			
+			model.addAttribute("reserveList",reserveList);
+		
+		 return "checkOutAppointments";
+	 }
+	 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;

@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
+<c:if test="${!empty reserveList}">
 <table class="mytable">
 	<thead>
 		<tr>
@@ -35,3 +36,4 @@
 	</c:forEach>
 	</tbody>
 </table>
+</c:if>

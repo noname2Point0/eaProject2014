@@ -11,12 +11,54 @@
 		var dateFormatted = date.getFullYear()+"-"+("0"+(date.getMonth()+1)).slice(-2)+"-"+("0"+date.getDate()).slice(-2);
 
 		$("#dateBirth").attr("value",dateFormatted);
+		$("#mod").submit(function(){
+			var name = $("#name").val();
+			if(name == "" || name == "undefined" || name == null){
+				alert("inserisci il nome");
+				return false;
+			}
+			
+			if(name.length < 2 || name.length >10 ){
+				alert("name size between 2 and 10");
+				return false;
+			}
+			
+			var surname = $("#surname").val();
+			if(surname == "" || surname == "undefined" || surname == null){
+				alert("inserisci il cognome");
+				return false;
+			}
+			
+			if(surname.length < 2 || surname.length >10 ){
+				alert("surname size between 2 and 10");
+				return false;
+			}
+			
+			var email = $("#email").val();
+			if(email == "" || email == "undefined" || email == null){
+				alert("inserisci l' email");
+				return false;
+			}
+			
+			var city = $("#city").val();
+			if(city=="" || city == "undefined" || city == null){
+				alert("inserisci città");
+				return false;
+			}
+			
+			var address=$("#address").val();
+			if(address == "" || address == "undefined" || address == null){
+				alert("inserisci indirizzo");
+				return false;
+			}
+		
+		});
 	});
 </script>
 <p>inserisci il nuovo account:</p>
 
 <p>Anagrafica</p>
-<form:form action="insertNewAccount" method="post" modelAttribute="insUser">
+<form:form id="mod" action="insertNewAccount" method="post" modelAttribute="insUser" commandName="insUser">
 <table class="mytable">
 <thead>
 	<tr><th></th><th>value</th></tr>
@@ -24,11 +66,11 @@
 	<tbody>
 		<tr>
 			<th>Name:</th>
-			<td><input type="text"  name="name"></input></td>
+			<td><input id="name" type="text"  name="name"></input></td>
 		</tr>
 		<tr>
 			<th>Surname:</th>
-			<td><input type="text" name="surname"></input></td>
+			<td><input id="surname" type="text" name="surname"></input></td>
 		</tr>
 		<tr>
 			<th>Birth date:</th>
@@ -36,19 +78,19 @@
 		</tr>
 		<tr>
 			<th>City:</th>
-			<td><input type="text" name="city"></input></td>
+			<td><input id="city" type="text" name="city"></input></td>
 		</tr>
 		<tr>
 			<th>Address:</th>
-			<td><input type="text"  name="streetAddress"></input></td>
+			<td><input id="address" type="text"  name="streetAddress"></input></td>
 		</tr>
 		<tr>
 			<th>TelephoneNumber:</th>
-			<td><input type="text" name="telephoneNumber"></input></td>
+			<td><input id="telephon" type="text" name="telephoneNumber"></input></td>
 		</tr>
 		<tr>
 			<th>email:</th>
-			<td><input type="email"  name="email"></input></td>
+			<td><input id="email" type="email"  name="email"></input></td>
 		</tr>
 		<tr>
 			<th>type:</th>

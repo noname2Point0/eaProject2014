@@ -4,6 +4,7 @@ import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.ApplicationData.ProductCustomList;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
@@ -77,8 +78,9 @@ public class SellingController implements ApplicationContextAware{
 		ArrayList<Product> products = new ArrayList<Product>();
 
 		Double sum = 0.0;
-		for(ProductStock productStock :productsCustomList.getProductsStock()){
-					
+		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		
+		for(ProductStock productStock :productsCustomList.getProductsStock()){		
 			String query = new String("from Product p where p.productStock.id="+productStock.getId()+"");
 			List<Product> p =(List<Product>) QueryFactory.create(applicationContext, query);
 
@@ -86,8 +88,12 @@ public class SellingController implements ApplicationContextAware{
 				products.add(p.get(i));
 				sum+= productStock.getPrice();
 			}
+			ProductStock ps = productStockDao.retrieve(productStock.getId());
+			ps.setQuantity(ps.getQuantity()-productStock.getQuantity());
+			productStockDao.update(ps);
 		}
 	
+		
 	
 		UserDao userDao = (UserDao)applicationContext.getBean("userDao");
 		Customer customer = (Customer) userDao.retrieve(appInfo.getUser().getAccount().getUsername());
@@ -113,6 +119,7 @@ public class SellingController implements ApplicationContextAware{
 		
 		redirect.addFlashAttribute("selling",selling);
 		redirect.addFlashAttribute("stockList",productsCustomList.getProductsStock());
+		
 		return "redirect:/reviewSellingSuccess";
 
 	}
@@ -140,11 +147,6 @@ public class SellingController implements ApplicationContextAware{
 
 	@RequestMapping(value="/checkOutSelling",method=RequestMethod.GET)
 	 public String checkOutAppointments(Model model){
-
-//		 	String query = new String("from Selling s where s.billing is null");
-//			List<Reserve> reserveList = (List<Reserve>)QueryFactory.getSellingByParameter(applicationContext, query, null);
-	
-//			String query = new String("from Selling s where s.billing is not null ");
 		
 			String query=new String("from Selling s where s.dateConsignment is not null and  not exists(from Billing b where b.selling = s)");
 			
