@@ -7,6 +7,50 @@
 <p>il tuo account:</p>
 <script type="text/javascript">
 $(function(){
+	
+$("#anForm").submit(function(){
+
+	var name = $("#name").val();
+	if(name == "" || name == "undefined" || name == null){
+		alert("inserisci il nome");
+		return false;
+	}
+
+	if((name.length < 2) || (name.length >10) ){
+		alert("name size between 2 and 10");
+		return false;
+	}
+
+	var surname = $("#surname").val();
+	if(surname == "" || surname == "undefined" || surname == null){
+		alert("inserisci il cognome");
+		return false;
+	}
+	
+	if((surname.length < 2) || (surname.length >10) ){
+		alert("surname size between 2 and 10");
+		return false;
+	}
+	
+	var email = $("#email").val();
+	if(email == "" || email == "undefined" || email == null){
+		alert("inserisci l' email");
+		return false;
+	}
+	
+	var city = $("#city").val();
+	if(city=="" || city == "undefined" || city == null){
+		alert("inserisci città");
+		return false;
+	}
+	
+	var address=$("#address").val();
+	if(address == "" || address == "undefined" || address == null){
+		alert("inserisci indirizzo");
+		return false;
+	}
+});
+
 $("#mod").submit(function(){
 	
 	var cpass=$("#cpass").val();
@@ -28,14 +72,13 @@ $("#mod").submit(function(){
 		return false;
 	}
 	
-	
 	});
 
 });
 
 </script>
 <p>Anagrafica</p>
-<form:form action="updateAlterUser" method="post" modelAttribute="updUser">
+<form:form id="anForm" action="updateAlterUser" method="post" modelAttribute="updUser">
 <table class="mytable">
 <thead>
 	<tr><th></th><th>current value</th><th>new value</th></tr>
@@ -44,37 +87,37 @@ $("#mod").submit(function(){
 		<tr>
 			<th>Name:</th>
 			<td>${user.name}</td>
-			<td><input type="text" value="${user.name}" name="name"></input></td>
+			<td><input id="name" type="text" value="${user.name}" name="name"></input></td>
 		</tr>
 		<tr>
 			<th>Surname:</th>
 			<td>${user.surname}</td>
-			<td><input type="text" value="${user.surname }" name="surname"></input></td>
+			<td><input id="surname" type="text" value="${user.surname }" name="surname"></input></td>
 		</tr>
 		<tr>
 			<th>Birth date:</th>
 			<td>${user.birth}</td>
-			<td><input type="date" value="${userBirth}" name="birth"></input></td>
+			<td><input id="birth" type="date" value="${userBirth}" name="birth"></input></td>
 		</tr>
 		<tr>
 			<th>City:</th>
 			<td>${user.city}</td>
-			<td><input type="text" value="${user.city }" name="city"></input></td>
+			<td><input id="city" type="text" value="${user.city }" name="city"></input></td>
 		</tr>
 		<tr>
 			<th>Address:</th>
 			<td>${user.streetAddress}</td>
-			<td><input type="text" value="${user.streetAddress}" name="streetAddress"></input></td>
+			<td><input id="address" type="text" value="${user.streetAddress}" name="streetAddress"></input></td>
 		</tr>
 		<tr>
 			<th>TelephoneNumber:</th>
 			<td>${user.telephoneNumber}</td>
-			<td><input type="text" value="${user.telephoneNumber}" name="telephoneNumber"></input></td>
+			<td><input id="telephoneNumber" type="text" value="${user.telephoneNumber}" name="telephoneNumber"></input></td>
 		</tr>
 		<tr>
 			<th>email:</th>
 			<td>${user.email}</td>
-			<td><input type="email" value="${user.email }" name="email"></input></td>
+			<td><input id="email" type="email" value="${user.email }" name="email"></input></td>
 		</tr>
 		
 	</tbody>

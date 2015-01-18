@@ -157,6 +157,10 @@ input[type=text], input[type=password], input[type=date], input[type=time],input
 	padding-right:10px;
 	padding-bottom: 10px;
 }
+#divEmpty{
+	height:100vh;
+	
+}
 
 #divview{
 	margin-left: 50px;

@@ -4,6 +4,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.context.ApplicationContext;
 
@@ -54,5 +55,26 @@ public abstract class CredentialsManager{
 		
 		return test; 
 	}
-
+	
+	public static String generatePassword(ApplicationContext context, String type){
+		String init= new String();
+		if(AccountType.isEmployeeSaloon(type)){
+			init = "ES";
+		}
+		
+		if(AccountType.isEmloyeeWarehouse(type)){
+			init="EW";
+		}
+		
+		if(AccountType.isAdmin(type)){
+			init="ADM";
+		}
+		
+		Random rand = new Random();
+		String attach = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
+		
+		
+		
+		return init+attach;
+	}
 }

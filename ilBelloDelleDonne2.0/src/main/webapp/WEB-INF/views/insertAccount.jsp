@@ -12,24 +12,25 @@
 
 		$("#dateBirth").attr("value",dateFormatted);
 		$("#mod").submit(function(){
+	
 			var name = $("#name").val();
 			if(name == "" || name == "undefined" || name == null){
 				alert("inserisci il nome");
 				return false;
 			}
-			
-			if(name.length < 2 || name.length >10 ){
+		
+			if((name.length < 2) || (name.length >10) ){
 				alert("name size between 2 and 10");
 				return false;
 			}
-			
+	
 			var surname = $("#surname").val();
 			if(surname == "" || surname == "undefined" || surname == null){
 				alert("inserisci il cognome");
 				return false;
 			}
 			
-			if(surname.length < 2 || surname.length >10 ){
+			if((surname.length < 2) || (surname.length >10) ){
 				alert("surname size between 2 and 10");
 				return false;
 			}
@@ -56,7 +57,7 @@
 	});
 </script>
 <p>inserisci il nuovo account:</p>
-
+<p>username e password saranno automaticamente creati dal sistema</p>
 <p>Anagrafica</p>
 <form:form id="mod" action="insertNewAccount" method="post" modelAttribute="insUser" commandName="insUser">
 <table class="mytable">
