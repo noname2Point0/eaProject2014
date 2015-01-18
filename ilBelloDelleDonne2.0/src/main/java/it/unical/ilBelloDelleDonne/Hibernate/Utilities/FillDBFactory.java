@@ -109,23 +109,23 @@ public abstract class FillDBFactory{
 		SellingDao sellingDao = (SellingDao) context.getBean("sellingDao");
 		
 		Account account1 = new Account("admin", "admin", AccountType.getAdminType());
-		Account account2 = new Account("vincenzo", "paswd00", AccountType.getCustomerType());
-		Account account3 = new Account("giuseppe", "paswd01", AccountType.getEmployeeWarehouseType());
-		Account account4 = new Account("giovanni", "paswd02", AccountType.getEmployeeSaloonType());
-		Account account5 = new Account("pasquale", "pasquale", AccountType.getCustomerType());
-		Account account6 = new Account("luca", "luca", AccountType.getCustomerType());
+//		Account account2 = new Account("", "paswd00", AccountType.getCustomerType());
+//		Account account3 = new Account("giuseppe", "paswd01", AccountType.getEmployeeWarehouseType());
+//		Account account4 = new Account("giovanni", "paswd02", AccountType.getEmployeeSaloonType());
+//		Account account5 = new Account("pasquale", "pasquale", AccountType.getCustomerType());
+//		Account account6 = new Account("luca", "luca", AccountType.getCustomerType());
 
 		accountDao.create(account1);
-		accountDao.create(account2);
-		accountDao.create(account3);
-		accountDao.create(account4);
-		accountDao.create(account5);
-		accountDao.create(account6);
+//		accountDao.create(account2);
+//		accountDao.create(account3);
+//		accountDao.create(account4);
+//		accountDao.create(account5);
+//		accountDao.create(account6);
 		
 		Date date1=null;
-		Date date2=null;
-		Date date3=null;
-		Date date4=null;
+//		Date date2=null;
+//		Date date3=null;
+//		Date date4=null;
 		
 		Date dateOrder1 = null;
 		Date dateOrder2 = null;
@@ -133,43 +133,43 @@ public abstract class FillDBFactory{
 		
 		try{
 			String birth1 = "1989-12-02";
-			String birth2 = "1980-10-07";
-			String birth3 = "1985-11-12";
-			String birth4 = "1989-06-12";
+//			String birth2 = "1980-10-07";
+//			String birth3 = "1985-11-12";
+//			String birth4 = "1989-06-12";
 			
 			date1 = new SimpleDateFormat("yyyy-MM-dd").parse(birth1);
-			date2 = new SimpleDateFormat("yyyy-MM-dd").parse(birth2);
-			date3 = new SimpleDateFormat("yyyy-MM-dd").parse(birth3);
-			date4 = new SimpleDateFormat("yyyy-MM-dd").parse(birth4);
+//			date2 = new SimpleDateFormat("yyyy-MM-dd").parse(birth2);
+//			date3 = new SimpleDateFormat("yyyy-MM-dd").parse(birth3);
+//			date4 = new SimpleDateFormat("yyyy-MM-dd").parse(birth4);
 			
 			
-			String order1 = "12-12-2014";
-			String order2 = "10-10-2014";
-			String order3 = "11-11-2014";
+//			String order1 = "12-12-2014";
+//			String order2 = "10-10-2014";
+//			String order3 = "11-11-2014";
 			
-			dateOrder1 = new SimpleDateFormat("yyyy-MM-dd").parse(order1);
-			dateOrder2 = new SimpleDateFormat("yyyy-MM-dd").parse(order2);
-			dateOrder3 = new SimpleDateFormat("yyyy-MM-dd").parse(order3);
+//			dateOrder1 = new SimpleDateFormat("yyyy-MM-dd").parse(order1);
+//			dateOrder2 = new SimpleDateFormat("yyyy-MM-dd").parse(order2);
+//			dateOrder3 = new SimpleDateFormat("yyyy-MM-dd").parse(order3);
 		}
 		catch (Exception e) {
 			e.addSuppressed(e.getCause());
 		}		
-		Customer customer1 = new Customer("vincenzo", "Algieri", "cosenza", "mazzini", "3209878655", date1, "lgrvcn89t02d005r", "algieri@tiscali.it", account2);
-		Customer customer2 = new Customer("pasquale", "Grimaldi", "rende", "rossini", "3209889765", date1, "pqlgmd89g13d005r", "pasquale@gmail.com", account5);
-		Customer customer3 = new Customer("luca", "Di Lascio", "lauria", "boh", "3209859765", date3, "dlslca92g13d005r", "luca@gmail.com", account6);
-		Employee employee1 = new Employee("nicola",  "Benedetto", "cosenza", "mazzini", "3209877055", date2, "magazzino", "benedetto@tiscali.it", account3);
-		Employee employee2 = new Employee("nicola",  "Benedetto", "cosenza", "mazzini", "3209877055", date4, "saloon", "benedetto@tiscali.it", account4);
-		Admin admin1 = new Admin("giuseppe", "cristiano", "cosenza", "mazzini", "3223877055", date3, "admin@tiscali.it", account1);
+//		Customer customer1 = new Customer("vincenzo", "Algieri", "cosenza", "mazzini", "3209878655", date1, "lgrvcn89t02d005r", "algieri@tiscali.it", account2);
+//		Customer customer2 = new Customer("pasquale", "Grimaldi", "rende", "rossini", "3209889765", date1, "pqlgmd89g13d005r", "pasquale@gmail.com", account5);
+//		Customer customer3 = new Customer("luca", "Di Lascio", "lauria", "boh", "3209859765", date3, "dlslca92g13d005r", "luca@gmail.com", account6);
+//		Employee employee1 = new Employee("nicola",  "Benedetto", "cosenza", "mazzini", "3209877055", date2, "magazzino", "benedetto@tiscali.it", account3);
+//		Employee employee2 = new Employee("nicola",  "Benedetto", "cosenza", "mazzini", "3209877055", date4, "saloon", "benedetto@tiscali.it", account4);
+		Admin admin1 = new Admin("giuseppe", "cristiano", "cosenza", "mazzini", "3223877055", date1, "admin@tiscali.it", account1);
 	
-		userDao.create(customer1);
-		userDao.create(customer2);
-		userDao.create(customer3);
-		userDao.create(employee1);
-		userDao.create(employee2);
+//		userDao.create(customer1);
+//		userDao.create(customer2);
+//		userDao.create(customer3);
+//		userDao.create(employee1);
+//		userDao.create(employee2);
 		userDao.create(admin1);
 		
 		
-		
+		/*
 		
 		Selling selling1 = new Selling(customer2, dateOrder1 , null , 56.0);
 		Selling selling2 = new Selling(customer2, dateOrder3 , null , 98.0);
@@ -190,7 +190,7 @@ public abstract class FillDBFactory{
 		sellingDao.create(selling7);
 		sellingDao.create(selling8);
 		sellingDao.create(selling9);
-		
+		*/
 				
 	}
 

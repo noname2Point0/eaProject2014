@@ -116,6 +116,7 @@
 								<li><a id="visualizzaMagazzino" href="#">visualizza</a></li>
 								<c:if test="${user.account.type=='admin'}">
 								<li><a id="inserisciProdotti" href="#">inserisci prodotti</a></li>
+								<li><a id="modificaProdotto" href="#">modifica prodotto</a></li>
 								</c:if>
 							</ul>
 						</c:if>

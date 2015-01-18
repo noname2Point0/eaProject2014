@@ -28,6 +28,10 @@ $(function(){
 		$("#divview").load("showWarehouse");
 	});
 	
+	$("#modificaProdotto").click(function(){
+		$("#divivew").load("alterProduct");
+	});
+	
 	$("#inserisciProdotti").click(function(){
 		$("#divview").load("insertProduct");
 	});
@@ -45,15 +49,15 @@ $(function(){
 	});
 	
 	$("#visualizzaServizi").click(function(){
-		alert("ciao");
+		$("#divview").load("showService");
 	});
 	
 	$("#inserisciServizio").click(function(){
-		alert("ciao");
+		$("#divview").load("insertService");
 	});
 	
 	$("#modificaServizio").click(function(){
-		alert("ciao");
+		$("diviview").load("alterService");
 	});
 	
 });

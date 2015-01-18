@@ -1,8 +1,11 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
+import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
@@ -41,6 +44,7 @@ public class WarehouseController implements ApplicationContextAware{
 
 		return "products";
 	}
+	
 
 	@RequestMapping(value="/showWarehouse", method=RequestMethod.GET)
 	public String showWarehouse(Model model){
@@ -74,6 +78,14 @@ public class WarehouseController implements ApplicationContextAware{
 		return "redirect:myAccount";
 	}
 	
+	
+	@RequestMapping(value="/alterProduct",method=RequestMethod.GET)
+	public String alterProduct(Model model){
+		
+		
+		return null;
+	}
+	
 	@RequestMapping(value="/insertProduct",method=RequestMethod.GET)
 	public String insertProduct(){
 
@@ -87,15 +99,14 @@ public class WarehouseController implements ApplicationContextAware{
 		int nProd = productCustom.getQuantity();
 
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
-
-//		for(int i = 0 ; i<nProd; i++){
-//			Product product = new Product();
-//			product.setType(productCustom.getType());
-//			product.setBrand(productCustom.getBrand());
-//			product.setDescription(productCustom.getDescription());
-//			product.setPrice(productCustom.getPrice());
-//			productDao.create(product);
-//		}
+		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		
+		productStockDao.create(productCustom);
+		
+		for(int i = 0 ; i<nProd; i++){
+			Product product = new Product(productCustom);
+			productDao.create(product);
+		}
 
 		
 		redirect.addFlashAttribute("message","prodotti inseriti con successo");
