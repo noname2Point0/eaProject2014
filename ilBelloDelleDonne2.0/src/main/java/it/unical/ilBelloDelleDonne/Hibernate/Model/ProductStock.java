@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -40,12 +42,16 @@ public class ProductStock{
 	
 	@OneToMany(mappedBy="productStock")
 	private List<Product> products;
+	
+	@OneToOne
+	@JoinColumn(name="imageWrapper")
+	private ImageWrapper imageWrapper;
 
 	public ProductStock() {
 
 	}
 	
-	public ProductStock(String type, String brand, String description, int minStock, int quantity, Double price){
+	public ProductStock(String type, String brand, String description, int minStock, int quantity, Double price, ImageWrapper imageWrapper){
 		
 		this.type = type;
 		this.brand = brand;
@@ -53,11 +59,12 @@ public class ProductStock{
 		this.price = price;
 		this.minStock = minStock;
 		this.quantity = quantity;
+		this.imageWrapper = imageWrapper;
 		this.products = new ArrayList<Product>();
 		
 	}
 	
-	public ProductStock(int id,String type, String brand, String description, int minStock, int quantity, Double price){
+	public ProductStock(int id,String type, String brand, String description, int minStock, int quantity, Double price, ImageWrapper imageWrapper){
 		
 		this.id = id;
 		this.type = type;
@@ -66,6 +73,7 @@ public class ProductStock{
 		this.price = price;
 		this.minStock = minStock;
 		this.quantity = quantity;
+		this.imageWrapper = imageWrapper;
 		this.products = new ArrayList<Product>();
 	}
 	
@@ -133,6 +141,13 @@ public class ProductStock{
 	public void setMinStock(int minStock) {
 		this.minStock = minStock;
 	}
-	
+
+	public ImageWrapper getImageWrapper() {
+		return imageWrapper;
+	}
+
+	public void setImageWrapper(ImageWrapper imageWrapper) {
+		this.imageWrapper = imageWrapper;
+	}
 
 }

@@ -2,6 +2,7 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.ShoppingCart;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ShoppingCartController {
@@ -26,6 +28,17 @@ public class ShoppingCartController {
 		
 		return "redirect:/products";
 	}
+/*	
+	@RequestMapping(value="/showImage",method=RequestMethod.GET)
+	public String showImage(Model model,HttpSession session,
+			@RequestParam("imageWrapper") ImageWrapper image){
+		
+			System.out.println("SONO NEL CONTROLLER AL CLICK DELL'IMMAGINE");
+			System.out.println("ecco l'immagine "+image.getImageName());
+		
+		return "redirect:/products";
+	}
+	*/
 	
 	@RequestMapping(value="/removeToCart",method=RequestMethod.GET)
 	public String removeToShoppingCart(HttpSession session, 

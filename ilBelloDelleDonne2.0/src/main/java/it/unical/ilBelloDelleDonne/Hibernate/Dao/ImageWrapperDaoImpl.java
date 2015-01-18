@@ -5,23 +5,23 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Billing;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 
-public class BillingDaoImpl implements BillingDao{
+public class ImageWrapperDaoImpl implements ImageWrapperDao{
 
 	private SessionFactory sessionFactory;
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
+	
 	@Override
-	public void create(Billing billing) {
+	public void create(ImageWrapper imageWrapper) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();			
-			session.save(billing);
+			session.save(imageWrapper);
 			tx.commit();
 		}
 		catch (Exception e) {
@@ -31,27 +31,27 @@ public class BillingDaoImpl implements BillingDao{
 		finally {
 			session.close();
 		}
-
+		
 	}
 
 	@Override
-	public Billing retrieve(int idBilling) {
+	public ImageWrapper retrieve(int id) {
 		Session session = sessionFactory.openSession();
-		String queryString = "from Billing where id = :billing";
+		String queryString = "from ImageWrapper where id =:image";
 		Query query = session.createQuery(queryString);
-		query.setParameter("billing", idBilling);
-		Billing billing = (Billing) query.uniqueResult();	
+		query.setParameter("image", id);
+		ImageWrapper imageWrapper = (ImageWrapper) query.uniqueResult();	
 		session.close();	
-		return billing;
+		return imageWrapper;
 	}
 
 	@Override
-	public void update(Billing billing) {
+	public void update(ImageWrapper imageWrapper) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.saveOrUpdate(billing);			
+			session.saveOrUpdate(imageWrapper);			
 			tx.commit();
 		}
 		catch (Exception e) {
@@ -61,16 +61,16 @@ public class BillingDaoImpl implements BillingDao{
 		finally {
 			session.close();
 		}
-
+		
 	}
 
 	@Override
-	public void delete(Billing billing) {
+	public void delete(ImageWrapper imageWrapper) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.delete(billing);
+			session.delete(imageWrapper);
 			tx.commit();
 		}
 		catch (Exception e) {
@@ -80,7 +80,7 @@ public class BillingDaoImpl implements BillingDao{
 		finally {
 			session.close();
 		}
-
+		
 	}
 
 }
