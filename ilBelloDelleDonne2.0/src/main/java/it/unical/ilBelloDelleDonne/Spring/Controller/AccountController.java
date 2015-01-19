@@ -17,7 +17,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import javax.validation.Valid;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -25,6 +25,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -61,10 +62,16 @@ public class AccountController implements ApplicationContextAware{
 	}
 
 	@RequestMapping(value="/updateAlterUser",method=RequestMethod.POST)
-	public String updateAlterUser(HttpSession session,
-			@ModelAttribute("updUser")User userAlter,
+	public String updateAlterUser(Model model,
+			HttpSession session,
+			@Valid @ModelAttribute("updUser")User userAlter,
+			BindingResult result,
 			RedirectAttributes redirect){
-
+		
+		if(result.hasErrors()){
+			return alterAccount(session, model);
+		}
+		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 
 		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
@@ -83,7 +90,10 @@ public class AccountController implements ApplicationContextAware{
 		appInfo.setUser(user);
 		redirect.addFlashAttribute("message","operazione eseguita con successo");
 
-		return "redirect:/myAccount";
+		model.addAttribute("user",user);
+		String date = user.getBirth().toString().substring(0,10);
+		model.addAttribute("userBirth",date);
+		return "showAccountDetails";
 	}
 
 	@RequestMapping(value="/updateAlterAccount", method=RequestMethod.POST)
@@ -162,6 +172,13 @@ public class AccountController implements ApplicationContextAware{
 		return "showAccounts";
 	}
 
+	@RequestMapping(value="/accountDetails",method=RequestMethod.POST)
+	public String getAccountDetails(Model model,@RequestParam("username") String username){
+		User user = DataProvider.getUser(applicationContext,username);
+		model.addAttribute("user",user);
+		
+		return "showAccountDetails";
+	}
 	@RequestMapping(value="/deleteAccounts",method=RequestMethod.GET)
 	public String deleteAccounts(Model model){
 

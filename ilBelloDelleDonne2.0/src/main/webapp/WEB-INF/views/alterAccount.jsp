@@ -3,53 +3,31 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<script type="text/javascript" src="resources/scripts/comuni.js"></script>
 
 <p>il tuo account:</p>
 <script type="text/javascript">
 $(function(){
+$("#anForm").submit(function(event){
 	
-$("#anForm").submit(function(){
-
-	var name = $("#name").val();
-	if(name == "" || name == "undefined" || name == null){
-		alert("inserisci il nome");
-		return false;
-	}
-
-	if((name.length < 2) || (name.length >10) ){
-		alert("name size between 2 and 10");
-		return false;
-	}
-
-	var surname = $("#surname").val();
-	if(surname == "" || surname == "undefined" || surname == null){
-		alert("inserisci il cognome");
-		return false;
-	}
-	
-	if((surname.length < 2) || (surname.length >10) ){
-		alert("surname size between 2 and 10");
-		return false;
-	}
-	
-	var email = $("#email").val();
-	if(email == "" || email == "undefined" || email == null){
-		alert("inserisci l' email");
-		return false;
-	}
-	
-	var city = $("#city").val();
-	if(city=="" || city == "undefined" || city == null){
-		alert("inserisci città");
-		return false;
-	}
-	
-	var address=$("#address").val();
-	if(address == "" || address == "undefined" || address == null){
-		alert("inserisci indirizzo");
-		return false;
-	}
+		if($("#city").val()=="-1" || $("#city").val() == "" || $("#city").val() == "undefined" || $("#city").val() == null){
+			alert("select city");
+			return false;
+		}
+		
+	 	$.ajax({
+	      type: 'POST',
+	      url: 'updateAlterUser',
+	      data: $("#anForm").serialize(),
+	      success: function(response) {
+	      	$("#divview").empty();
+	      	$("#divview").html(response);
+	      }
+		});
+	 
+	 return false;
 });
+
 
 $("#mod").submit(function(){
 	
@@ -73,10 +51,14 @@ $("#mod").submit(function(){
 	}
 	
 	});
+	
 
 });
 
 </script>
+
+					
+					 			
 <p>Anagrafica</p>
 <form:form id="anForm" action="updateAlterUser" method="post" modelAttribute="updUser">
 <table class="mytable">
@@ -88,36 +70,46 @@ $("#mod").submit(function(){
 			<th>Name:</th>
 			<td>${user.name}</td>
 			<td><input id="name" type="text" value="${user.name}" name="name"></input></td>
+			<td><form:errors path='name'/></td>
 		</tr>
 		<tr>
 			<th>Surname:</th>
 			<td>${user.surname}</td>
 			<td><input id="surname" type="text" value="${user.surname }" name="surname"></input></td>
+			<td><form:errors path='surname'/></td>
 		</tr>
 		<tr>
 			<th>Birth date:</th>
 			<td>${user.birth}</td>
 			<td><input id="birth" type="date" value="${userBirth}" name="birth"></input></td>
-		</tr>
+			<td><form:errors path='birth'/></td>
+			</tr>
 		<tr>
 			<th>City:</th>
 			<td>${user.city}</td>
-			<td><input id="city" type="text" value="${user.city }" name="city"></input></td>
+				<td><select name="city" id="city"></select></td>
+				<script language="javascript">populateCountries("city");</script>
+				<td><form:errors path='city' /></td>
+				
 		</tr>
 		<tr>
 			<th>Address:</th>
 			<td>${user.streetAddress}</td>
 			<td><input id="address" type="text" value="${user.streetAddress}" name="streetAddress"></input></td>
-		</tr>
+			<td><form:errors path='streetAddress' /></td>
+			</tr>
 		<tr>
 			<th>TelephoneNumber:</th>
 			<td>${user.telephoneNumber}</td>
 			<td><input id="telephoneNumber" type="text" value="${user.telephoneNumber}" name="telephoneNumber"></input></td>
+			<td><form:errors path='telephoneNumber' /></td>
 		</tr>
 		<tr>
 			<th>email:</th>
 			<td>${user.email}</td>
 			<td><input id="email" type="email" value="${user.email }" name="email"></input></td>
+			<td><form:errors path='email'/></td>
+			
 		</tr>
 		
 	</tbody>

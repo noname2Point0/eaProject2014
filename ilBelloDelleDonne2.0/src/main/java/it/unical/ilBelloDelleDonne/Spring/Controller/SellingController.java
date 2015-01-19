@@ -13,6 +13,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
@@ -136,9 +137,17 @@ public class SellingController implements ApplicationContextAware{
 
 	
 	@RequestMapping(value="/showSelling",method=RequestMethod.GET)
-	public String showSelling(Model model){
+	public String showSelling(Model model,HttpSession session){
 
-		List<Selling> sellings = (List<Selling>)QueryFactory.create(applicationContext,"from Selling");
+		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		
+		User user = appInfo.getUser();
+		List<Selling> sellings;
+		
+		if(AccountType.isCustomer(user.getAccount().getType()))
+			sellings = DataProvider.getCustomerSellingList(applicationContext,user.getAccount().getUsername());
+		else
+			sellings = DataProvider.getSellingList(applicationContext);
 		
 		model.addAttribute("sellings",sellings);
 		

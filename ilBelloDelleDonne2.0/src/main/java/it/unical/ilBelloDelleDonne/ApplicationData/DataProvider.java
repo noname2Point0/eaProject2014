@@ -3,6 +3,7 @@ package it.unical.ilBelloDelleDonne.ApplicationData;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
@@ -92,6 +93,15 @@ public abstract class DataProvider {
 
 		session.close();
 		return l;
+	}
+
+	public static List<Selling> getCustomerSellingList(ApplicationContext applicationContext, String username) {
+		return (List<Selling>)performQuery(applicationContext,"from Selling s where s.customer.account.username = '"+username+"'");
+	}
+
+	public static List<Selling> getSellingList(ApplicationContext applicationContext) {
+		return (List<Selling>) performQuery(applicationContext, "from Selling");
+		
 	}
 
 	
