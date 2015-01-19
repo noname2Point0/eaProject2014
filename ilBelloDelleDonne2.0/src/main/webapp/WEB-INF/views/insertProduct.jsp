@@ -10,20 +10,24 @@
 	<tr><th></th><th>value</th></tr>
 </thead>
 	<tbody>
+	 	<tr>
+			<th>Product Image:</th>
+			<td><input type="file" name="file" ></input></td>		  
+		</tr>
 		<tr>
 			<th>Type:</th>
 			<td><input type="text"  name="type"></input></td>
 		</tr>
 		<tr>
-			<th>brand:</th>
+			<th>Brand:</th>
 			<td><input type="text" name="brand"></input></td>
 		</tr>
 		<tr>
-			<th>description:</th>
+			<th>Description:</th>
 			<td><input type="text" name="description"></input></td>
 		</tr>
 		<tr>
-			<th>price:</th>
+			<th>Price:</th>
 			<td><input type="number" min="1" name="price"></input></td>
 		</tr>
 		<tr>

@@ -39,11 +39,13 @@
 		</property>
 	</bean>
 
-	<bean id="productDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDaoImpl">
-			<property name="sessionFactory" ref="sessionFactory" />
+	<bean id="productDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="serviceDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDaoImpl">
+	<bean id="serviceDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
@@ -51,34 +53,40 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="sellingDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDaoImpl">
+	<bean id="sellingDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="reserveDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>		
-	
-	<bean id="accountDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>		
-	
-	<bean id="billingDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.BillingDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>		
 
-	<bean id="productStockDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDaoImpl">
+	<bean id="reserveDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	
-	<bean id="imageWrapperDao" class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDaoImpl">
+	</bean>
+
+	<bean id="accountDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>		
-	
+	</bean>
+
+	<bean id="billingDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.BillingDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="productStockDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="imageWrapperDao"
+		class="it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

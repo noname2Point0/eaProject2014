@@ -5,12 +5,15 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
+import it.unical.ilBelloDelleDonne.Hibernate.Utilities.LoadImage;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -42,29 +45,18 @@ public class WarehouseController implements ApplicationContextAware{
 			model.addAttribute("user", appInfo.getUser());
 		
 		List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
+
 		
-		System.out.println("SONO NEL CONTROLLER@@@");
-	/*	
 		for(ProductStock ps:productStocks){
-			String imageName = ps.getType()+"_"+ps.getBrand();
-			String pathImage = "/home/vincenzo/git/ilBelloDelleDonne2.0/ilBelloDelleDonne2.0/src/main/webapp/resources/images/"+imageName;
-			
+		
 			ImageWrapper image = imageDao.retrieve(ps.getImageWrapper().getId());
+			
 			byte[] byteImage = image.getData();
-			try{
-			    FileOutputStream fos = new FileOutputStream(pathImage);
-			    fos.write(byteImage);
-			    fos.close();
-			}
-			catch(Exception e){
-			    e.printStackTrace();
-			}
 			
 			ps.getImageWrapper().setData(byteImage);
 			productStockDao.update(ps);
 			
 		}
-		*/
 		
 		model.addAttribute("stockList",productStocks);
 
@@ -130,14 +122,24 @@ public class WarehouseController implements ApplicationContextAware{
 
 	@RequestMapping(value="/insertNewProduct",method=RequestMethod.POST)
 	public String insertNewProduct(@ModelAttribute("insProduct") ProductStock productCustom,
-			RedirectAttributes redirect){
-
-		int nProd = productCustom.getQuantity();
-
+			RedirectAttributes redirect, @RequestParam("file") File file){
+		
+		
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
 		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		ImageWrapperDao imageDao = (ImageWrapperDao) applicationContext.getBean("imageWrapperDao");
 		
+		int nProd = productCustom.getQuantity();
+		
+		
+		ImageWrapper imageWrapper = new ImageWrapper();
+		imageWrapper = LoadImage.loadByChooserFile(file.getAbsolutePath(), file.getName());
+		imageDao.create(imageWrapper);
+		
+		productCustom.setImageWrapper(imageWrapper);
+		System.out.println("path assou "+productCustom.getImageWrapper().getImageName());
 		productStockDao.create(productCustom);
+				
 		
 		for(int i = 0 ; i<nProd; i++){
 			Product product = new Product(productCustom);
@@ -146,6 +148,7 @@ public class WarehouseController implements ApplicationContextAware{
 
 		
 		redirect.addFlashAttribute("message","prodotti inseriti con successo");
+		
 		return "redirect:myAccount";
 	}
 
