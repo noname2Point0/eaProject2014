@@ -44,8 +44,8 @@
 
 		<div id="content">
 			<div class="imgContainer">
-				<img src="resources/images/salone.png" /> <br> <img
-					src="resources/images/taglio.png" />
+				<img src="resources/images/salone.png" /> <br>
+				<img src="resources/images/taglio.png" />
 			</div>
 			<p class="homeP">
 				Passione esperienza e cortesia al servizio del vostro benessere e

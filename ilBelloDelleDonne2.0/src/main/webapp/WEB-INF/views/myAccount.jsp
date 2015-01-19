@@ -96,7 +96,7 @@
 							</ul>
 						</c:if>
 						
-						<c:if test="${user.account.type == 'admin' || user.account.type == 'employeeWarehouse'}">
+						<c:if test="${user.account.type == 'admin' || user.account.type == 'employeeWarehouse' || user.account.type == 'customer'}">
 						<hr/>
 						ordini:
 							<ul class="userMenu">
@@ -110,6 +110,7 @@
 								
 							</ul>
 						
+						<c:if test="${user.account.type!='customer' }">
 						<hr/>
 						magazzino:
 							<ul class="userMenu">
@@ -119,6 +120,7 @@
 								<li><a id="modificaProdotto" href="#">modifica prodotto</a></li>
 								</c:if>
 							</ul>
+							</c:if>
 						</c:if>
 						
 						<c:if test="${user.account.type=='admin'}">
@@ -141,7 +143,6 @@
 							</ul>
 						</c:if>	
 						</div>
-						<div id="divEmpty"></div>
 				</div>
 				
 				<div id="divview">
