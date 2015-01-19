@@ -2,6 +2,8 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
+import it.unical.ilBelloDelleDonne.ApplicationData.EmailType;
+import it.unical.ilBelloDelleDonne.ApplicationData.SendEmail;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
@@ -9,11 +11,14 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
@@ -146,8 +151,16 @@ public class ApplicationAccessController implements ApplicationContextAware {
 			userDao.create(user);
 			
 			redirect.addFlashAttribute("before",after);
-			if(serviceId!=null)
+			if(serviceId!=null){
 				redirect.addFlashAttribute("service",serviceId);
+			}
+			
+			try{
+				SendEmail.send(EmailType.getRegistrationType(), user.getAccount().getUsername(), user.getEmail());
+			}
+			catch(Exception e){
+				
+			}
 			
 			return "redirect:login";
 				
