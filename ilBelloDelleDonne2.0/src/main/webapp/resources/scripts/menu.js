@@ -29,7 +29,7 @@ $(function(){
 	});
 	
 	$("#modificaProdotto").click(function(){
-		$("#divivew").load("alterProduct");
+		$("#divview").load("alterProduct");
 	});
 	
 	$("#inserisciProdotti").click(function(){

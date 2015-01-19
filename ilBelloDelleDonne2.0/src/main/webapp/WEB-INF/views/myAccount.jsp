@@ -127,11 +127,21 @@
 							<ul class="userMenu">
 								<li><a id="visualizzaServizi" href="#">visualizza</a></li>
 								<li><a id="inserisciServizio" href="#">inserisci servizio</a></li>
-								<li><a id="modificaServizio" href="#">modifica servizio</a>
+								<li><a id="modificaServizio" href="#">modifica servizio</a></li>
 							</ul>
-							
+						</c:if>	
+						<c:if test="${user.account.type=='admin'}">
+						<hr/>
+							statistiche:
+							<ul class="userMenu">
+								<li><a id="visualizzaFatturatoOut" href="#">fatturato out</a></li>
+								<li><a id="visualizzaFatturatoIn" href="#">fatturato in</a></li>
+								<li><a id="incassoSalone" href="#">incasso salone</a></li>
+								<li><a id="incassoECommerce" href="#">incasso e commerce</a></li>
+							</ul>
 						</c:if>	
 						</div>
+						<div id="divEmpty"></div>
 				</div>
 				
 				<div id="divview">

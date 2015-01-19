@@ -7,61 +7,56 @@
 
 		$("#footer").load("resources/template/footer.html");
 		$("#header").load("resources/template/header.html");
-
+		
 		var date = new Date();
-		var dateFormatted = date.getFullYear() + "-"
-				+ ("0" + (date.getMonth() + 1)).slice(-2) + "-"
-				+ ("0" + date.getDate()).slice(-2);
+		var dateFormatted = date.getFullYear()+"-"+("0"+(date.getMonth()+1)).slice(-2)+"-"+("0"+date.getDate()).slice(-2);
 
-		$("#dateBirth").attr("value", dateFormatted);
-		$("#mod2").submit(function() {
-			
-
+		$("#dateBirth").attr("value",dateFormatted);
+		$("#mod").submit(function(){
+	
 			var name = $("#name").val();
-			if (name == "" || name == "undefined" || name == null) {
+			if(name == "" || name == "undefined" || name == null){
 				alert("inserisci il nome");
 				return false;
 			}
-
-			if ((name.length < 2) || (name.length > 10)) {
+		
+			if((name.length < 2) || (name.length >10) ){
 				alert("name size between 2 and 10");
 				return false;
 			}
-
+	
 			var surname = $("#surname").val();
-			if (surname == "" || surname == "undefined" || surname == null) {
+			if(surname == "" || surname == "undefined" || surname == null){
 				alert("inserisci il cognome");
 				return false;
 			}
-
-			if ((surname.length < 2) || (surname.length > 10)) {
+			
+			if((surname.length < 2) || (surname.length >10) ){
 				alert("surname size between 2 and 10");
 				return false;
 			}
-
+			
 			var email = $("#email").val();
-			if (email == "" || email == "undefined" || email == null) {
+			if(email == "" || email == "undefined" || email == null){
 				alert("inserisci l' email");
 				return false;
 			}
-
+			
 			var city = $("#city").val();
-			if (city == "" || city == "undefined" || city=="-1" || city == null) {
+			if(city=="" || city == "undefined" || city == null){
 				alert("inserisci città");
 				return false;
 			}
-
-			var address = $("#address").val();
-			if (address == "" || address == "undefined" || address == null) {
+			
+			var address=$("#address").val();
+			if(address == "" || address == "undefined" || address == null){
 				alert("inserisci indirizzo");
 				return false;
 			}
-
+		
 		});
 	});
 </script>
-
-
 <p>inserisci il nuovo account:</p>
 <p>username e password saranno automaticamente creati dal sistema</p>
 <p>Anagrafica</p>
@@ -116,8 +111,8 @@
 				</select></td>
 			</tr>
 
-		</tbody>
-	</table>
-	<br>
-	<input type="submit" value="insert">
+	</tbody>
+</table>
+<br>
+<input type="submit" value="insert">
 </form:form>

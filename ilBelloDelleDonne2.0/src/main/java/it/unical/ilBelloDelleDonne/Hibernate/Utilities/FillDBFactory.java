@@ -30,8 +30,8 @@ public abstract class FillDBFactory{
 
 	public static void create(ApplicationContext context){
 	
-		createProduct(context);
-		createService(context);
+//		createProduct(context);
+//		createService(context);
 		createUser(context);
 	}
 	

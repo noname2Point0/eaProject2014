@@ -66,8 +66,6 @@
 				<br>
 				<br>
 			</c:if>
-			<script src="resources/scripts/login.js" />
-			</script>
 
 			<div class="login">
 				<h3>login</h3>
@@ -92,6 +90,7 @@
 			</div>
 			<br><br>
 			
+			<div class="login">
 			<form id="logForm" method="get" action="signIn">
 				<c:if test="${!empty before}">
 					<input type="hidden" name="after" value="${before}">
@@ -105,7 +104,7 @@
 					<input type="submit" value="signIn">
 					</p>
 			</form>
-				
+			</div>
 			<br>
 		</div>
 		<div id="footer"></div>

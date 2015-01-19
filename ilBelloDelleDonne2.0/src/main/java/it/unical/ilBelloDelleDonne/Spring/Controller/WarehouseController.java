@@ -1,19 +1,16 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
-import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
-import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -111,10 +108,20 @@ public class WarehouseController implements ApplicationContextAware{
 	@RequestMapping(value="/alterProduct",method=RequestMethod.GET)
 	public String alterProduct(Model model){
 		
+	List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
 		
-		return null;
+	model.addAttribute("stockList",productStocks);
+	return "alterProduct";
 	}
 	
+	@RequestMapping(value="/setAlterProduct",method=RequestMethod.GET)
+	public String setAlterProduct(@ModelAttribute("altProduct")ProductStock productStock){
+	
+		System.out.println(productStock.getBrand());
+	
+	return "setAlterProduct";
+	
+	}
 	@RequestMapping(value="/insertProduct",method=RequestMethod.GET)
 	public String insertProduct(){
 

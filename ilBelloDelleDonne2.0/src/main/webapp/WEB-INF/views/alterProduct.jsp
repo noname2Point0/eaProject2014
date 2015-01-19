@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
+<div id = "con">
 <table class="mytable">
 	<thead>
 		<tr>
@@ -23,17 +24,18 @@
 				<td>${stock.price}</td>
 				<td>${stock.quantity}</td>
 				<td>
-				<form:form method="post" action="alterProduct" modelAttribute="altProduct">
+				<form:form id="form" modelAttribute="altProduct"> 
 					<input type="hidden" name="type" value="${stock.type}">
 					<input type="hidden" name="brand" value="${stock.brand}">
 					<input type="hidden" name="description" value="${stock.description}">
 					<input type="hidden" name="price" value="${stock.price}">
 					<input type="hidden" name="quantity" value="${stock.quantity}">
 					<input type="hidden" name="id" value="${stock.id}">
-					<input type="submit" value="alter">
+					<input id="c" type="submit" value="alter">
 					</form:form>
 				</td>
 			</tr>
 		</c:forEach>
 	</tbody>
 </table>
+</div>

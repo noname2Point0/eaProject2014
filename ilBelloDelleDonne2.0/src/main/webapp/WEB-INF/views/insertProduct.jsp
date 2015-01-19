@@ -30,6 +30,10 @@
 			<th>Quantity</th>
 			<td><input type="number"  min="1" name="quantity"></input></td>
 		</tr>
+		<tr>
+			<th>Min</th>
+			<td><input type="number"  min="1" name="minStock"></input></td>
+		</tr>
 	</tbody>
 </table>
 <br>
