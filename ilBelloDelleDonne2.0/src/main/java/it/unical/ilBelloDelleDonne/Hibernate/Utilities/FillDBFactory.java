@@ -1,5 +1,7 @@
 package it.unical.ilBelloDelleDonne.Hibernate.Utilities;
 
+import it.unical.ilBelloDelleDonne.ApplicationData.EmailType;
+import it.unical.ilBelloDelleDonne.ApplicationData.SendEmail;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
@@ -27,12 +29,15 @@ import org.springframework.context.ApplicationContext;
 public abstract class FillDBFactory{
 
 	public static void create(ApplicationContext context){
+	
 //		createProduct(context);
 //		createService(context);
 		createUser(context);
-	}	
+	}
+	
 
 	private static void createProduct(ApplicationContext context){
+		
 
 		ImageWrapperDao imageDao = (ImageWrapperDao) context.getBean("imageWrapperDao");
 		ProductStockDao psd = (ProductStockDao) context.getBean("productStockDao");
