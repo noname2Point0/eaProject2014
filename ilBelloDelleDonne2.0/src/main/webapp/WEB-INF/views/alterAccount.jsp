@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<script type="text/javascript" src="resources/scripts/comuni.js"></script>
 
 <p>il tuo account:</p>
 <script type="text/javascript">
@@ -102,7 +103,9 @@ $("#mod").submit(function(){
 		<tr>
 			<th>City:</th>
 			<td>${user.city}</td>
-			<td><input id="city" type="text" value="${user.city }" name="city"></input></td>
+				<td><select name="city" id="city" value="${user.city}"></select></td>
+				<script language="javascript">populateCountries("city");</script>
+				
 		</tr>
 		<tr>
 			<th>Address:</th>

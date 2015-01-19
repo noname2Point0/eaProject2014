@@ -12,8 +12,9 @@
 		var dateFormatted = date.getFullYear()+"-"+("0"+(date.getMonth()+1)).slice(-2)+"-"+("0"+date.getDate()).slice(-2);
 
 		$("#dateBirth").attr("value",dateFormatted);
-		$("#mod").submit(function(){
-	
+		
+		$("#mod2").submit(function(){
+
 			var name = $("#name").val();
 			if(name == "" || name == "undefined" || name == null){
 				alert("inserisci il nome");
@@ -85,9 +86,8 @@
 			<tr>
 				<th>City:</th>
 				<td><select name="city" id="city" value="${user.city}"></select></td>
-				<td><script language="javascript">populateCountries("city");
-				</script>
-				</td>
+				<script language="javascript">populateCountries("city");</script>
+				
 				<td><form:errors path='city' /></td>
 			</tr>
 			<tr>
