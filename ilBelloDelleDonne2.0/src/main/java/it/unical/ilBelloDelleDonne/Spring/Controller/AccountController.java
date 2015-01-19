@@ -162,6 +162,13 @@ public class AccountController implements ApplicationContextAware{
 		return "showAccounts";
 	}
 
+	@RequestMapping(value="/accountDetails",method=RequestMethod.POST)
+	public String getAccountDetails(Model model,@RequestParam("username") String username){
+		User user = DataProvider.getUser(applicationContext,username);
+		model.addAttribute("user",user);
+		
+		return "showAccountDetails";
+	}
 	@RequestMapping(value="/deleteAccounts",method=RequestMethod.GET)
 	public String deleteAccounts(Model model){
 

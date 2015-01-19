@@ -40,10 +40,38 @@ hr{
 	text-align:center;
 	font-family: arial,sans-serif;	
 	border-radius: 10px;
-	width: 80%
+	width: 100%
+}
+.mySortableTable{
+	margin: auto;
+	text-align:center;
+	font-family: arial,sans-serif;	
+	border-radius: 10px;
+	width: 100%
 }
 
+#tableSearch{
+	text-align: justify;
+}
+
+
 .mytable thead tr{
+	background-color:#9394fe;
+	color:#efeffe;
+	font-weight: bold;
+	height: 40px;
+}
+
+.mySortableTable thead tr{
+	background-color:#9394fe;
+	color:#efeffe;
+	font-weight: bold;
+	height: 40px;
+	cursor: pointer;
+}
+
+
+.mytable thead th{
 	background-color:#9394fe;
 	color:#efeffe;
 	font-weight: bold;
@@ -57,10 +85,26 @@ hr{
 	height: 40px;
 }
 
+.mySortableTable thead th{
+	background-image: url('../images/white-unsorted.gif');
+	background-position: center right;
+	background-repeat: no-repeat;
+	background-color:#9394fe;
+	color:#efeffe;
+	font-weight: bold;
+	height: 40px;
+}
+
 .mytable tbody tr{
 	background-color:#f4f4fd;
 	height: 30px;
 }
+
+.mySortableTable tbody tr{
+	background-color:#f4f4fd;
+	height: 30px;
+}
+
 
 .pLogHelp{
 	text-decoration:none;
@@ -163,7 +207,8 @@ input[type=text], input[type=password], input[type=date], input[type=time],input
 }
 
 #divview{
-	margin-left: 50px;
+	width:78%;
+	float:right;
 }
 
 .userMenu{
