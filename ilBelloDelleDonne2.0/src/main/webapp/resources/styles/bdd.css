@@ -1,295 +1,324 @@
-body{
+body {
+	background-color: #d3d3ff;
+	text-align: center;
+	font-family: arial, sans-serif;
+	color: #9394fe;
+}
 
-	background-color:#d3d3ff;
+hr {
+	margin: 0px;
+	padding: 0px;
+}
 
-	text-align:center;
+.box {
+	background-color: #e9e9ff;
+	border-radius: 10px;
+	display: inline-block;
+	width: 250px;
+	height: 250px;
+	margin: 1em;
+	font-weight: bold;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.imgContainer {
+	padding-left: 30px;
+	float: right;
 	
-	font-family: arial,sans-serif;	
-	color:#9394fe;
 }
 
-hr{
-	margin:0px;
-	padding:0px;
+.homeP {
+	text-align: left;
 }
 
-.imgContainer{
-	padding-left:30px;
-	float:right;
-}
-
-.homeP{
+.loginTable{
+	margin:auto;
+	min-width:450px;
 	text-align:left;
+	font-family: arial, sans-serif;
+    border-spacing: 0;
 }
 
-.login{
+.loginTable thead tr:first-child td:first-child {
+    -webkit-border-top-left-radius:10px;
+}
+.loginTable thead tr:first-child td:last-child {
+    -webkit-border-top-right-radius:10px;
+}
+.loginTable tbody tr:last-child td:first-child {
+    -webkit-border-bottom-left-radius:10px;
+}
+.loginTable tbody tr:last-child td:last-child {
+    -webkit-border-bottom-right-radius:10px;
+}
 
+
+.loginTable td{
+	padding-bottom:10px;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-right: 10px;
+}
+
+.loginTable thead tr {
+	background-color: #9394fe;
+	color: #efeffe;
+	font-weight: bold;
+	font-size:20px;
+	height: 60px;
+}
+
+.loginTable tbody tr{
+	background-color: #a8a8fd;
+	color: #efeffe;
+}
+
+
+
+.login {
 	position: relative;
-  	width:300px;
-	margin:0 auto;	
-	padding:20px 20px 20px;
-	
-	background-color:#9394fe;
-	color:#efeffe;
-	
-	border-radius:15px;
+	width:450px;
+	margin: 0 auto;
+	padding: 20px 20px 20px;
+	background-color: #9394fe;
+	color: #efeffe;
+	border-radius: 15px;
 }
 
-.mytable{
+.mytable {
 	margin: auto;
-	text-align:center;
-	font-family: arial,sans-serif;	
-	border-radius: 10px;
-	width: 100%
-}
-.mySortableTable{
-	margin: auto;
-	text-align:center;
-	font-family: arial,sans-serif;	
+	text-align: center;
+	font-family: arial, sans-serif;
 	border-radius: 10px;
 	width: 100%
 }
 
-#tableSearch{
+.mySortableTable {
+	margin: auto;
+	text-align: center;
+	font-family: arial, sans-serif;
+	border-radius: 10px;
+	width: 100%
+}
+
+#tableSearch {
 	text-align: justify;
 }
 
-
-.mytable thead tr{
-	background-color:#9394fe;
-	color:#efeffe;
+.mytable thead tr {
+	background-color: #9394fe;
+	color: #efeffe;
 	font-weight: bold;
 	height: 40px;
 }
 
-.mySortableTable thead tr{
-	background-color:#9394fe;
-	color:#efeffe;
+.mySortableTable thead tr {
+	background-color: #9394fe;
+	color: #efeffe;
 	font-weight: bold;
 	height: 40px;
 	cursor: pointer;
 }
 
-
-.mytable thead th{
-	background-color:#9394fe;
-	color:#efeffe;
+.mytable thead th {
+	background-color: #9394fe;
+	color: #efeffe;
 	font-weight: bold;
 	height: 40px;
 }
 
-.mytable tbody th{
-	background-color:#9394fe;
-	color:#efeffe;
+.mytable tbody th {
+	background-color: #9394fe;
+	color: #efeffe;
 	font-weight: bold;
 	height: 40px;
 }
 
-.mySortableTable thead th{
+.mySortableTable thead th {
 	background-image: url('../images/white-unsorted.gif');
 	background-position: center right;
 	background-repeat: no-repeat;
-	background-color:#9394fe;
-	color:#efeffe;
+	background-color: #9394fe;
+	color: #efeffe;
 	font-weight: bold;
 	height: 40px;
 }
 
-.mytable tbody tr{
-	background-color:#f4f4fd;
+.mytable tbody tr {
+	background-color: #f4f4fd;
 	height: 30px;
 }
 
-.mySortableTable tbody tr{
-	background-color:#f4f4fd;
+.mySortableTable tbody tr {
+	background-color: #f4f4fd;
 	height: 30px;
 }
 
-
-.pLogHelp{
-	text-decoration:none;
-	font-size:11px
+.pLogHelp {
+	text-decoration: none;
+	font-size: 11px
 }
 
-.login p{
-	margin:20px 0 0;
+.login p {
+	margin: 20px 0 0;
 }
 
-
-input[type=submit]{
-	
-	height:25px;
-	background-color:#efeffe;
-	color:#9394fe;
-	border-radius:10px;
+input[type=submit] {
+	height: 25px;
+	background-color: #efeffe;
+	color: #9394fe;
+	border-radius: 10px;
 }
 
-input[type=text], input[type=password], input[type=date], input[type=time],input[type=email],input[type=number], select{
-	width:250px;
-	height:30px;	
-	color:#9394fe;
-	
+input[type=text], input[type=password], input[type=date], input[type=time],
+	input[type=email], input[type=number], select {
+	width: 250px;
+	height: 30px;
+	color: #9394fe;
 }
 
-.signIn{
+.signIn {
 	position: relative;
-  	width:60%;
-	margin:0 auto;	
-	padding:20px 20px 20px;
-	
-	background-color:#9394fe;
-	color:#efeffe;
-	
-	border-radius:15px;
-}
-
-#pshiftedRight{
-	text-align:right;	
-}
-
-#pshiftedLeft{
-	text-align:left;
-}
-
-#container{
-	background-color:#efeffe;
+	width: 60%;
+	margin: 0 auto;
+	padding: 20px 20px 20px;
+	background-color: #9394fe;
+	color: #efeffe;
 	border-radius: 15px;
+}
 
+#pshiftedRight {
+	text-align: right;
+}
+
+#pshiftedLeft {
+	text-align: left;
+}
+
+#container {
+	background-color: #efeffe;
+	border-radius: 15px;
 	margin: 5% 5%;
+	box-shadow: 10px 10px 5px #888888;
+	min-height: 100vh;
 }
 
-#content{
-	margin:50px 10%;
-	overflow:auto;
+#content {
+	min-height:80vh;
+	margin: 50px 5%;
+	overflow: auto;
 }
 
-
-#accountContent{
-	margin:50px 5%;
-	overflow:auto;
+#divmenu {
+	float: left;
+	text-align: left;
+	width: 20%;
+	color: #6f6fff;
 }
 
-#divmenu{
-	
-	float:left;
-	text-align:left;
-	width:20%;
-	color:#6f6fff;
-}
-
-#divUserInfo{
+#divUserInfo {
 	background-color: #e9e9ff;
 	border: 1px solid;
-	
-	border-radius:10px;
-	
-	padding-top:10px;
-	padding-left:10px;
-	padding-right:10px;
+	border-radius: 10px;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
 	padding-bottom: 10px;
-	
 }
 
-#divUserMenu{
+#divUserMenu {
 	background-color: #e9e9ff;
-	border-radius:10px;
+	border-radius: 10px;
 	border: 1px solid;
-	
-	margin-top:20px;
-	padding-top:10px;
-	padding-left:10px;
-	padding-right:10px;
+	margin-top: 20px;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
 	padding-bottom: 10px;
-}
-#divEmpty{
-	height:100vh;
-	
+	margin-bottom: 50px;
 }
 
-#divview{
-	width:78%;
-	float:right;
+
+#divview {
+	width: 78%;
+	float: right;
 }
 
-.userMenu{
-	list-style-type:none;
+.userMenu {
+	list-style-type: none;
 }
 
-.userMenu li{
-	margin-bottom:5px;	
+.userMenu li {
+	margin-bottom: 5px;
 }
 
-.userMenu a{
-	text-decoration:none;
-	color:#6f6fff;
-	font-style:italic;
-	margin-bottom:10px;
+.userMenu a {
+	text-decoration: none;
+	color: #6f6fff;
+	font-style: italic;
+	margin-bottom: 10px;
 }
 
-.userMenu a:hover{
-	font-weight:bold;
+.userMenu a:hover {
+	font-weight: bold;
 }
 
-#tcontent{
-	margin:50px 10%;
+#tcontent {
+	margin: 50px 10%;
 }
 
-#header{
-
+#header {
 	background-image: url('../images/header.png');
 	background-repeat: no-repeat;
 	background-position: center top;
-	padding-top:100px;
-	font-weight:bold;
-	font-style:italic;
+	padding-top: 100px;
+	font-weight: bold;
+	font-style: italic;
 }
 
-#headerp{
+#headerp {
 	text-align: left;
 	padding-left: 10%;
 }
 
-#navigationBar{
-	padding-top:0px;
-	padding-bottom:0px;
+#navigationBar {
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
-#navigationBar ul{
+#navigationBar ul {
 	list-style-type: none;
-	margin:5px;
-	padding:5px;
-	
+	margin: 5px;
+	padding: 5px;
 }
 
-#navigationBar ul li{
+#navigationBar ul li {
 	display: inline;
-	padding:20px;
-	
+	padding: 20px;
 }
 
-#navigationBar ul li a{
+#navigationBar ul li a {
+	text-decoration: none;
+	color: #9394fe;
+	font-weight: bold;
+	font-style: italic;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-radius: 10px;
+}
 
-	text-decoration:none;
-	color:#9394fe;
-	font-weight:bold;
+#navigationBar ul li a:hover {
+	background-color: #9394fe;
+	color: #efeffe;
+}
+
+#footer{ 
+	background-color: #efeffe;
+	min-height:10em;
+	font-size:13px;
 	font-style:italic;
-	
-	padding-top:5px;
-	padding-bottom:5px;	
-	padding-left:10px;
-	padding-right:10px;
-
-	border-radius:10px;
-}
-
-#navigationBar ul li a:hover{
-	background-color:#9394fe;
-	color:#efeffe;
-}
-
-#footer{
-	font-size:10px;
-	font-style:italic;
-	padding-top:5px;
-	padding-bottom:5px;
+	margin: 0 5%;
+	border-radius: 15px;
 }

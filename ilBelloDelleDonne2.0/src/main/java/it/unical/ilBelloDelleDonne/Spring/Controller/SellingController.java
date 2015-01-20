@@ -46,27 +46,25 @@ public class SellingController implements ApplicationContextAware{
 	public String orderProducts(HttpSession session, Model model,RedirectAttributes redirect){
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-
-		if(appInfo.isUserLogged()){
-
-			ProductCustomList productCustomList = new ProductCustomList();
-			productCustomList.setProductsStock(appInfo.getShoppingCart().getProductsIn());
-
-			model.addAttribute("productCustomList",productCustomList);
-
-			model.addAttribute("user", appInfo.getUser());
-			return "sellingProducts";
-		}else{
-
-			String message = new String("devi accedere al sistema prima di poter effettuare l'acquisto, riempi il seguente form oppure registrati");
-
-			redirect.addFlashAttribute("before",new String("/sellingProducts"));
-			redirect.addFlashAttribute("message",message);
-
+		
+		if(!appInfo.isUserLogged()){
+			appInfo.setSelling(true);
+			redirect.addFlashAttribute("message","devi accedere al sistema prima di poter effettuare l'acquisto");
 			return "redirect:/login";
-
 		}
+		
+		if(appInfo.getSelling())
+			appInfo.setSelling(false);
+		
+		
+		ProductCustomList productCustomList = new ProductCustomList();
+		productCustomList.setProductsStock(appInfo.getShoppingCart().getProductsIn());
 
+		model.addAttribute("productCustomList",productCustomList);
+		model.addAttribute("user",appInfo.getUser());
+
+		return "sellingProducts";
+	
 	}
 
 	@RequestMapping(value="/confirmSelling",method=RequestMethod.GET)
@@ -74,7 +72,7 @@ public class SellingController implements ApplicationContextAware{
 			@ModelAttribute("productsCustomList") ProductCustomList productsCustomList,
 			HttpSession session,
 			RedirectAttributes redirect){
-		
+
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		ArrayList<Product> products = new ArrayList<Product>();
 
@@ -161,10 +159,6 @@ public class SellingController implements ApplicationContextAware{
 			
 			List<Selling> sellings = (List<Selling>) QueryFactory.create(applicationContext, query);
 			
-			
-		 	System.out.println("ciao "+sellings.size());
-		 	
-		 	
 			model.addAttribute("sellings",sellings);
 		
 			return "checkOutSelling";

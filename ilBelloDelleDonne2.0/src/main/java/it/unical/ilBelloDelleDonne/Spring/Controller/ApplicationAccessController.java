@@ -8,7 +8,6 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
 
@@ -17,6 +16,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.sound.midi.SysexMessage;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeansException;
@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -40,142 +39,111 @@ public class ApplicationAccessController implements ApplicationContextAware {
 	private ApplicationContext applicationContext;
 
 	@RequestMapping(value="/login", method=RequestMethod.GET )	
-	public String getLogin(Model model){
-		
+	public String getLogin(){
 		return "login";
 	}
 
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String postLogin(HttpSession session,Model model,
-			HttpServletRequest request,RedirectAttributes redirect,
-			@RequestParam("username") String username,
-			@RequestParam("password") String password,
-			@RequestParam(value="service" , required=false) String serviceId,
-			@RequestParam(value= "after" , required=false)String after){
+	public String postLogin(HttpSession session,
+		Model model,
+		@Valid @ModelAttribute("logAccount")Account logAccount,
+		BindingResult result){
 		
-		User user = DataProvider.getUser(applicationContext, username);
-		if(user != null && user.getAccount().getPassword().equals(password)){	
-			
-			ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-			appInfo.setUser(user);
-			
-			if(after !=null){
-				
-				if(serviceId != null){
-					
-					Service service = DataProvider.getService(applicationContext, Integer.valueOf(serviceId));
-					
-					redirect.addFlashAttribute("service",service);
-				}
-				
-				return"redirect:"+after;
-			
-			}else{
-				return "redirect:myAccount";
-			}
-			
+		if(result.hasErrors()){
+			return "login";
 		}else{
-			
-			if(after != null)
-				redirect.addFlashAttribute("after",after);
-			
-			if(serviceId!=null)
-				redirect.addFlashAttribute("service",serviceId);
-			
-			redirect.addFlashAttribute("message","username or password incorrect!");
-			return "redirect:/login";
+			User user = DataProvider.getUser(applicationContext,logAccount.getUsername());
+			if(user != null && user.getAccount().getPassword().equals(logAccount.getPassword())){
+				user.getAccount().setPassword("");
+				ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+				appInfo.setUser(user);
+				
+				if(appInfo.getSelling())
+					return "redirect:sellingProducts";
+				
+				if(appInfo.getService() != null)
+					return "redirect:reserveService";
+				
+				return "redirect:myAccount";
+			}else{
+				model.addAttribute("message","username or password incorrect");
+				return "login";
+			}
 		}
 	}
 	
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(HttpSession session){
-		
 			session.setAttribute("info",new ApplicationInfo());
-			
-			return "redirect:/home";
+			return "redirect:/";
 	}
 	
 	@RequestMapping(value="/signIn", method = RequestMethod.GET)
-	public String getSignIn(Model model, 
-			@RequestParam(value="after",required=false)String after,
-			@RequestParam(value="service",required=false)String serviceId){
-		
-		if(after != null)
-			model.addAttribute("after",after);
-		
-		if(serviceId != null)
-			model.addAttribute("service",serviceId);
-		
+	public String getSignIn(){
 		return "signIn";
 	}
 	
 	@RequestMapping(value="/signIn", method=RequestMethod.POST)
-	public String postSignIn(HttpServletRequest request,
-			Model model,
-			@Valid @ModelAttribute("newUser")Customer user,
+	public String postSignIn(Model model,
+			HttpSession session,
+			@Valid @ModelAttribute("SignInUser")Customer user,
 			BindingResult result,
 			RedirectAttributes redirect){
 		
-		String after = request.getParameter("after");
-		String serviceId = request.getParameter("service");
-		
 		if(result.hasErrors()){
 			model.addAttribute("user",user);
-			model.addAttribute("message","errore nel riempimento dei campi");
-			
-			if(after != null)
-				model.addAttribute("after", after);
-			
-			if(serviceId != null)
-				model.addAttribute("service",serviceId);
-			
 			return "signIn";
 		}
 		
-		String username = (String)request.getParameter("username");	
-		String password = (String)request.getParameter("password");
-	
-		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
-		Account account = accountDao.retrieve(username);
+		if(user.getAccount().getUsername().length() <5 || user.getAccount().getUsername().length()>10){
 			
-		if( account == null ){
-			account = new Account();
-			account.setUsername(username);
-			account.setPassword(password);
-			account.setUser(user);
-			account.setType(AccountType.getCustomerType());
-			accountDao.create(account);
-			user.setAccount(account);
-				
-			UserDao userDao = (UserDao) applicationContext.getBean("userDao");
-			userDao.create(user);
-			
-			redirect.addFlashAttribute("before",after);
-			if(serviceId!=null){
-				redirect.addFlashAttribute("service",serviceId);
-			}
-			
-			try{
-				SendEmail.send(EmailType.getRegistrationType(), user.getAccount().getUsername(), user.getEmail());
-			}
-			catch(Exception e){
-				
-			}
-			
-			return "redirect:login";
-				
-		}else{
+			model.addAttribute("message", "username size must be between 5 and 10");
 			model.addAttribute("user",user);
-			model.addAttribute("message","Accont già esistente, scegli un altro username.");
-			
-			if(after != null)
-				model.addAttribute("after", after);
-			
-			if(serviceId != null)
-				model.addAttribute("service",serviceId);
-			
 			return "signIn";
 		}
+		
+		if(user.getAccount().getUsername().length()<5 || user.getAccount().getUsername().length()>10){
+			model.addAttribute("message", "password size must be between 5 and 10");
+			model.addAttribute("user",user);
+			return "signIn";
+		}
+		
+		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
+		Account account = accountDao.retrieve(user.getAccount().getUsername());
+		
+		if(account != null){
+			model.addAttribute("message","username alredy exists");
+			model.addAttribute("user",user);
+			return "signIn";
+		}else{
+			account = new Account(user.getAccount().getUsername(), user.getAccount().getPassword(), AccountType.getCustomerType());
+			account.setUser(user);
+			accountDao.create(account);
+			
+			user.setAccount(account);	
+			
+			UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+			userDao.create(user);
+		}
+		
+		try{
+			SendEmail.send(EmailType.getRegistrationType(), user.getAccount().getUsername(), user.getEmail());
+		}
+		catch(Exception e){
+			
+		}
+		
+		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		appInfo.setUser(user);
+		
+		if(appInfo.getSelling())
+			return "redirect:sellingProducts";
+		
+		if(appInfo.getService() != null)
+			return "redirect:reserveService";
+		
+		
+		return "login";
 	}
 
 	@InitBinder

@@ -2,6 +2,7 @@ package it.unical.ilBelloDelleDonne.ApplicationData;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
@@ -36,22 +37,12 @@ public abstract class DataProvider {
 	}
 	
 	public static List<Service> getServiceList(ApplicationContext applicationContext) {
-		
-		String query="from Service";
-		List<Service> serviceList = (List<Service>) performQuery(applicationContext, query);
-		
-		return serviceList;
+		return (List<Service>) performQuery(applicationContext, "from Service");
 	}
 	
 
 	public static List<Reserve> getReserveList(ApplicationContext context) {
-		
-		String query = "from Reserve";
-		
-		List<Reserve> reserveList = (List<Reserve>) performQuery(context, query);
-		
-		return reserveList;
-	
+		return (List<Reserve>) performQuery(context, "from Reserve");
 	}
 	
 	public static List<Reserve> getReserveListNoBilling(ApplicationContext context){
@@ -102,6 +93,10 @@ public abstract class DataProvider {
 	public static List<Selling> getSellingList(ApplicationContext applicationContext) {
 		return (List<Selling>) performQuery(applicationContext, "from Selling");
 		
+	}
+
+	public static List<ProductStock> getAvailableProductsList(ApplicationContext applicationContext) {
+		return (List<ProductStock>) performQuery(applicationContext, "from ProductStock ps where ps.quantity > 0");
 	}
 
 	

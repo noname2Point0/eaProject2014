@@ -97,29 +97,33 @@ public class AccountController implements ApplicationContextAware{
 	}
 
 	@RequestMapping(value="/updateAlterAccount", method=RequestMethod.POST)
-	public String updateAlterAccount(@RequestParam("password")String password,
-			@RequestParam("currentPassword") String curPass,
+	public String updateAlterAccount(@Valid @ModelAttribute("updAccount")Account acc,
+			BindingResult result,
 			HttpSession session,
 			RedirectAttributes redirect){
 
-
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-
-		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
-		Account acc = accountDao.retrieve(appInfo.getUser().getAccount().getUsername());
-
-		if(acc.getPassword().equals(curPass)){
-			acc.setPassword(password);
-			accountDao.update(acc);
-
-			appInfo.getUser().setAccount(acc);
-
-			redirect.addFlashAttribute("message","operazione eseguita con successo");
-		}else{
-			redirect.addFlashAttribute("message", "spiacente, non è stato possibile cambiare la tua password, il valore inserito della password corrente non combacia");
+		
+		if(result.hasErrors()){
+			System.err.println("cia");
+			return "alterAccount";
 		}
 
-		return "redirect:myAccount";
+//		
+//		if(acc.getPassword().equals(curPass)){
+//			
+//			acc.setPassword(password);
+//			accountDao.update(acc);
+//
+//			appInfo.getUser().setAccount(acc);
+//
+//			redirect.addFlashAttribute("message","operazione eseguita con successo");
+//		}else{
+//			redirect.addFlashAttribute("message", "spiacente, non è stato possibile cambiare la tua password, il valore inserito della password corrente non combacia");
+//		}
+
+//		return "redirect:myAccount";
+		return null;
 	}
 
 	@RequestMapping(value="/insertNewAccount",method=RequestMethod.POST)

@@ -16,20 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class ApplicationController implements ApplicationContextAware{
-	/*
-	 * Controller che gestisce la navigazione delle pagine statiche
-	 */
 	private boolean firstInvocation = true;
 	private ApplicationContext applicationContext;
 	
-	
 	@RequestMapping(value="/",method = RequestMethod.GET)
-	public String getHome(HttpSession session,Model model){
-		
-		/*
-		 * inserisce alcuni dati nel db;
-		 * se non esiste crea un oggetto applicationInfo nella sessione
-		 */
+	public String getHome(HttpSession session){
 		
 		if(firstInvocation){
 			FillDBFactory.create(applicationContext);
@@ -41,41 +32,32 @@ public class ApplicationController implements ApplicationContextAware{
 		if(appInfo == null){
 			appInfo = new ApplicationInfo();
 			session.setAttribute("info", appInfo);
-		}else{
-			if(appInfo.isUserLogged())
-				model.addAttribute("user", appInfo.getUser());
 		}
 		
 		return "home";
 	}
 
 	@RequestMapping(value="/home",method=RequestMethod.GET)
-	public String getHome(Model model,HttpSession session){
+	public String getHome(){
 		
-		/*
-		 * semplice get di home
-		 */
-		
-		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		if(appInfo.isUserLogged())
-			model.addAttribute("user", appInfo.getUser());
-	
-		return "home";
+		return "homeTemplate";
 	}
 	
 	@RequestMapping(value="/chiSiamo", method=RequestMethod.GET)
-	public String getChiSiamo(Model model,HttpSession session){
-		/*
-		 * semplice get di chi siamo
-		 */
+	public String getChiSiamo(){
+		return "chiSiamoTemplate";
+	}
+
+	@RequestMapping(value="/navigationBar",method=RequestMethod.POST)
+	public String getNavigationBar(Model model,HttpSession session){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
-	
-		return "chiSiamo";
-	}
 
+		return "navigationBar";
+	}
+	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;

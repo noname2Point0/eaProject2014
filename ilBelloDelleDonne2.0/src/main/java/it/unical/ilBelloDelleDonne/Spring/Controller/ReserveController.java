@@ -3,27 +3,30 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.ReserveSchedule;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,82 +46,67 @@ public class ReserveController implements ApplicationContextAware {
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 
-		if(appInfo.isUserLogged()){
-			model.addAttribute("user", appInfo.getUser());
-			model.addAttribute("service",service);
-			return"reserveService";
-
-		}else{
-			String message = new String("devi accedere al sistema prima di prenotare un servizio, riempi il seguente form oppure registrati");
-
-			redirect.addFlashAttribute("before",new String("/reserveService"));
-			redirect.addFlashAttribute("message",message);
-			redirect.addFlashAttribute("service",service.getId());
-
+		if(!appInfo.isUserLogged()){
+			appInfo.setService(service);
+			redirect.addFlashAttribute("message","devi accedere al sistema prima di prenotare un servizio");
 			return "redirect:/login";
 		}
+		
+		model.addAttribute("user",appInfo.getUser());
+		model.addAttribute("service",service);
+		return"reserveService";
 	}
+	
 
 	@RequestMapping(value="/reserveService", method=RequestMethod.GET)
 	public String getReserve(Model model,HttpSession session){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		if(appInfo.isUserLogged())
-			model.addAttribute("user", appInfo.getUser());
-
+	
+		Service service = appInfo.getService();
+		appInfo.setService(null);
+		
+		model.addAttribute("user", appInfo.getUser());
+		model.addAttribute("service",service);
 		return "reserveService";
 	}
 
 
 	@RequestMapping(value="/confirmReserve", method=RequestMethod.POST)
 	public String confirmReserve(HttpSession session, Model model, 
-			@RequestParam("data") String data,
-			@RequestParam("time") String time,
-			@ModelAttribute("service") Service service,
+			@Valid @ModelAttribute("reserve")Reserve reserve,
+			BindingResult result,
+			@RequestParam("serviceId")int id,
+			@RequestParam("dateService")String date,
 			RedirectAttributes redirect){
-
+		
+		ServiceDao serviceDao = (ServiceDao) applicationContext.getBean("serviceDao");
+		Service service = serviceDao.retrieve(id);
+	
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-
-		Date dateService = new Date();
-
-		try{
-			dateService = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(data);		
+		if(result.hasErrors()){
+			model.addAttribute("service",service);
+			model.addAttribute("user",appInfo.getUser());
+			return "reserveService";
 		}
-		catch (Exception e) {
-			e.addSuppressed(e.getCause());
-		}
-
-		if(ReserveSchedule.isAnAvailableReserve(applicationContext, data, time)){
-
-			Reserve reserve = new Reserve();
-
-			Date dateOrder = MyData.getLocaleData();
-
-			ReserveDao reserveDao = (ReserveDao) applicationContext.getBean("reserveDao");
-
-			Customer customer = (Customer) DataProvider.getUser(applicationContext, appInfo.getUser().getAccount().getUsername());
-
+		
+		if(ReserveSchedule.isAnAvailableReserve(applicationContext,date, reserve.getTime().toString())){
+			
+			Customer customer = (Customer) DataProvider.getUser(applicationContext, appInfo.getUser().getAccount().getUsername());	
 			reserve.setCustomer(customer);
-			reserve.setDateOrder(dateOrder);
-			reserve.setDateService(dateService);
-			reserve.setTime(time);
+			reserve.setDateOrder(MyData.getLocaleData());
 			reserve.setService(service);
-
+			
+			ReserveDao reserveDao = (ReserveDao) applicationContext.getBean("reserveDao");
 			reserveDao.create(reserve);
-
 			redirect.addFlashAttribute("reserve",reserve);
-
 			return "redirect:/reviewReserveSuccess";
 		}
 		else{
-
 			String message = "non è possibile effettuare la prenotazione, scegli un altra data o orario";
-			
-			if(appInfo.isUserLogged()){
-				model.addAttribute("user", appInfo.getUser());
-				model.addAttribute("message",message);
-			}
-
+			model.addAttribute("service",service);
+			model.addAttribute("message",message);
+			model.addAttribute("user",appInfo.getUser());
 			return "reserveService";
 		}
 
@@ -168,6 +156,13 @@ public class ReserveController implements ApplicationContextAware {
 		
 		 return "checkOutAppointments";
 	 }
+	 
+	 @InitBinder
+	    public void initBinder(WebDataBinder binder) {
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        dateFormat.setLenient(false);
+	        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+	    }
 	 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

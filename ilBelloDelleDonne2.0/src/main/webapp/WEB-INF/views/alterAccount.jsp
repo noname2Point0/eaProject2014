@@ -29,7 +29,7 @@ $("#anForm").submit(function(event){
 });
 
 
-$("#mod").submit(function(){
+$("#acForm").submit(function(){
 	
 	var cpass=$("#cpass").val();
 	var pass = $("#inpass").val();
@@ -41,7 +41,7 @@ $("#mod").submit(function(){
 	}
 	
 	if((pass==null)||(pass=="")||(pass=="undefined")){
-		alert("inserisci una password");
+		alert("inserisci una nuova password");
 		return false;
 	}
 	
@@ -50,6 +50,16 @@ $("#mod").submit(function(){
 		return false;
 	}
 	
+	$.ajax({
+	      type: 'POST',
+	      url: 'updateAlterAccount',
+	      data: $("#acForm").serialize(),
+	      success: function(response) {
+	      	$("#divview").empty();
+	      	$("#divview").html(response);
+	      }
+		});
+		
 	});
 	
 
@@ -122,7 +132,7 @@ $("#mod").submit(function(){
 
 <br>
 <p>cambia la tua password</p>
-<form:form id="mod" action="updateAlterAccount" method="post" modelAttribute="udpAccount">
+<form:form id="acForm" action="updateAlterAccount" method="post" modelAttribute="updAccount" commandName="updAccount">
 <table class="mytable">
 	<thead>
 		<tr>
@@ -130,8 +140,9 @@ $("#mod").submit(function(){
 		</tr>
 	</thead>	
 		<tr>
-			<th>password</th>		
-			<td><input id="cpass" type="password" name="currentPassword"></td>
+			<th>password</th>
+			<td><input type="hidden" name="username" value="${user.account.username}" 
+					<input id="cpass" type="password" name="currentPassword"></td>
 			<td><input id="inpass" type="password" name="password"></td>
 			<td><input id="rinpass" type="password"></td>
 		</tr>

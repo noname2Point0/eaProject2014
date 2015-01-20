@@ -1,10 +1,12 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
+import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
@@ -31,44 +33,34 @@ public class WarehouseController implements ApplicationContextAware{
 
 	private ApplicationContext applicationContext;
 	
-	@RequestMapping(value="/products",method=RequestMethod.GET)
-	public String products(Model model,HttpSession session){
+	@RequestMapping(value="/productsGrid",method=RequestMethod.GET)
+	public String getProductsGrid(Model model,HttpSession session){
 		
-		ImageWrapperDao imageDao = (ImageWrapperDao) applicationContext.getBean("imageWrapperDao");
+		//ImageWrapperDao imageDao = (ImageWrapperDao) applicationContext.getBean("imageWrapperDao");
 		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
 		
-		List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
-		
-		System.out.println("SONO NEL CONTROLLER@@@");
-	/*	
+		List<ProductStock> productStocks = DataProvider.getAvailableProductsList(applicationContext);
+	/*
 		for(ProductStock ps:productStocks){
 			String imageName = ps.getType()+"_"+ps.getBrand();
 			String pathImage = "/home/vincenzo/git/ilBelloDelleDonne2.0/ilBelloDelleDonne2.0/src/main/webapp/resources/images/"+imageName;
 			
 			ImageWrapper image = imageDao.retrieve(ps.getImageWrapper().getId());
 			byte[] byteImage = image.getData();
-			try{
-			    FileOutputStream fos = new FileOutputStream(pathImage);
-			    fos.write(byteImage);
-			    fos.close();
-			}
-			catch(Exception e){
-			    e.printStackTrace();
-			}
 			
 			ps.getImageWrapper().setData(byteImage);
 			productStockDao.update(ps);
 			
 		}
 		*/
-		
+
 		model.addAttribute("stockList",productStocks);
 
-		return "products";
+		return "productsGrid";
 	}
 	
 

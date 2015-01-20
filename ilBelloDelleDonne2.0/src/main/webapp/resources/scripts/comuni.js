@@ -6,12 +6,11 @@ function populateCountries(cityElementId){
 
 	var countryElement = document.getElementById(cityElementId);
 	countryElement.length=0;
-	countryElement.options[0] = new Option('Select City','-1');
+	countryElement.options[0] = new Option('Select City','');
 	countryElement.selectedIndex = 0;
 	for (var i=0; i<city_arr.length; i++) {
 		countryElement.options[countryElement.length] = new Option(city_arr[i],city_arr[i]);
 	}
-
 };
 
 $(function(){

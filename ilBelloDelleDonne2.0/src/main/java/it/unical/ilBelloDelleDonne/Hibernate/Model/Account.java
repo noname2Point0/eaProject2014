@@ -6,16 +6,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="Account")
 public class Account {
 	
-	
+	@Size(min=5,max=10)
 	@Id
 	@Column(name="username")
 	private String username;
 	
+	@Size(min=5,max=10)
 	@Column(name="password")
 	private String password;
 	

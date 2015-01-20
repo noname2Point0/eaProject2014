@@ -1,113 +1,79 @@
-<!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html lang="it">
-<head>
-<meta charset="utf-8">
-<title>il bello delle donne</title>
-<link href="resources/styles/bdd.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="resources/scripts/jquery-1.11.1.js"></script>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <script type="text/javascript">
-	$(function() {
-
-		$("#footer").load("resources/template/footer.html");
-		$("#header").load("resources/template/header.html");
-		
-		$("#logForm").submit(function(){
-		//	var username = $("#inusername").val();
-		//	var pass = $("#inpassword").val();
-		var username = $("#inusername").val();
-		var pass = $("#inpassword").val();	
-			
-			if(username == "" || username == "undefined" || username == null){
-				alert("insert username");
-				return false;
-			}
-			
-			if(pass == "" || pass=="undefined" || pass== null){
-				alert("insert password");
-				return false;
-			}
-			
-			
+$(function(){
+	$("#signInLink").click(function(){
+	
+		$.ajax({
+		      type: 'GET',
+		      url: 'signIn',
+		      success: function(response) {
+		      	$("#content").empty();
+		      	$("#content").html(response);
+		      }
 		});
 	});
+	
+	$("#logForm").submit(function(){
+		
+		$.ajax({
+		      type: 'POST',
+		      url: 'login',
+		      data: $("#logForm").serialize(),
+		      success: function(response){
+		    	$.ajax({
+				      type: 'POST',
+				      url: 'navigationBar',
+				      success: function(response) {
+				      	$("#navigationBar").empty();
+				      	$("#navigationBar").html(response);
+				      }
+				});
+		    	
+		      	$("#content").empty();
+		      	$("#content").html(response);
+		      }
+			});
+		
+		return false;
+	});
+});
 </script>
-
-</head>
-<body>
-	<div id="container">
-		<div id="header"></div>
-		<div id="navigationBar">
-			<ul>
-				<li><a href="home">home</a></li>
-				<li><a href="chiSiamo">chi siamo</a></li>
-				<li><a href="products">prodotti</a></li>
-				<li><a href="services">servizi</a></li>
-				<li></li>
-				<li></li>
-				<c:if test="${empty user}">
-					<li><a href="login">login</a></li>
-				</c:if>
-				<c:if test="${!empty user}">
-					<li><a href="logout">logout</a></li>
-				</c:if>
-				<li><a href="myAccount">my account</a></li>
-				<li><a href="shoppingCart">carrello</a></li>
-			</ul>
-			<hr />
-		</div>
-
-		<div id="content">
-			<c:if test="${!empty message}">
-				<p>
-					<c:out value="${message}" />
-				</p>
-				<br>
-				<br>
-			</c:if>
-
-			<div class="login">
-				<h3>login</h3>
-				<hr />
-				<form id="logForm" method="post" action="login">
-					<p>
-						<input id="inusername" type="text" value="" placeholder="username" name="username">
-					</p>
-					<p>
-						<input id="inpassword" type="password" value="" placeholder="password"	name="password">
-					</p>
-					<c:if test="${!empty before}">
-						<input type="hidden" name="after" value="${before}">
-						<c:if test="${!empty service}">
-							<input type="hidden" name="service" value="${service}">
-						</c:if>
-					</c:if>
-					<p>
-						<input type="submit" value="login">
-					</p>
-				</form>
-			</div>
-			<br><br>
-			
-			<div class="login">
-			<form id="logForm" method="get" action="signIn">
-				<c:if test="${!empty before}">
-					<input type="hidden" name="after" value="${before}">
-					<c:if test="${!empty service}">
-						<input type="hidden" name="service" value="${service}">
-					</c:if>
-				</c:if>
-					
-					<p>non sei ancora registrato? allora registrati cliccando il pulsante</p>
-					<p>
-					<input type="submit" value="signIn">
-					</p>
-			</form>
-			</div>
-			<br>
-		</div>
-		<div id="footer"></div>
-	</div>
-</body>
-</html>
+<c:if test="${!empty message}">
+	<p>
+		<c:out value="${message}" />
+	</p>
+	<br>
+</c:if>
+<div>
+	
+	<form:form id="logForm" method="post" action="login" modelAttribute="logAccount" commandName="logAccount">
+	<br>
+		<table class="loginTable">
+		<thead>
+		<tr><td></td><td>login</td><td></td></tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Username:</td>
+			<td><input type="text" name="username"></td>
+			<td><form:errors path='username' /></td>
+			</tr>
+		<tr>
+			<td>Password:</td>
+			<td><input type="password" name="password"></td>
+			<td><form:errors path='password' /></td>
+		</tr>
+		<tr><td></td><td><p><input type="submit" value="login"></p></td><td></td></tr>
+		</tbody>
+		</table>
+		
+		</tbody>
+		</table>
+		
+	</form:form>
+</div>
+<br>
+<br>
+<p>non sei ancora registrato? allora <a id="signInLink" href="#signIn">registrati</a></p>

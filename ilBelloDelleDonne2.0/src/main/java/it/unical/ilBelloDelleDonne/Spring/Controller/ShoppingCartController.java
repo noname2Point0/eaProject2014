@@ -19,32 +19,19 @@ public class ShoppingCartController {
 
 	@RequestMapping(value="/addToCart",method=RequestMethod.GET)
 	public String addToShoppingCart(HttpSession session, 
-			@ModelAttribute("productCustom") ProductStock productStock){
+		@ModelAttribute("productStock") ProductStock productStock){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		
 		appInfo.getShoppingCart().addToCart(productStock);
 		session.setAttribute("info", appInfo);
 		
-		return "redirect:/products";
+		return "redirect:/productsGrid";
 	}
-/*	
-	@RequestMapping(value="/showImage",method=RequestMethod.GET)
-	public String showImage(Model model,HttpSession session,
-			@RequestParam("imageWrapper") ImageWrapper image){
-		
-			System.out.println("SONO NEL CONTROLLER AL CLICK DELL'IMMAGINE");
-			System.out.println("ecco l'immagine "+image.getImageName());
-		
-		return "redirect:/products";
-	}
-	*/
+
 	
 	@RequestMapping(value="/removeToCart",method=RequestMethod.GET)
-	public String removeToShoppingCart(HttpSession session, 
-			@ModelAttribute("productCustom") ProductStock productStock){
-		
-		System.out.println(productStock.getId());
+	public String removeToShoppingCart(HttpSession session, @ModelAttribute("productStock") ProductStock productStock){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		appInfo.getShoppingCart().removeToCart(productStock);
@@ -57,8 +44,6 @@ public class ShoppingCartController {
 	public String showShoppingCart(HttpSession session, Model model){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		if(appInfo.isUserLogged())
-			model.addAttribute("user", appInfo.getUser());
 		
 		ShoppingCart shoppingCart = (ShoppingCart) appInfo.getShoppingCart();
 		

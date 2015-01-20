@@ -27,19 +27,18 @@ public class SaloonController implements ApplicationContextAware{
 
 	private ApplicationContext applicationContext;
 
-	@RequestMapping(value="/services",method=RequestMethod.GET)
+	@RequestMapping(value="/servicesList",method=RequestMethod.GET)
 	public String services(Model model, HttpSession session){
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
 		
-		ServiceList serviceList = new ServiceList();
-		serviceList.setServices((List<Service>) QueryFactory.create(applicationContext, new String("from Service")));
+		List<Service> serviceList = DataProvider.getServiceList(applicationContext);
 		
 		model.addAttribute("serviceList", serviceList);
 
-		return "services";
+		return "servicesList";
 	}
 	
 	

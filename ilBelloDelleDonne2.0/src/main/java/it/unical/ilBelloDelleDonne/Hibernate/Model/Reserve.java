@@ -13,6 +13,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="Reserve")
@@ -27,6 +32,9 @@ public class Reserve {
     @Column(name = "dateOrder", nullable = false)
     private Date dateOrder;
 	
+	@Future
+	@NotNull
+	@DateTimeFormat(pattern="dd/mm/yyyy")
 	@Temporal(TemporalType.DATE)
     @Column(name = "dateService", nullable = false)
     private Date dateService;
