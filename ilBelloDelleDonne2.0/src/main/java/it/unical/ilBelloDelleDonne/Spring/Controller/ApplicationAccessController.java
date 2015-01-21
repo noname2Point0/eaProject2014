@@ -2,8 +2,6 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
-import it.unical.ilBelloDelleDonne.ApplicationData.EmailType;
-import it.unical.ilBelloDelleDonne.ApplicationData.SendEmail;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
@@ -14,9 +12,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.sound.midi.SysexMessage;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeansException;
@@ -126,22 +122,10 @@ public class ApplicationAccessController implements ApplicationContextAware {
 			userDao.create(user);
 		}
 		
-		try{
-			SendEmail.send(EmailType.getRegistrationType(), user.getAccount().getUsername(), user.getEmail());
-		}
-		catch(Exception e){
-			
-		}
+		
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		appInfo.setUser(user);
-		
-		if(appInfo.getSelling())
-			return "redirect:sellingProducts";
-		
-		if(appInfo.getService() != null)
-			return "redirect:reserveService";
-		
 		
 		return "login";
 	}

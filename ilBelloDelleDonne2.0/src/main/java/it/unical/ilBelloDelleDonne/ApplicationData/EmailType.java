@@ -6,4 +6,8 @@ public abstract class EmailType {
 		return new String("registration");
 	}
 
+	public static String getAdminRegistrationType() {
+		return new String("admin registration");
+	}
+
 }

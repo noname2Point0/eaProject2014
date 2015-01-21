@@ -11,6 +11,9 @@
 </thead>
 	<tbody>
 		<tr>
+				<th>Product Image:</th>
+				<td><input type="file" name="file" id="file"></td>
+			</tr>
 			<th>Type:</th>
 			<td><input type="text"  name="type"></input></td>
 		</tr>

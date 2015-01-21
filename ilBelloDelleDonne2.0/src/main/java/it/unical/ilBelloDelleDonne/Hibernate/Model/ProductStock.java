@@ -25,6 +25,9 @@ public class ProductStock{
 	@Column(name="type", nullable=false)
 	private String type;
 	
+	@Column(name = "image", nullable = false, length = 10000000)
+	private byte[] image;
+
 	@Column(name="brand",nullable=false)
 	private String brand;
 	
@@ -43,15 +46,11 @@ public class ProductStock{
 	@OneToMany(mappedBy="productStock")
 	private List<Product> products;
 	
-	@OneToOne
-	@JoinColumn(name="imageWrapper")
-	private ImageWrapper imageWrapper;
-
 	public ProductStock() {
 
 	}
 	
-	public ProductStock(String type, String brand, String description, int minStock, int quantity, Double price, ImageWrapper imageWrapper){
+	public ProductStock(String type, String brand, String description, int minStock, int quantity, Double price){
 		
 		this.type = type;
 		this.brand = brand;
@@ -59,12 +58,11 @@ public class ProductStock{
 		this.price = price;
 		this.minStock = minStock;
 		this.quantity = quantity;
-		this.imageWrapper = imageWrapper;
 		this.products = new ArrayList<Product>();
 		
 	}
 	
-	public ProductStock(int id,String type, String brand, String description, int minStock, int quantity, Double price, ImageWrapper imageWrapper){
+	public ProductStock(int id,String type, String brand, String description, int minStock, int quantity, Double price){
 		
 		this.id = id;
 		this.type = type;
@@ -73,7 +71,6 @@ public class ProductStock{
 		this.price = price;
 		this.minStock = minStock;
 		this.quantity = quantity;
-		this.imageWrapper = imageWrapper;
 		this.products = new ArrayList<Product>();
 	}
 	
@@ -86,6 +83,13 @@ public class ProductStock{
 		this.id = id;
 	}
 
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 	public String getType() {
 		return type;
 	}
@@ -140,14 +144,6 @@ public class ProductStock{
 
 	public void setMinStock(int minStock) {
 		this.minStock = minStock;
-	}
-
-	public ImageWrapper getImageWrapper() {
-		return imageWrapper;
-	}
-
-	public void setImageWrapper(ImageWrapper imageWrapper) {
-		this.imageWrapper = imageWrapper;
 	}
 
 }

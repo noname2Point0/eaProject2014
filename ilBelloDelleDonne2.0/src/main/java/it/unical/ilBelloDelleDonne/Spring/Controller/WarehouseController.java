@@ -2,11 +2,9 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
-import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
@@ -18,6 +16,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
@@ -26,38 +25,24 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class WarehouseController implements ApplicationContextAware{
 
 	private ApplicationContext applicationContext;
+
 	
 	@RequestMapping(value="/productsGrid",method=RequestMethod.GET)
 	public String getProductsGrid(Model model,HttpSession session){
-		
-		//ImageWrapperDao imageDao = (ImageWrapperDao) applicationContext.getBean("imageWrapperDao");
-		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
-		
+	
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
 		
 		List<ProductStock> productStocks = DataProvider.getAvailableProductsList(applicationContext);
-	/*
-		for(ProductStock ps:productStocks){
-			String imageName = ps.getType()+"_"+ps.getBrand();
-			String pathImage = "/home/vincenzo/git/ilBelloDelleDonne2.0/ilBelloDelleDonne2.0/src/main/webapp/resources/images/"+imageName;
-			
-			ImageWrapper image = imageDao.retrieve(ps.getImageWrapper().getId());
-			byte[] byteImage = image.getData();
-			
-			ps.getImageWrapper().setData(byteImage);
-			productStockDao.update(ps);
-			
-		}
-		*/
-
 		model.addAttribute("stockList",productStocks);
 
 		return "productsGrid";
@@ -119,9 +104,72 @@ public class WarehouseController implements ApplicationContextAware{
 
 		return "insertProduct";
 	}
+	/*
+	 * @RequestMapping(value="/insertNewProduct",method=RequestMethod.POST)
+	public String insertNewProduct(@ModelAttribute("product") ProductStock productCustom,
+			@RequestParam("file") MultipartFile file, RedirectAttributes redirect){
 
+
+		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
+		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		ImageWrapperDao imageDao = (ImageWrapperDao) applicationContext.getBean("imageWrapperDao");
+
+		System.out.println("Type:" + productCustom.getType());
+		System.out.println("Brand:" + productCustom.getBrand());
+		System.out.println("Desc:" + productCustom.getDescription());
+		System.out.println("File:" + file.getName());
+		System.out.println("Path: "+file.getOriginalFilename());
+		System.out.println("ContentType:" + file.getContentType());
+
+
+		//        Session session = sessionFactory.getCurrentSession();
+		//        byte[] data = new byte[(int) file.getSize()];
+		//        Blob blob = Hibernate.getLobCreator(session).createBlob(data);
+		//        
+		//        productCustom.setBlob(blob);     
+		//        String split [] = file.getOriginalFilename().split(".");
+		//        String nameImage = "";
+		//        for(int i=0; i<split.length-1; i++){
+		//        	 nameImage = split[i]+"";
+		//        }
+		//        nameImage = nameImage+".png";
+
+
+		byte[] data = new byte[(int) file.getSize()];
+
+		try{
+			data = file.getBytes();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+
+
+	//	ImageWrapper imageWrapper = new ImageWrapper(file.getOriginalFilename(), data);
+		productCustom.setB(data);
+	//	imageDao.create(imageWrapper);
+
+		productStockDao.create(productCustom);
+
+
+		int nProd = productCustom.getQuantity();             
+
+
+		for(int i = 0 ; i<nProd; i++){
+			Product product = new Product(productCustom);
+			productDao.create(product);
+		}
+
+
+		redirect.addFlashAttribute("message","prodotti inseriti con successo");        
+
+
+		return "redirect:myAccount";
+	}
+	 */
 	@RequestMapping(value="/insertNewProduct",method=RequestMethod.POST)
 	public String insertNewProduct(@ModelAttribute("insProduct") ProductStock productCustom,
+			@RequestParam("file") MultipartFile file,
 			RedirectAttributes redirect){
 
 		int nProd = productCustom.getQuantity();
@@ -129,6 +177,16 @@ public class WarehouseController implements ApplicationContextAware{
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
 		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
 		
+		byte[] data = new byte[(int) file.getSize()];
+
+		try{
+			data = file.getBytes();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		productCustom.setImage(data);
 		productStockDao.create(productCustom);
 		
 		for(int i = 0 ; i<nProd; i++){

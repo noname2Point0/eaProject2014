@@ -2,6 +2,8 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
+import it.unical.ilBelloDelleDonne.ApplicationData.EmailType;
+import it.unical.ilBelloDelleDonne.ApplicationData.SendEmail;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
@@ -97,74 +99,100 @@ public class AccountController implements ApplicationContextAware{
 	}
 
 	@RequestMapping(value="/updateAlterAccount", method=RequestMethod.POST)
-	public String updateAlterAccount(@Valid @ModelAttribute("updAccount")Account acc,
+	public String updateAlterAccount(Model model,
+			@RequestParam("currentPassword")String currPass,
+			@Valid @ModelAttribute("updAccount")Account acc,
 			BindingResult result,
 			HttpSession session,
 			RedirectAttributes redirect){
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
+		User user = DataProvider.getUser(applicationContext, appInfo.getUser().getAccount().getUsername());
 		
 		if(result.hasErrors()){
-			System.err.println("cia");
+			user.getAccount().setPassword("");
+			String date = user.getBirth().toString().substring(0,10);
+			model.addAttribute("user",user);
+			model.addAttribute("userBirth",date);
+			
 			return "alterAccount";
 		}
+		
+		
+		if(user.getAccount().getPassword().equals(currPass)){
+			AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
+			UserDao userDao =(UserDao) applicationContext.getBean("userDao");
+			
+			accountDao.update(acc);
+			user.setAccount(acc);
+			userDao.update(user);
+			
+			redirect.addFlashAttribute("message","operazione eseguita con successo");
+		}else{
+			redirect.addFlashAttribute("message", "spiacente, non è stato possibile cambiare la tua password, il valore inserito della password corrente non combacia");
+		}
 
-//		
-//		if(acc.getPassword().equals(curPass)){
-//			
-//			acc.setPassword(password);
-//			accountDao.update(acc);
-//
-//			appInfo.getUser().setAccount(acc);
-//
-//			redirect.addFlashAttribute("message","operazione eseguita con successo");
-//		}else{
-//			redirect.addFlashAttribute("message", "spiacente, non è stato possibile cambiare la tua password, il valore inserito della password corrente non combacia");
-//		}
-
-//		return "redirect:myAccount";
-		return null;
+		model.addAttribute("user",user);
+		return "showAccountDetails";
 	}
 
 	@RequestMapping(value="/insertNewAccount",method=RequestMethod.POST)
 	public String insertNewAccount(Model model,
 			RedirectAttributes redirect,
 			HttpSession session,
-			@ModelAttribute("insUser")User user,
+			@Valid @ModelAttribute("insUser")User user,
+			BindingResult result,
 			@RequestParam("typeUs")String type){
 
+		System.out.println("insert");
+		
+		if(result.hasErrors()){
+			model.addAttribute("user",user);
+			return "insertAccount";
+		}
+		
 		String username = CredentialsManager.generateUsername(applicationContext, user.getName(), user.getSurname());
 		String pass = CredentialsManager.generatePassword(applicationContext, type);
-
+		
 		UserDao userDao = (UserDao) applicationContext.getBean("userDao");
 		AccountDao accountDao = (AccountDao) applicationContext.getBean("accountDao");
-
+		
 		Account account = new Account(username,pass,type);
 		accountDao.create(account);
-
+		
 		if(type.equals(AccountType.getAdminType())){
 			Admin admin = new Admin();
 			admin.copy(user);
 
+			account.setUser(admin);
 			admin.setAccount(account);
 			userDao.create(admin);
-
 		}else{
 			Employee employee = new Employee();
 			employee.copy(user);
-
+			account.setUser(employee);
+			employee.setAccount(account);
+		
 			if(type.equals(AccountType.getEmployeeSaloonType()))
 				employee.setDepartment("saloon");
 			else
 				employee.setDepartment("warehouse");
-
-			employee.setAccount(account);
+			
 			userDao.create(employee);
+			
 		}
-
-		redirect.addFlashAttribute("message","utente inserito con successo USERNAME: "+username+" PASSWORD: "+pass+"");
-
-		return "redirect:myAccount";
+		
+		model.addAttribute("message","utente inserito con successo username e password saranno inviati al diretto interessato tramite mail specifica");
+		model.addAttribute("user",user);
+		user.setAccount(account);
+		
+		try{
+			SendEmail.send(EmailType.getAdminRegistrationType(),user);
+		}catch(Exception e){
+			//da gestire
+		}
+		
+		return "showAccountDetails";
 	}
 
 	@RequestMapping(value="/showAccounts",method=RequestMethod.GET)

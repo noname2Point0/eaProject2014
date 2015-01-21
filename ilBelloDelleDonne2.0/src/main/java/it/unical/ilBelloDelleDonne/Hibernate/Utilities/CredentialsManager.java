@@ -43,7 +43,7 @@ public abstract class CredentialsManager{
 	public static String generateUsername(ApplicationContext context, String a, String b) {
 		String username = new String();
 		
-		username = new String(a+"."+b);
+		username = new String(a.substring(0,2)+"."+b.substring(0,2));
 		
 		int conc = 0;
 		
@@ -72,9 +72,12 @@ public abstract class CredentialsManager{
 		
 		Random rand = new Random();
 		String attach = String.valueOf(rand.nextInt(Integer.MAX_VALUE));
+		String password = init+attach;
 		
+		if(password.length()>=10){
+			password = password.substring(0,9);
+		}
 		
-		
-		return init+attach;
+		return password;
 	}
 }

@@ -171,7 +171,7 @@ input[type=submit] {
 }
 
 input[type=text], input[type=password], input[type=date], input[type=time],
-	input[type=email], input[type=number], select {
+	input[type=email], input[type=number], input[type=file], select {
 	width: 250px;
 	height: 30px;
 	color: #9394fe;

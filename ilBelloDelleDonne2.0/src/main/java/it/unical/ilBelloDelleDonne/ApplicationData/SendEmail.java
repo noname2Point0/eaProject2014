@@ -1,7 +1,9 @@
 package it.unical.ilBelloDelleDonne.ApplicationData;
 
+import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -15,17 +17,24 @@ import javax.mail.internet.MimeMessage;
 
 public abstract class SendEmail {
 
-	public static void send(String emailType, String newUser, String recipient) throws IOException {
+	public static void send(String emailType, User newUser) throws IOException {
 
         final String user = "ilBelloDelleDonne.help@gmail.com";
         final String password = "vi89giu89";
-        String to = recipient;
+        String to = newUser.getEmail();
         String title = "";
         String textmsg = "";
         
         if(emailType.equals("registration")){
         	title = "Welcome!";
-        	textmsg = "Benvenuto sul nostro portale "+newUser+"! \n Da oggi potrai prenotare i nostri servizi ed acquistare i nostri prodotti.";
+        	textmsg = "Benvenuto sul nostro portale "+newUser.getName()+"! Da oggi potrai prenotare i nostri servizi ed acquistare i nostri prodotti.";
+        }
+        
+        if(emailType.equals("admin registration")){
+        	System.err.println(newUser.getName()+newUser.getAccount().getPassword());
+        	title="Welcome!";
+        	textmsg = "Sei stato registrato nel nostro sistema. Le tue credenziali d'accesso sono: {username= "+newUser.getAccount().getUsername()
+        						+" password="+newUser.getAccount().getPassword()+"}.";
         }
   
         Properties properties = System.getProperties();

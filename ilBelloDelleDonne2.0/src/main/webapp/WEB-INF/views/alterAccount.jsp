@@ -2,9 +2,8 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <script type="text/javascript" src="resources/scripts/comuni.js"></script>
-
+<script>populateCountries("city");</script>
 <p>il tuo account:</p>
 <script type="text/javascript">
 $(function(){
@@ -59,6 +58,7 @@ $("#acForm").submit(function(){
 	      	$("#divview").html(response);
 	      }
 		});
+		return false;
 		
 	});
 	
@@ -98,7 +98,6 @@ $("#acForm").submit(function(){
 			<th>City:</th>
 			<td>${user.city}</td>
 				<td><select name="city" id="city"></select></td>
-				<script language="javascript">populateCountries("city");</script>
 				<td><form:errors path='city' /></td>
 				
 		</tr>
@@ -141,7 +140,8 @@ $("#acForm").submit(function(){
 	</thead>	
 		<tr>
 			<th>password</th>
-			<td><input type="hidden" name="username" value="${user.account.username}" 
+			<td><input type="hidden" name="username" value="${user.account.username}" >
+					<input type="hidden" name="type" value="${user.account.type}"> 
 					<input id="cpass" type="password" name="currentPassword"></td>
 			<td><input id="inpass" type="password" name="password"></td>
 			<td><input id="rinpass" type="password"></td>
@@ -149,5 +149,7 @@ $("#acForm").submit(function(){
 	</tbody>
 </table>
 <br>
+
+<form:errors path='password'/>
 <input type="submit" value="update">
 </form:form>

@@ -1,7 +1,6 @@
 package it.unical.ilBelloDelleDonne.Hibernate.Utilities;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
-import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
@@ -10,11 +9,8 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Admin;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Employee;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
 
 import java.text.SimpleDateFormat;
@@ -28,7 +24,7 @@ public abstract class FillDBFactory{
 
 	public static void create(ApplicationContext context){
 	
-		createProduct(context);
+//		createProduct(context);
 		createService(context);
 		createUser(context);
 	}
@@ -37,20 +33,15 @@ public abstract class FillDBFactory{
 	private static void createProduct(ApplicationContext context){
 		
 
-		ImageWrapperDao imageDao = (ImageWrapperDao) context.getBean("imageWrapperDao");
 		ProductStockDao psd = (ProductStockDao) context.getBean("productStockDao");
 		ProductDao productDao = (ProductDao) context.getBean("productDao");
 		
-		ImageWrapper imageWrapper = new ImageWrapper();
-
-		ProductStock productStock = new ProductStock("shampoo","garnier","shampoo medio",5,100,4.5, imageWrapper);
-		imageWrapper = LoadImage.load(productStock.getType()+"_"+productStock.getBrand()+".png");
-		productStock.setImageWrapper(imageWrapper);
-		imageDao.create(imageWrapper);
-
+		
+		ProductStock productStock = new ProductStock("shampoo","garnier","shampoo medio",5,100,4.5);
+	
 		psd.create(productStock);
 
-		ArrayList<Product> products = new ArrayList<Product>();
+	ArrayList<Product> products = new ArrayList<Product>();
 		for(int i = 0; i<productStock.getQuantity(); i++){
 			Product product = new Product(productStock);
 			products.add(product);
@@ -61,14 +52,7 @@ public abstract class FillDBFactory{
 
 
 		psd = (ProductStockDao) context.getBean("productStockDao");
-
-		ImageWrapper imageWrapper2 = new ImageWrapper();
-
-		productStock = new ProductStock("piastra","imetech","bellissima",5,100,80.0, imageWrapper2);
-		
-		imageWrapper2 = LoadImage.load(productStock.getType()+"_"+productStock.getBrand()+".png");
-		productStock.setImageWrapper(imageWrapper2);
-		imageDao.create(imageWrapper2);
+		productStock = new ProductStock("piastra","imetech","bellissima",5,100,80.0);
 		
 		productDao = (ProductDao) context.getBean("productDao");
 
@@ -86,14 +70,7 @@ public abstract class FillDBFactory{
 
 
 		psd = (ProductStockDao) context.getBean("productStockDao");
-
-		ImageWrapper imageWrapper3 = new ImageWrapper();
-
-		productStock = new ProductStock("phon","parlux","4200",5,100,60.0,imageWrapper3);
-		
-		imageWrapper3 = LoadImage.load(productStock.getType()+"_"+productStock.getBrand()+".png");
-		productStock.setImageWrapper(imageWrapper3);
-		imageDao.create(imageWrapper3);
+		productStock = new ProductStock("phon","parlux","4200",5,100,60.0);
 		
 		productDao = (ProductDao) context.getBean("productDao");
 

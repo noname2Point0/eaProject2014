@@ -1,3 +1,4 @@
+<p>${message}</p>
 <p>Details</p>
 
 <p>Anagrafica</p>
