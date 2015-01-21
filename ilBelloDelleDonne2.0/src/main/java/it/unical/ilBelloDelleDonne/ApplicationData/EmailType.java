@@ -9,5 +9,9 @@ public abstract class EmailType {
 	public static String getAdminRegistrationType() {
 		return new String("admin registration");
 	}
+	
+	public static String getConfirmSelling(){
+		return new String("confirm selling");
+	}
 
 }

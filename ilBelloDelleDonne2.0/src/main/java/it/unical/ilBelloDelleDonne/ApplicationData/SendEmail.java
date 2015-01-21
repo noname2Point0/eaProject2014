@@ -1,5 +1,7 @@
 package it.unical.ilBelloDelleDonne.ApplicationData;
 
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 
@@ -19,9 +21,15 @@ import javax.mail.internet.MimeMessage;
 public abstract class SendEmail {
 
 	public static void sendSellingConfirmation(User user, Selling selling) throws IOException{
-		String email = null;
-		String title = null;
-		String message = null;
+		String email = user.getEmail();
+		String title = "Confirm Buying";
+		String products = "";
+		for(Product ps:selling.getProducts()){
+			products = products+" "+ps.getProductStock().toString()+"\n";
+		}
+		
+		String message = "Hai appena effettuato un acquisto! \n "
+						+"Riepilogo acquisto: "+products;
 		
 		send(email,title,message);
 	}
@@ -48,7 +56,8 @@ public abstract class SendEmail {
 	private static void send(String mail, String tit, String msg) throws IOException {
 
         final String user = "ilBelloDelleDonne.help@gmail.com";
-        final String password = "vi89giu89";
+        final String password = "vi89giu89";    
+  
         String to = mail;
         String title = tit;
         String textmsg = msg;

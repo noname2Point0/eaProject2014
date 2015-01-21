@@ -152,4 +152,10 @@ public ProductStock(String type, String brand, String description, int minStock,
 	public void setMinStock(int minStock) {
 		this.minStock = minStock;
 	}
+	
+	@Override
+	public String toString() {
+		
+		return new String(type+" "+brand+" "+description+" "+price+" "+quantity);
+	}
 }

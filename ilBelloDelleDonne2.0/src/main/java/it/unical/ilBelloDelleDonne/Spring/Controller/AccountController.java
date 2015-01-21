@@ -189,7 +189,7 @@ public class AccountController implements ApplicationContextAware{
 		try{
 			SendEmail.sendAdminRegistration(user);
 		}catch(Exception e){
-			System.err.println("ciao ");
+			
 			//da gestire
 		}
 		
