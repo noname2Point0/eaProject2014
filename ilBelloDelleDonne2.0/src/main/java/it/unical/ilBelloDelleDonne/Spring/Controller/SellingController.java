@@ -2,7 +2,9 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
+import it.unical.ilBelloDelleDonne.ApplicationData.EmailType;
 import it.unical.ilBelloDelleDonne.ApplicationData.ProductCustomList;
+import it.unical.ilBelloDelleDonne.ApplicationData.SendEmail;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
@@ -10,7 +12,6 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
@@ -118,6 +119,13 @@ public class SellingController implements ApplicationContextAware{
 		
 		redirect.addFlashAttribute("selling",selling);
 		redirect.addFlashAttribute("stockList",productsCustomList.getProductsStock());
+		
+		try{
+			SendEmail.send(EmailType.getConfirmSelling(), appInfo.getUser());
+		}
+		catch(Exception e){
+			e.getCause();
+		}
 		
 		return "redirect:/reviewSellingSuccess";
 

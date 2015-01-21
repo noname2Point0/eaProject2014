@@ -30,12 +30,20 @@ public abstract class SendEmail {
         	textmsg = "Benvenuto sul nostro portale "+newUser.getName()+"! Da oggi potrai prenotare i nostri servizi ed acquistare i nostri prodotti.";
         }
         
-        if(emailType.equals("admin registration")){
+        else if(emailType.equals("admin registration")){
         	System.err.println(newUser.getName()+newUser.getAccount().getPassword());
         	title="Welcome!";
         	textmsg = "Sei stato registrato nel nostro sistema. Le tue credenziali d'accesso sono: {username= "+newUser.getAccount().getUsername()
         						+" password="+newUser.getAccount().getPassword()+"}.";
         }
+        else if(emailType.equals("confirm selling")){
+        	title = "confirm selling";
+        	textmsg = "Hai appena effettuato una vendita.\n Riepilogo vendita: "
+        			 +"";
+        	
+        }
+        
+        
   
         Properties properties = System.getProperties();
         properties.setProperty("mail.transport.protocol", "smtp");
