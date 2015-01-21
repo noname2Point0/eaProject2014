@@ -18,6 +18,17 @@ $(function(){
 	 $("#addform").submit(function(event){
 		 var submitButton = $(this).data('button') || $('input[type="submit"]').get(0).name;
 		 var qnt = $("#qntAdd").val();
+		 
+		 if(qnt <= 0){
+			 alert("inserisci quantita adatta");
+			 return false;
+		 }
+		 
+		 if(qnt == "" || qnt == null || qnt == "undefined"){
+			 alert("inserisci quantita adatta");
+			 return false;
+		 }
+		 
 		 $.ajax({
 		      type: 'POST',
 		      url: 'insertExistProduct',
@@ -27,7 +38,7 @@ $(function(){
 		      	$("#divview").html(response);
 		      }
 			});
-		 alert("ciao");
+		
 		 	return false;
 	 });	
 		 
@@ -108,7 +119,7 @@ $(function(){
 <p>inserisci il prodotto ad uno stock esistente</p>
 <form:form id="addform" action="">
 <table>
-<tr><td>Quantità di prodotti da aggiungere allo stock: </td><td><input id="qntAdd" type="text"></td></tr>
+<tr><td>Quantità di prodotti da aggiungere allo stock: </td><td><input id="qntAdd" type="number"></td></tr>
 </table>
 <div id="tableSearch"><p>Search: <input type="text" id="tablesearchinput" /></div>
  <table id="table" class="mySortableTable">

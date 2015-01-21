@@ -18,8 +18,8 @@ $(function(){
 			      url: 'setAlterProduct',
 			      data: $("#"+id).serialize(),
 			      success: function(response) {
-			      	$("#content").empty();
-			      	$("#content").html(response);
+			      	$("#divview").empty();
+			      	$("#divview").html(response);
 			      }
 			});	
 				return false;
@@ -29,7 +29,6 @@ $(function(){
 </script>	 
 <div id="tableSearch"><p>Search: <input type="text" id="tablesearchinput" /></div>
 <table id="table" class="mySortableTable">
-<table class="mytable">
 	<thead>
 		<tr>
 			<th>type</th>

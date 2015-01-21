@@ -49,6 +49,7 @@
 					<li><a id="visualizzaServizi" href="#">visualizza</a></li>
 					<li><a id="inserisciServizio" href="#">inserisci servizio</a></li>
 					<li><a id="modificaServizio" href="#">modifica servizio</a></li>
+					<li><a id="eliminaServizio" href="#">elimina servizio</a></li>
 				</ul>
 			</c:if>
 			

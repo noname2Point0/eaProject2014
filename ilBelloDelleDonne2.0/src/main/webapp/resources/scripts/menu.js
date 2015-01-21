@@ -57,7 +57,11 @@ $(function(){
 	});
 	
 	$("#modificaServizio").click(function(){
-		$("diviview").load("alterService");
+		$("#divview").load("alterService");
+	});
+	
+	$("#eliminaServizio").click(function(){
+		$("#divview").load("deleteService");
 	});
 	
 });

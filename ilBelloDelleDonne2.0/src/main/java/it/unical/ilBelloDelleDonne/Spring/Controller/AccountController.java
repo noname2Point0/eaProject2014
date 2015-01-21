@@ -232,7 +232,7 @@ public class AccountController implements ApplicationContextAware{
 
 		String message="user eliminato correttamente dal sistema";
 		redirect.addFlashAttribute("message",message);
-		return "redirect:myAccount";
+		return "redirect:showAccounts";
 	}
 
 	@InitBinder
