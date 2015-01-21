@@ -68,10 +68,7 @@ $(function(){
 		<tr><td></td><td><p><input type="submit" value="login"></p></td><td></td></tr>
 		</tbody>
 		</table>
-		
-		</tbody>
-		</table>
-		
+	
 	</form:form>
 </div>
 <br>
