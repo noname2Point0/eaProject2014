@@ -187,7 +187,7 @@ public class AccountController implements ApplicationContextAware{
 		user.setAccount(account);
 		
 		try{
-			SendEmail.send(EmailType.getAdminRegistrationType(),user);
+			SendEmail.sendAdminRegistration(user);
 		}catch(Exception e){
 			System.err.println("ciao ");
 			//da gestire
