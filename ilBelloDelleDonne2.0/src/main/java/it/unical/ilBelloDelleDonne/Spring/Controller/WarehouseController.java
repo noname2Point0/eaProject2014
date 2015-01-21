@@ -11,22 +11,22 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
+import java.util.Base64;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -104,69 +104,16 @@ public class WarehouseController implements ApplicationContextAware{
 
 		return "insertProduct";
 	}
-	/*
-	 * @RequestMapping(value="/insertNewProduct",method=RequestMethod.POST)
-	public String insertNewProduct(@ModelAttribute("product") ProductStock productCustom,
-			@RequestParam("file") MultipartFile file, RedirectAttributes redirect){
-
-
-		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
-		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
-		ImageWrapperDao imageDao = (ImageWrapperDao) applicationContext.getBean("imageWrapperDao");
-
-		System.out.println("Type:" + productCustom.getType());
-		System.out.println("Brand:" + productCustom.getBrand());
-		System.out.println("Desc:" + productCustom.getDescription());
-		System.out.println("File:" + file.getName());
-		System.out.println("Path: "+file.getOriginalFilename());
-		System.out.println("ContentType:" + file.getContentType());
-
-
-		//        Session session = sessionFactory.getCurrentSession();
-		//        byte[] data = new byte[(int) file.getSize()];
-		//        Blob blob = Hibernate.getLobCreator(session).createBlob(data);
-		//        
-		//        productCustom.setBlob(blob);     
-		//        String split [] = file.getOriginalFilename().split(".");
-		//        String nameImage = "";
-		//        for(int i=0; i<split.length-1; i++){
-		//        	 nameImage = split[i]+"";
-		//        }
-		//        nameImage = nameImage+".png";
-
-
-		byte[] data = new byte[(int) file.getSize()];
-
-		try{
-			data = file.getBytes();
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-
-
-	//	ImageWrapper imageWrapper = new ImageWrapper(file.getOriginalFilename(), data);
-		productCustom.setB(data);
-	//	imageDao.create(imageWrapper);
-
-		productStockDao.create(productCustom);
-
-
-		int nProd = productCustom.getQuantity();             
-
-
-		for(int i = 0 ; i<nProd; i++){
-			Product product = new Product(productCustom);
-			productDao.create(product);
-		}
-
-
-		redirect.addFlashAttribute("message","prodotti inseriti con successo");        
-
-
-		return "redirect:myAccount";
+	
+	@RequestMapping(value="/product/{id}/image")
+	public String  getProductImage(@PathVariable("id")int id){
+		System.err.println(id);
+		ProductStockDao psDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		byte[] image = psDao.retrieve(id).getImage();
+		String str = Base64.getEncoder().encodeToString(image);
+		return str;
 	}
-	 */
+	
 	@RequestMapping(value="/insertNewProduct",method=RequestMethod.POST)
 	public String insertNewProduct(@ModelAttribute("insProduct") ProductStock productCustom,
 			@RequestParam("file") MultipartFile file,

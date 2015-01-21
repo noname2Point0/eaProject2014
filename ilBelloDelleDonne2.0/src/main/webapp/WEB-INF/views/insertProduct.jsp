@@ -4,7 +4,7 @@
 
 <p>inserisci il prodotto:</p>
 
-<form:form action="insertNewProduct" method="post" modelAttribute="insProduct">
+<form:form action="insertNewProduct" method="post" commandname="insProduct" enctype="multipart/form-data" modelAttribute="insProduct">
 <table class="mytable">
 <thead>
 	<tr><th></th><th>value</th></tr>

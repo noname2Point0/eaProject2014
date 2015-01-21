@@ -9,6 +9,8 @@ import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Admin;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
+
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Employee;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Service;
@@ -25,67 +27,10 @@ public abstract class FillDBFactory{
 	public static void create(ApplicationContext context){
 	
 //		createProduct(context);
-		createService(context);
+		//createService(context);
 		createUser(context);
 	}
 	
-
-	private static void createProduct(ApplicationContext context){
-		
-
-		ProductStockDao psd = (ProductStockDao) context.getBean("productStockDao");
-		ProductDao productDao = (ProductDao) context.getBean("productDao");
-		
-		
-		ProductStock productStock = new ProductStock("shampoo","garnier","shampoo medio",5,100,4.5);
-	
-		psd.create(productStock);
-
-	ArrayList<Product> products = new ArrayList<Product>();
-		for(int i = 0; i<productStock.getQuantity(); i++){
-			Product product = new Product(productStock);
-			products.add(product);
-			productDao.create(product);
-		}
-		productStock.setProducts(products);
-		psd.update(productStock);
-
-
-		psd = (ProductStockDao) context.getBean("productStockDao");
-		productStock = new ProductStock("piastra","imetech","bellissima",5,100,80.0);
-		
-		productDao = (ProductDao) context.getBean("productDao");
-
-		psd.create(productStock);
-
-		products = new ArrayList<Product>();
-		for(int i = 0; i<productStock.getQuantity(); i++){
-			Product product = new Product(productStock);
-			products.add(product);
-			productDao.create(product);
-		}
-		productStock.setProducts(products);
-		psd.update(productStock);
-
-
-
-		psd = (ProductStockDao) context.getBean("productStockDao");
-		productStock = new ProductStock("phon","parlux","4200",5,100,60.0);
-		
-		productDao = (ProductDao) context.getBean("productDao");
-
-		psd.create(productStock);
-
-		products = new ArrayList<Product>();
-		for(int i = 0; i<productStock.getQuantity(); i++){
-			Product product = new Product(productStock);
-			products.add(product);
-			productDao.create(product);
-		}
-		productStock.setProducts(products);
-		psd.update(productStock);
-
-	}
 
 	private static void createService(ApplicationContext context){
 

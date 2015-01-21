@@ -45,7 +45,7 @@ $(function(){
 			<div id="${stock.id}" class="box">
 				<br>
 				<div>
-					<!--  <img src="resources/images/phon_parlux.png"> INSERIRE L'IMMAGINE PER OGNI PRODOTTO QUA-->
+				<img src="product/${stock.id}/image">
 				</div>
 				<p>
 					${stock.type} <br> ${stock.brand} <br>
@@ -76,50 +76,3 @@ $(function(){
 </form>
 </c:if>
 </div>
-	<!-- 
-			<table class="mytable">
-				<thead>
-					<tr>
-						<th>photo</th>
-						<th>type</th>
-						<th>brand</th>
-						<th>description</th>
-						<th>price</th>
-						<c:if test="${user.account.type =='customer' || empty user.account.type }">
-						<th>add to cart</th> 
-						</c:if>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="stock" items="${stockList}">
-						<tr>
-							<td>
-							  <form action="showImage" method="get">
-							  	<input type="image" src="resources/images/${stock.imageWrapper.imageName}" name="imageWrapper" >
-							  </form>
-							</td>
-							<td>${stock.type}</td>
-							<td>${stock.brand}</td>
-							<td>${stock.description}</td>
-							<td>${stock.price}</td>							
-							<c:if test="${user.account.type =='customer' || empty user.account.type }">
-							<td>
-								<form action="addToCart" method="get" modelattribute="productCustom">
-								<input type="submit" value="add">
-					 		<input type="hidden" name="imageWrapper" value="${stock.imageWrapper}"> 
-								<input type="hidden" name="id" value="${stock.id}"> 
-								<input type="hidden" name="type" value="${stock.type}"> 
-								<input type="hidden" name="brand" value="${stock.brand}"> 
-								<input type="hidden" name="description" value="${stock.description}">
-								<input type="hidden" name="price" value="${stock.price}">
-								<input type="hidden" name="quantity" value="${stock.quantity}">
-								</form>
-							</td>
-							</c:if>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			
-			
-			-->
