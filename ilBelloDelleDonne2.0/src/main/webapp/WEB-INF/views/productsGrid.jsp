@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <script>
 $(function(){
 	
@@ -45,10 +46,10 @@ $(function(){
 			<div id="${stock.id}" class="box">
 				<br>
 				<div>
-				<img src="product/${stock.id}/image">
+				<img src="product/${stock.id}/image" width="150px" height="150px">
 				</div>
 				<p>
-					${stock.type} <br> ${stock.brand} <br>
+					${stock.type} ${stock.brand} <br>
 					${stock.description}<br> ${stock.price} &#8364;<br>
 				<form:form action="addToCart" method="get" id="${stock.id}form" modelAttribute="productStock">
 					<input id="${stock.id}bt" type="submit" value="add"> <input

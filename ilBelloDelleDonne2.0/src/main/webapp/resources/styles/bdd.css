@@ -14,10 +14,9 @@ hr {
 	background-color: #e9e9ff;
 	border-radius: 10px;
 	display: inline-block;
-	width: 250px;
-	height: 250px;
+	width: 300px;
+	height: 300px;
 	margin: 1em;
-	font-weight: bold;
 	box-shadow: 10px 10px 5px #888888;
 }
 

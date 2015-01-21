@@ -11,9 +11,11 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
+import java.io.OutputStream;
 import java.util.Base64;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeansException;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -105,13 +108,26 @@ public class WarehouseController implements ApplicationContextAware{
 		return "insertProduct";
 	}
 	
-	@RequestMapping(value="/product/{id}/image")
-	public String  getProductImage(@PathVariable("id")int id){
-		System.err.println(id);
-		ProductStockDao psDao = (ProductStockDao) applicationContext.getBean("productStockDao");
-		byte[] image = psDao.retrieve(id).getImage();
-		String str = Base64.getEncoder().encodeToString(image);
-		return str;
+	@RequestMapping(value ="/product/{id}/image")
+	public void retrieveimage(@PathVariable("id") Integer id, HttpServletResponse response){
+		
+		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		
+		response.setContentType("image/png");
+		response.setContentLength((int)productStockDao.retrieve(id).getImage().length);
+		
+		try{
+			OutputStream out = response.getOutputStream();
+			out.write(productStockDao.retrieve(id).getImage());
+			out.flush();
+			out.close();
+		}
+		catch(Exception e){
+			e.getCause();
+		}
+		
+		return;
+
 	}
 	
 	@RequestMapping(value="/insertNewProduct",method=RequestMethod.POST)

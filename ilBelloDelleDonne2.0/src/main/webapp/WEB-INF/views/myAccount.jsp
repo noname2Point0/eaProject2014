@@ -17,6 +17,7 @@
 			<c:out value="${user.account.type}"></c:out>
 			<br>
 		</div>
+		
 		<div id="divUserMenu">
 			<p>menu:</p>
 			<hr />
