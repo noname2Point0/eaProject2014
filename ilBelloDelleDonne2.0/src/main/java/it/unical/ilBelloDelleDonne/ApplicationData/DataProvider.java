@@ -2,6 +2,7 @@ package it.unical.ilBelloDelleDonne.ApplicationData;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
@@ -55,6 +56,18 @@ public abstract class DataProvider {
 		
 		return reserveList;
 		
+	}
+	
+	public static List getProductListFromStockNotSelling(ApplicationContext applicationContext, int stockProductId){
+		SessionFactory ses = (SessionFactory) applicationContext.getBean("sessionFactory");
+		Session session = ses.openSession();
+		String query = "from Product p where p.productStock.id="+stockProductId+" and not exists(from Selling s where p.selling=s)";
+		Query q = session.createQuery(query);
+		List l = q.list();
+		
+		session.close();
+		
+		return l;
 	}
 	
 	public static List<Reserve> getCustomerReserveList( ApplicationContext applicationContext, String username) {

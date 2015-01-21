@@ -47,17 +47,17 @@ public class SellingController implements ApplicationContextAware{
 	public String orderProducts(HttpSession session, Model model,RedirectAttributes redirect){
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		
+
 		if(!appInfo.isUserLogged()){
 			appInfo.setSelling(true);
 			redirect.addFlashAttribute("message","devi accedere al sistema prima di poter effettuare l'acquisto");
 			return "redirect:/login";
 		}
-		
+
 		if(appInfo.getSelling())
 			appInfo.setSelling(false);
-		
-		
+
+
 		ProductCustomList productCustomList = new ProductCustomList();
 		productCustomList.setProductsStock(appInfo.getShoppingCart().getProductsIn());
 
@@ -65,7 +65,7 @@ public class SellingController implements ApplicationContextAware{
 		model.addAttribute("user",appInfo.getUser());
 
 		return "sellingProducts";
-	
+
 	}
 
 	@RequestMapping(value="/confirmSelling",method=RequestMethod.GET)
@@ -79,32 +79,42 @@ public class SellingController implements ApplicationContextAware{
 
 		Double sum = 0.0;
 		ProductStockDao productStockDao = (ProductStockDao) applicationContext.getBean("productStockDao");
-		
-		for(ProductStock productStock :productsCustomList.getProductsStock()){		
-			String query = new String("from Product p where p.productStock.id="+productStock.getId()+"");
-			List<Product> p =(List<Product>) QueryFactory.create(applicationContext, query);
 
-			for(int i = 0; i<productStock.getQuantity(); i++){
-				products.add(p.get(i));
-				sum+= productStock.getPrice();
+
+		for(ProductStock productStock :productsCustomList.getProductsStock()){		
+		//	String query = new String("from Product p where p.productStock.id="+productStock.getId()+"");
+
+			List<Product> p = (List<Product>) DataProvider.getProductListFromStockNotSelling(applicationContext, productStock.getId());
+
+			if(productStock.getQuantity() <= p.size()){
+
+				for(int i = 0; i<productStock.getQuantity(); i++){
+					products.add(p.get(i));
+					sum+= productStock.getPrice();
+				}
+				ProductStock ps = productStockDao.retrieve(productStock.getId());
+				ps.setQuantity(ps.getQuantity()-productStock.getQuantity());
+				productStockDao.update(ps);
 			}
-			ProductStock ps = productStockDao.retrieve(productStock.getId());
-			ps.setQuantity(ps.getQuantity()-productStock.getQuantity());
-			productStockDao.update(ps);
+			else{
+				String message = new String("Quantità non disponibile");
+				redirect.addFlashAttribute("message", message);
+				return "redirect:/sellingProducts";
+			}
 		}
-	
-		
-	
+
+
+
 		UserDao userDao = (UserDao)applicationContext.getBean("userDao");
 		Customer customer = (Customer) userDao.retrieve(appInfo.getUser().getAccount().getUsername());
-		
+
 		Date dateOrder = MyData.getLocaleData();
 		SellingDao sellingDao = (SellingDao) applicationContext.getBean("sellingDao");
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
 
 		Selling selling = new Selling(customer, dateOrder, null, sum);
 		sellingDao.create(selling);
-		
+
 		for(int i = 0; i<products.size(); i++){
 			products.get(i).setSelling(selling);
 			productDao.update(products.get(i));
@@ -112,21 +122,21 @@ public class SellingController implements ApplicationContextAware{
 
 		selling.setProducts(products);
 		sellingDao.update(selling);
-		
-		
+
+
 		appInfo.getShoppingCart().clearCart();
 		session.setAttribute("info", appInfo);
-		
+
 		redirect.addFlashAttribute("selling",selling);
 		redirect.addFlashAttribute("stockList",productsCustomList.getProductsStock());
-		
+
 		try{
-			SendEmail.send(EmailType.getConfirmSelling(), appInfo.getUser());
+			SendEmail.sendSellingConfirmation(appInfo.getUser(), selling);
 		}
 		catch(Exception e){
 			e.getCause();
 		}
-		
+
 		return "redirect:/reviewSellingSuccess";
 
 	}
@@ -141,36 +151,36 @@ public class SellingController implements ApplicationContextAware{
 		return "reviewSellingSuccess";
 	}
 
-	
+
 	@RequestMapping(value="/showSelling",method=RequestMethod.GET)
 	public String showSelling(Model model,HttpSession session){
 
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		
+
 		User user = appInfo.getUser();
 		List<Selling> sellings;
-		
+
 		if(AccountType.isCustomer(user.getAccount().getType()))
 			sellings = DataProvider.getCustomerSellingList(applicationContext,user.getAccount().getUsername());
 		else
 			sellings = DataProvider.getSellingList(applicationContext);
-		
+
 		model.addAttribute("sellings",sellings);
-		
+
 		return "showSelling";
 	}
 
 	@RequestMapping(value="/checkOutSelling",method=RequestMethod.GET)
-	 public String checkOutAppointments(Model model){
-		
-			String query=new String("from Selling s where s.dateConsignment is not null and  not exists(from Billing b where b.selling = s)");
-			
-			List<Selling> sellings = (List<Selling>) QueryFactory.create(applicationContext, query);
-			
-			model.addAttribute("sellings",sellings);
-		
-			return "checkOutSelling";
-	 }
+	public String checkOutAppointments(Model model){
+
+		String query=new String("from Selling s where s.dateConsignment is not null and  not exists(from Billing b where b.selling = s)");
+
+		List<Selling> sellings = (List<Selling>) QueryFactory.create(applicationContext, query);
+
+		model.addAttribute("sellings",sellings);
+
+		return "checkOutSelling";
+	}
 
 
 	@Override
