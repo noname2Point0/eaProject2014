@@ -15,11 +15,11 @@
 		var id=$(this).attr("id");
 		$.ajax({
 		      type: 'POST',
-		      url: 'reserveService',
+		      url: 'deleteService',
 		      data: $("#"+id).serialize(),
 		      success: function(response) {
-		      	$("#content").empty();
-		      	$("#content").html(response);
+		      	$("#divview").empty();
+		      	$("#divview").html(response);
 		      }
 		});	
 		
@@ -27,14 +27,12 @@
 	});
 });
 </script>
-<c:if test="${!empty message}">
-<p>${message}</p>
-</c:if>
 <c:if test="${!empty serviceList}">
 <div id="tcontent">
 			<p>Services</p>
-			<br>
+			<br> <br>
 			<div id="tableSearch"><p>Search: <input type="text" id="tablesearchinput" /></div>
+ 
  			<table id="table" class="mySortableTable">
 				<thead>
 					<tr>
@@ -52,8 +50,8 @@
 							<td>${service.price}</td>
 							<c:if test="${user.account.type =='customer' || empty user.account.type }">
 							<td>
-							<form:form class="formSubmit"  id="${service.id}" action="reserveService" method="post" modelattribute="service">
-								<input type="submit" value="reserve"> 
+							<form:form class="formSubmit"  id="${service.id}" action="deleteService" method="post" modelattribute="service">
+								<input type="submit" value="delete"> 
 								<input type="hidden" name="id" value="${service.id}"> 
 								<input type="hidden" name="description" value="${service.description }"> 
 								<input type="hidden" name="price" value="${service.price }">

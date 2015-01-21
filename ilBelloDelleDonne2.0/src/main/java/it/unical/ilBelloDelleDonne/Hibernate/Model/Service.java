@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="Service")
@@ -23,6 +24,7 @@ public class Service {
 	@Column(name="id")
     private int id;
 	
+	@NotEmpty
 	@Column(name="description", nullable=false)
 	private String description;
 	

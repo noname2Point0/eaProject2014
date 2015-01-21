@@ -10,6 +10,22 @@
  $("#table").searcher({
 	    inputSelector: "#tablesearchinput"
 	});
+ 
+ $(".formSubmit").submit(function(){
+		var id=$(this).attr("id");
+		$.ajax({
+		      type: 'POST',
+		      url: 'deleteAccount',
+		      data: $("#"+id).serialize(),
+		      success: function(response) {
+		      	$("#divview").empty();
+		      	$("#divview").html(response);
+		      }
+		});	
+		
+			return false;
+	});
+ 
  });
  
  </script>
@@ -36,7 +52,7 @@
 				<td>${user.surname}</td>
 				<td>${user.account.type}</td>
 				<td>
-					<form action="deleteAccount" method="post">
+					<form  class="formSubmit"  id="${user.account.username}" action="deleteAccount" method="post">
 						<input type="submit" value="remove"> 
 						<input type="hidden" name ="identifier" value="${user.account.username}">
 					</form>

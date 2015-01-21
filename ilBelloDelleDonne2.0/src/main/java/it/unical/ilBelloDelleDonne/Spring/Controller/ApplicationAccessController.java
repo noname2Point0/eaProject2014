@@ -2,6 +2,7 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
+import it.unical.ilBelloDelleDonne.ApplicationData.SendEmail;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
@@ -122,6 +123,11 @@ public class ApplicationAccessController implements ApplicationContextAware {
 			userDao.create(user);
 		}
 		
+		try{
+			SendEmail.sendRegistrationEmail(user);
+		}catch(Exception e){
+			
+		}
 		
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");

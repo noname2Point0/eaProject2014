@@ -98,13 +98,36 @@ public class WarehouseController implements ApplicationContextAware{
 	public String setAlterProduct(Model model,
 			@ModelAttribute("altProduct")ProductStock productStock){
 	
-	model.addAttribute("productStock",productStock);
-	return "setAlterProduct";
+		model.addAttribute("stock",productStock);
+		return "setAlterProduct";
 	}
 	
 	@RequestMapping(value="/setAlterProduct",method=RequestMethod.POST)
-	public String postSetAlterProduct(){
-	return null;	
+	public String postSetAlterProduct(Model model,
+			RedirectAttributes redirect,
+			@Valid @ModelAttribute("altProduct") ProductStock productStock,
+			BindingResult result){
+		
+		ProductStockDao psDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		
+		if(result.hasErrors()){
+			productStock = psDao.retrieve(productStock.getId());
+			model.addAttribute("stock",productStock);
+			return "setAlterProduct";
+		}
+		
+		ProductStock pStock = psDao.retrieve(productStock.getId());
+		
+		System.out.println(pStock.getBrand());
+		
+		pStock.setType(productStock.getType());
+		pStock.setBrand(productStock.getBrand());
+		pStock.setDescription(productStock.getDescription());
+		pStock.setPrice(productStock.getPrice());
+		
+		psDao.update(pStock);
+		redirect.addFlashAttribute("message","le modifiche sono state apportate correttamente al prodotto");
+		return "redirect:showWarehouse";	
 	}
 	
 	@RequestMapping(value="/insertProduct",method=RequestMethod.GET)
