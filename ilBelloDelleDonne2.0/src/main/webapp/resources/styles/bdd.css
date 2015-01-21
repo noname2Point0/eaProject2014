@@ -199,7 +199,7 @@ input[type=text], input[type=password], input[type=date], input[type=time],
 	border-radius: 15px;
 	margin: 5% 5%;
 	box-shadow: 10px 10px 5px #888888;
-	min-height: 100vh;
+	min-height: 150vh;
 }
 
 #content {

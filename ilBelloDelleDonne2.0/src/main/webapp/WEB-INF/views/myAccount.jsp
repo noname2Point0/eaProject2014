@@ -30,7 +30,7 @@
 					<li><a id="visualizzaAccount" href='#'>visualizza accounts</a></li>
 				</c:if>
 			</ul>
-			<c:if test="${user.account.type!='customer' && user.account.type!='employeeWarehouse'}">
+			<c:if test="${user.account.type!='customer' && user.account.type!='employeeSaloon'}">
 					<hr />
 						magazzino:
 							<ul class="userMenu">
@@ -83,8 +83,7 @@
 				<hr />
 							statistiche:
 							<ul class="userMenu">
-					<li><a id="visualizzaFatturatoOut" href="#">fatturato out</a></li>
-					<li><a id="visualizzaFatturatoIn" href="#">fatturato in</a></li>
+					<li><a id="visualizzaFatturato" href="#">fatturato</a></li>
 					<li><a id="incassoSalone" href="#">incasso salone</a></li>
 					<li><a id="incassoECommerce" href="#">incasso e commerce</a></li>
 				</ul>
