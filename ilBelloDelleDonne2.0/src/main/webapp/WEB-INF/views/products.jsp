@@ -65,9 +65,13 @@
 					<c:forEach var="stock" items="${stockList}">
 						<tr>
 							<td>
-							  <form action="showImage" method="get">
-							  	<input type="image" src="resources/images/${stock.imageWrapper.imageName}" name="imageWrapper" >
-							  </form>
+							
+					<!--   <form action="showImage" method="get">
+							  	<input type="image" src="<c:url value='/products'></c:url>" >
+							  </form>   -->
+					
+							<img src="product/${stock.id}/image"/>
+							  
 							</td>
 							<td>${stock.type}</td>
 							<td>${stock.brand}</td>
@@ -76,8 +80,7 @@
 							<c:if test="${user.account.type =='customer' || empty user.account.type }">
 							<td>
 								<form action="addToCart" method="get" modelattribute="productCustom">
-								<input type="submit" value="add">
-					<!-- 		<input type="hidden" name="imageWrapper" value="${stock.imageWrapper}"> --> 
+								<input type="submit" value="add"> 
 								<input type="hidden" name="id" value="${stock.id}"> 
 								<input type="hidden" name="type" value="${stock.type}"> 
 								<input type="hidden" name="brand" value="${stock.brand}"> 

@@ -1,7 +1,6 @@
 package it.unical.ilBelloDelleDonne.Hibernate.Utilities;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.AccountDao;
-import it.unical.ilBelloDelleDonne.Hibernate.Dao.ImageWrapperDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductStockDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
@@ -11,7 +10,6 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Account;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Admin;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Customer;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Employee;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
@@ -28,14 +26,12 @@ public abstract class FillDBFactory{
 
 	public static void create(ApplicationContext context){
 	
-		createProduct(context);
+	//	createProduct(context);
 //		createService(context);
-		createProduct(context);
-		createService(context);
 		createUser(context);
 	}
 	
-
+/*
 	private static void createProduct(ApplicationContext context){
 		
 
@@ -111,6 +107,7 @@ public abstract class FillDBFactory{
 		psd.update(productStock);
 
 	}
+	*/
 
 	private static void createService(ApplicationContext context){
 

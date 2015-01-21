@@ -2,7 +2,6 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.ShoppingCart;
-import it.unical.ilBelloDelleDonne.Hibernate.Model.ImageWrapper;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 
 import javax.servlet.http.HttpSession;

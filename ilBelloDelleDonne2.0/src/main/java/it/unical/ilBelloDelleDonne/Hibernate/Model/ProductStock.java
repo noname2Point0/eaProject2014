@@ -9,63 +9,72 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
- @Table(name="ProductStock")
+@Table(name="ProductStock")
 public class ProductStock{
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id")
-    private int id;
-	
+	private int id;
+
 	@Column(name="type", nullable=false)
 	private String type;
-	
+
 	@Column(name="brand",nullable=false)
 	private String brand;
-	
+
 	@Column(name="description")
 	private String description;
-	
+
 	@Column(name="price", nullable=false)
 	private Double price;
-	
+
 	@Column(name="quantity", nullable=false)
 	private int quantity;
-	
+
 	@Column(name="minStock", nullable= false)
 	private int minStock;
-	
+
 	@OneToMany(mappedBy="productStock")
 	private List<Product> products;
-	
-	@OneToOne
-	@JoinColumn(name="imageWrapper")
-	private ImageWrapper imageWrapper;
+
+//	@OneToOne
+//	@JoinColumn(name="imageWrapper")
+//	private ImageWrapper imageWrapper;
+
+		@Column(name = "b", nullable = false, length = 10000000)
+		private byte[] b;
+
+	//	@Column(name="blob")
+	//	@Lob
+	//	private Blob blob;
 
 	public ProductStock() {
 
 	}
-	
-	public ProductStock(String type, String brand, String description, int minStock, int quantity, Double price, ImageWrapper imageWrapper){
-		
+
+	public ProductStock(String type, String brand, String description, int minStock, int quantity, Double price, byte[] b){
+
 		this.type = type;
 		this.brand = brand;
 		this.description = description;
 		this.price = price;
 		this.minStock = minStock;
 		this.quantity = quantity;
-		this.imageWrapper = imageWrapper;
+	//	this.imageWrapper = imageWrapper;
+		this.b = b;
 		this.products = new ArrayList<Product>();
-		
+
 	}
-	
-	public ProductStock(int id,String type, String brand, String description, int minStock, int quantity, Double price, ImageWrapper imageWrapper){
-		
+
+	public ProductStock(int id,String type, String brand, String description, int minStock, int quantity, Double price, byte[] b){
+
 		this.id = id;
 		this.type = type;
 		this.brand = brand;
@@ -73,11 +82,12 @@ public class ProductStock{
 		this.price = price;
 		this.minStock = minStock;
 		this.quantity = quantity;
-		this.imageWrapper = imageWrapper;
+//		this.imageWrapper = imageWrapper;
+		this.b = b;
 		this.products = new ArrayList<Product>();
 	}
-	
-	
+
+
 	public int getId() {
 		return id;
 	}
@@ -125,7 +135,7 @@ public class ProductStock{
 	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
-	
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -142,12 +152,30 @@ public class ProductStock{
 		this.minStock = minStock;
 	}
 
-	public ImageWrapper getImageWrapper() {
-		return imageWrapper;
+	public byte[] getB() {
+		return b;
 	}
 
-	public void setImageWrapper(ImageWrapper imageWrapper) {
-		this.imageWrapper = imageWrapper;
+	public void setB(byte[] b) {
+		this.b = b;
 	}
+
+
+	//		public Blob getBlob() {
+	//			return blob;
+	//		}
+	//	
+	//		public void setBlob(Blob blob) {
+	//			this.blob = blob;
+	//		}
+
+//		public ImageWrapper getImageWrapper() {
+//			return imageWrapper;
+//		}
+//	
+//		public void setImageWrapper(ImageWrapper imageWrapper) {
+//			this.imageWrapper = imageWrapper;
+//		}
+
 
 }
