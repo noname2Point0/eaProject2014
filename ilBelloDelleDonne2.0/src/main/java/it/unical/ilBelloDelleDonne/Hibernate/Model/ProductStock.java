@@ -13,6 +13,10 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="ProductStock")
@@ -23,17 +27,21 @@ public class ProductStock{
 	@Column(name="id")
 	private int id;
 
+	@NotEmpty
 	@Column(name="type", nullable=false)
 	private String type;
+	
 	@Column(name = "image", nullable = false, length = 10000000)
 	private byte[] image;
 
+	@NotEmpty
 	@Column(name="brand",nullable=false)
 	private String brand;
 
 	@Column(name="description")
 	private String description;
 
+	
 	@Column(name="price", nullable=false)
 	private Double price;
 

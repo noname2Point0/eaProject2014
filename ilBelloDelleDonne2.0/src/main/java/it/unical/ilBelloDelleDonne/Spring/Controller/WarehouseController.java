@@ -12,23 +12,23 @@ import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
 import java.io.OutputStream;
-import java.util.Base64;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -95,15 +95,23 @@ public class WarehouseController implements ApplicationContextAware{
 	}
 	
 	@RequestMapping(value="/setAlterProduct",method=RequestMethod.GET)
-	public String setAlterProduct(@ModelAttribute("altProduct")ProductStock productStock){
+	public String setAlterProduct(Model model,
+			@ModelAttribute("altProduct")ProductStock productStock){
 	
-		System.out.println(productStock.getBrand());
-	
+	model.addAttribute("productStock",productStock);
 	return "setAlterProduct";
-	
 	}
+	
+	@RequestMapping(value="/setAlterProduct",method=RequestMethod.POST)
+	public String postSetAlterProduct(){
+	return null;	
+	}
+	
 	@RequestMapping(value="/insertProduct",method=RequestMethod.GET)
-	public String insertProduct(){
+	public String insertProduct(Model model){
+		List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
+		
+		model.addAttribute("stockList",productStocks);
 
 		return "insertProduct";
 	}
@@ -130,11 +138,41 @@ public class WarehouseController implements ApplicationContextAware{
 
 	}
 	
+	@RequestMapping(value="insertExistProduct",method=RequestMethod.POST)
+	public String insertExistProduc(@RequestParam("stockId") String stockId,
+			@RequestParam("qntS")String qnt,
+			RedirectAttributes redirect){
+		
+		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
+		ProductStockDao psDao = (ProductStockDao) applicationContext.getBean("productStockDao");
+		ProductStock productStock = psDao.retrieve(Integer.valueOf(stockId));
+		
+		int qnty = Integer.valueOf(qnt);
+		productStock.setQuantity(productStock.getQuantity()+qnty);
+		
+		for(int i = 0; i<qnty; i++){
+			Product product = new Product(productStock);
+			productDao.create(product);
+		}
+		
+		psDao.update(productStock);
+		
+		redirect.addFlashAttribute("message","quantita dello stock aggiornata con successo");
+		return "redirect:showWarehouse";
+	}
+	
 	@RequestMapping(value="/insertNewProduct",method=RequestMethod.POST)
-	public String insertNewProduct(@ModelAttribute("insProduct") ProductStock productCustom,
+	public String insertNewProduct(Model model,
+			@Valid @ModelAttribute("insProduct") ProductStock productCustom,
+			BindingResult result,
 			@RequestParam("file") MultipartFile file,
 			RedirectAttributes redirect){
-
+		
+		if(result.hasErrors()){
+			model.addAttribute("productStock",productCustom);
+			return "insertProduct";
+		}
+		
 		int nProd = productCustom.getQuantity();
 
 		ProductDao productDao = (ProductDao) applicationContext.getBean("productDao");
@@ -159,7 +197,7 @@ public class WarehouseController implements ApplicationContextAware{
 
 		
 		redirect.addFlashAttribute("message","prodotti inseriti con successo");
-		return "redirect:myAccount";
+		return "redirect:showWarehouse";
 	}
 
 	@Override
