@@ -1,18 +1,37 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<script type="text/javascript" src="resources/scripts/jquery.tablesorter.js"></script> 
- <script type="text/javascript" src="resources/scripts/jquery.searcher.js"></script> 
- <script type="text/javascript">
+<script type="text/javascript"
+	src="resources/scripts/jquery.tablesorter.js"></script>
+<script type="text/javascript"
+	src="resources/scripts/jquery.searcher.js"></script>
+<script type="text/javascript">
  
- $(function(){
+$(function(){
  $("#table").tablesorter(); 
  $("#table").searcher({
 	    inputSelector: "#tablesearchinput"
 	});
- });
+ 
+ $("#form").submit(function(){
+	 $.ajax({
+	      type: 'POST',
+	      url: 'sendSelling',
+	      data:$("#form").serialize(),
+	      success: function(response){
+	      	$("#divview").empty();
+	      	$("#divview").html(response);
+	      }
+	});
+	 
+	return false; 
+ 	});
+});
 </script>
-<div id="tableSearch"><p>Search: <input type="text" id="tablesearchinput" /></div>
+<div id="tableSearch">
+	<p>
+		Search: <input type="text" id="tablesearchinput" />
+</div>
 <table id="table" class="mySortableTable">
 	<thead>
 		<tr>
@@ -32,12 +51,11 @@
 				<td>${selling.dateOrder }</td>
 				<td>${selling.dateConsignment }</td>
 				<td>${selling.sellingCost }</td>
-				<td><form action="sendSelling" method="post">
-							<input type="submit" value="send">
-						<input type="hidden" name="sellingId" value="${selling.id}">
-						</form>
-				</td>
-				</tr>
+				<td><form id="form" method="post" action="sendSelling" >
+						<input type="submit" value="send"> <input type="hidden"
+							name="sellingId" value="${selling.id}">
+					</form></td>
+			</tr>
 		</c:forEach>
 	</tbody>
 </table>

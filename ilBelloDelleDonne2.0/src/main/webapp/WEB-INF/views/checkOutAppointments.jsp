@@ -1,6 +1,25 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<script>
+$(function(){
+	
+	$("#form").submit(function(){
+		
+	$.ajax({
+	      type: 'POST',
+	      url: 'billingReserve',
+	      data: $("#form").serialize(),
+	      success: function(response) {
+	      	$("#divview").empty();
+	      	$("#divview").html(response);
+	      }
+	});
+	return false;
+	});
+});
+
+</script>
 
 <c:if test="${!empty reserveList}">
 <table class="mytable">
@@ -27,7 +46,7 @@
 			<td>${reserve.customer.surname }</td>
 			<td>${reserve.service.price}</td>
 			<td>
-				<form action="billingReserve" method="post" >
+				<form id="form" method="post" action="billingReserve" >
 				<input type="submit" value="check out">
 				<input type="hidden" name="reserveId" value="${reserve.id}">
 				</form> 

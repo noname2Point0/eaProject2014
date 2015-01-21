@@ -13,7 +13,7 @@
 	});
  });
 </script>
-<c:if test="${!empty selling}">
+<c:if test="${!empty sellings}">
 <div id="tableSearch"><p>Search: <input type="text" id="tablesearchinput" /></div>
 <table id="table" class="mySortableTable">
 	<thead>

@@ -84,8 +84,6 @@
 							statistiche:
 							<ul class="userMenu">
 					<li><a id="visualizzaFatturato" href="#">fatturato</a></li>
-					<li><a id="incassoSalone" href="#">incasso salone</a></li>
-					<li><a id="incassoECommerce" href="#">incasso e commerce</a></li>
 				</ul>
 			</c:if>
 		</div>

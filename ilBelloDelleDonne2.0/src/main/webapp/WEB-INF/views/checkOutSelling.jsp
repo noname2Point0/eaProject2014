@@ -2,6 +2,25 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<script>
+$(function(){
+	
+	$("#form").submit(function(){
+		
+	$.ajax({
+	      type: 'POST',
+	      url: 'billingSelling',
+	      data: $("#form").serialize(),
+	      success: function(response) {
+	      	$("#divview").empty();
+	      	$("#divview").html(response);
+	      }
+	});
+	return false;
+	});
+});
+
+</script>
 
 <c:if test="${!empty sellings}">
 <table class="mytable">
@@ -24,7 +43,7 @@
 				<td>${selling.dateConsignment }</td>
 				<td>${selling.sellingCost }</td>
 				<td>
-					<form action="billingSelling" method="post">
+					<form id="form" method="post" action="billingSelling">
 					<input type="hidden" name="sellingId" value="${selling.id}">
 						<input type="submit" value="check out">
 					</form>

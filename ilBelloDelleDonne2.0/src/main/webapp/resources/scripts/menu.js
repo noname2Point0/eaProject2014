@@ -64,4 +64,8 @@ $(function(){
 		$("#divview").load("deleteService");
 	});
 	
+	$("#visualizzaFatturato").click(function(){
+		$("#divview").load("showBilling");
+	});
+	
 });

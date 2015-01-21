@@ -82,9 +82,8 @@ public class SellingController implements ApplicationContextAware{
 
 
 		for(ProductStock productStock :productsCustomList.getProductsStock()){		
-		//	String query = new String("from Product p where p.productStock.id="+productStock.getId()+"");
-
-			List<Product> p = (List<Product>) DataProvider.getProductListFromStockNotSelling(applicationContext, productStock.getId());
+		
+			List<Product> p = DataProvider.getProductListFromStockNotSelling(applicationContext, productStock.getId());
 
 			if(productStock.getQuantity() <= p.size()){
 

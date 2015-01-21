@@ -1,5 +1,6 @@
 package it.unical.ilBelloDelleDonne.Spring.Controller;
 
+import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.BillingDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ReserveDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.SellingDao;
@@ -9,6 +10,7 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -45,7 +47,7 @@ public class BillingController implements ApplicationContextAware{
 		
 		redirect.addFlashAttribute("message","la prenotazione è stata fatturata dal sistema");
 		
-		return "redirect:myAccount";
+		return "redirect:checkOutReserve";
 	}
 	
 	@RequestMapping(value="/billingSelling",method=RequestMethod.POST)
@@ -69,7 +71,15 @@ public class BillingController implements ApplicationContextAware{
 		
 		redirect.addFlashAttribute("message","la fatturazione è andata a buon fine");
 		
-		return "redirect:myAccount";
+		return "redirect:checkOutSelling";
+	}
+	
+	@RequestMapping(value="/showBilling",method=RequestMethod.GET)
+	public String getShowBilling(Model model){
+		List<Billing> billingList = DataProvider.getBillingList(applicationContext);
+		
+		model.addAttribute("billingList",billingList);
+		return "showBilling";
 	}
 	
 	@Override

@@ -81,7 +81,7 @@ public class WarehouseController implements ApplicationContextAware{
 		sellingDao.update(selling);
 		
 		redirect.addFlashAttribute("message","operazione eseguita con successo. Spedizione in attesa del check out dell'amministratore");
-		return "redirect:myAccount";
+		return "redirect:sendSelling";
 	}
 	
 	

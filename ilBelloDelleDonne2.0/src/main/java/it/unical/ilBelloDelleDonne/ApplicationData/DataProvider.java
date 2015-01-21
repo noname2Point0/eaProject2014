@@ -2,6 +2,7 @@ package it.unical.ilBelloDelleDonne.ApplicationData;
 
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ServiceDao;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.UserDao;
+import it.unical.ilBelloDelleDonne.Hibernate.Model.Billing;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
@@ -58,16 +59,10 @@ public abstract class DataProvider {
 		
 	}
 	
-	public static List getProductListFromStockNotSelling(ApplicationContext applicationContext, int stockProductId){
-		SessionFactory ses = (SessionFactory) applicationContext.getBean("sessionFactory");
-		Session session = ses.openSession();
+	public static List<Product> getProductListFromStockNotSelling(ApplicationContext applicationContext, int stockProductId){
 		String query = "from Product p where p.productStock.id="+stockProductId+" and not exists(from Selling s where p.selling=s)";
-		Query q = session.createQuery(query);
-		List l = q.list();
 		
-		session.close();
-		
-		return l;
+		return (List<Product>) performQuery(applicationContext, query);
 	}
 	
 	public static List<Reserve> getCustomerReserveList( ApplicationContext applicationContext, String username) {
@@ -110,6 +105,11 @@ public abstract class DataProvider {
 
 	public static List<ProductStock> getAvailableProductsList(ApplicationContext applicationContext) {
 		return (List<ProductStock>) performQuery(applicationContext, "from ProductStock ps where ps.quantity > 0");
+	}
+
+	public static List<Billing> getBillingList(ApplicationContext applicationContext) {
+
+		return (List<Billing>) performQuery(applicationContext, "from Billing");
 	}
 
 	
