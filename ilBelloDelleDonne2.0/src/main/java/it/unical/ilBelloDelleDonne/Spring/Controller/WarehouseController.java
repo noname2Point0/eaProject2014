@@ -9,7 +9,6 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Product;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.ProductStock;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -55,8 +54,7 @@ public class WarehouseController implements ApplicationContextAware{
 	@RequestMapping(value="/showWarehouse", method=RequestMethod.GET)
 	public String showWarehouse(Model model){
 		
-		List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
-		
+		List<ProductStock> productStocks = DataProvider.getProductStockList(applicationContext);
 		model.addAttribute("stockList",productStocks);
 
 		return "showWarehouse";
@@ -65,8 +63,7 @@ public class WarehouseController implements ApplicationContextAware{
 	@RequestMapping(value="/sendSelling",method=RequestMethod.GET)
 	public String getSendSelling(Model model){
 	
-		List<Selling> sellings = QueryFactory.create(applicationContext,"from Selling s where s.dateConsignment is null");
-		
+		List<Selling> sellings = DataProvider.getSellingListNoSend(applicationContext);
 		model.addAttribute("sellings",sellings);
 		
 		return "sendSelling";
@@ -88,7 +85,7 @@ public class WarehouseController implements ApplicationContextAware{
 	@RequestMapping(value="/alterProduct",method=RequestMethod.GET)
 	public String alterProduct(Model model){
 		
-	List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
+	List<ProductStock> productStocks = DataProvider.getProductStockList(applicationContext);
 		
 	model.addAttribute("stockList",productStocks);
 	return "alterProduct";
@@ -118,8 +115,6 @@ public class WarehouseController implements ApplicationContextAware{
 		
 		ProductStock pStock = psDao.retrieve(productStock.getId());
 		
-		System.out.println(pStock.getBrand());
-		
 		pStock.setType(productStock.getType());
 		pStock.setBrand(productStock.getBrand());
 		pStock.setDescription(productStock.getDescription());
@@ -132,7 +127,7 @@ public class WarehouseController implements ApplicationContextAware{
 	
 	@RequestMapping(value="/insertProduct",method=RequestMethod.GET)
 	public String insertProduct(Model model){
-		List<ProductStock> productStocks = (List<ProductStock>)QueryFactory.create(applicationContext,"from ProductStock");
+		List<ProductStock> productStocks = DataProvider.getProductStockList(applicationContext);
 		
 		model.addAttribute("stockList",productStocks);
 

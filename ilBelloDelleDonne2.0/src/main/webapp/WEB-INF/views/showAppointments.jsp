@@ -42,7 +42,3 @@
 	</tbody>
 </table>
 </c:if>
-
-<c:if test="${empty reserveList}">
-<p>non ci sono prenotazioni a tuo nome</p>
-</c:if>

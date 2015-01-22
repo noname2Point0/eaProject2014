@@ -23,6 +23,10 @@
 				alert("inserisci una password");
 				return false;
 			}
+			if(pass.length<=5){
+				alert("inserisci una password di almeno 6 caratteri");
+				return false;
+			}
 			
 			if(pass != rpass){
 				alert("conferma password non corretta");

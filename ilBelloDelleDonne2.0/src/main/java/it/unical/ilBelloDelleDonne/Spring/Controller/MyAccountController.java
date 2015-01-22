@@ -16,7 +16,7 @@ public class MyAccountController {
 	public String myAccount(Model model,HttpSession session){
 		
 		ApplicationInfo appInfo = (ApplicationInfo) session.getAttribute("info");
-		System.out.println(model.asMap());
+		
 		if(appInfo.isUserLogged())
 			model.addAttribute("user", appInfo.getUser());
 		

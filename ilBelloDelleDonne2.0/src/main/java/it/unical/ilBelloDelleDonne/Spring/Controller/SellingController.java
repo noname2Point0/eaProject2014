@@ -2,7 +2,6 @@ package it.unical.ilBelloDelleDonne.Spring.Controller;
 
 import it.unical.ilBelloDelleDonne.ApplicationData.ApplicationInfo;
 import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
-import it.unical.ilBelloDelleDonne.ApplicationData.EmailType;
 import it.unical.ilBelloDelleDonne.ApplicationData.ProductCustomList;
 import it.unical.ilBelloDelleDonne.ApplicationData.SendEmail;
 import it.unical.ilBelloDelleDonne.Hibernate.Dao.ProductDao;
@@ -16,7 +15,6 @@ import it.unical.ilBelloDelleDonne.Hibernate.Model.Selling;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.User;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.AccountType;
 import it.unical.ilBelloDelleDonne.Hibernate.Utilities.MyData;
-import it.unical.ilBelloDelleDonne.Hibernate.Utilities.QueryFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,9 +22,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -172,9 +167,7 @@ public class SellingController implements ApplicationContextAware{
 	@RequestMapping(value="/checkOutSelling",method=RequestMethod.GET)
 	public String checkOutAppointments(Model model){
 
-		String query=new String("from Selling s where s.dateConsignment is not null and  not exists(from Billing b where b.selling = s)");
-
-		List<Selling> sellings = (List<Selling>) QueryFactory.create(applicationContext, query);
+		List<Selling> sellings = DataProvider.getSellingListNoBilling(applicationContext);
 
 		model.addAttribute("sellings",sellings);
 

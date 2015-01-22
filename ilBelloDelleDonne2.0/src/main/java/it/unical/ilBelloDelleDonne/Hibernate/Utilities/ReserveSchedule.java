@@ -1,5 +1,6 @@
 package it.unical.ilBelloDelleDonne.Hibernate.Utilities;
 
+import it.unical.ilBelloDelleDonne.ApplicationData.DataProvider;
 import it.unical.ilBelloDelleDonne.Hibernate.Model.Reserve;
 
 import java.util.List;
@@ -12,9 +13,7 @@ public abstract class ReserveSchedule {
 	public static boolean isAnAvailableReserve(ApplicationContext context,String dataService, String time){
 
 		String [] splitMyReserveTime = time.split(":");
-
-		String query = "from Reserve r where r.dateService='"+dataService+"'";
-		List<Reserve> reserves = QueryFactory.create(context, query);
+		List<Reserve> reserves = DataProvider.getReserveListFromDataString(context,dataService);
 
 		if(reserves.isEmpty()){
 			return true;

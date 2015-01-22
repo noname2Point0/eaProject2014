@@ -103,7 +103,7 @@ public class ReserveController implements ApplicationContextAware {
 			return "redirect:/reviewReserveSuccess";
 		}
 		else{
-			String message = "non è possibile effettuare la prenotazione, scegli un altra data o orario";
+			String message = "non è possibile effettuare la prenotazione, scegli un orario o una data differente";
 			model.addAttribute("service",service);
 			model.addAttribute("message",message);
 			model.addAttribute("user",appInfo.getUser());
@@ -149,7 +149,7 @@ public class ReserveController implements ApplicationContextAware {
 	
 	 @RequestMapping(value="/checkOutAppointments",method=RequestMethod.GET)
 	 public String checkOutAppointments(Model model){
-			 	
+			 
 		 	List<Reserve> reserveList = (List<Reserve>) DataProvider.getReserveListNoBilling(applicationContext); 	
 			
 			model.addAttribute("reserveList",reserveList);

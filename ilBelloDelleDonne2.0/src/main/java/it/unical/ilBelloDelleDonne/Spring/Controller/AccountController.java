@@ -144,8 +144,6 @@ public class AccountController implements ApplicationContextAware{
 			BindingResult result,
 			@RequestParam("typeUs")String type){
 
-		System.out.println("insert");
-		
 		if(result.hasErrors()){
 			model.addAttribute("user",user);
 			return "insertAccount";

@@ -24,20 +24,16 @@ public abstract class CredentialsManager{
 		}
 		return false;
 	}
-	
+
 	public static boolean isAnExistingUser(ApplicationContext context, String username){
-		String query = "from User user where user.account.username='"+username+"'";
+		UserDao userDao = (UserDao) context.getBean("userDao");
+		User user = userDao.retrieve(username);
 		
-		List<User> userList = (List<User>) QueryFactory.create(context, query);
-		
-		if(!userList.isEmpty()){
-			User user = userList.get(0);
-			if(user!=null){			
-				return true;
-			}
-		}		
+		if(user!=null){			
+			return true;
+		}
+				
 		return false;
-		
 	}
 
 	public static String generateUsername(ApplicationContext context, String a, String b) {
